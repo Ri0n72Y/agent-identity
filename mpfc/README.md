@@ -18,6 +18,9 @@ Derived metadata may include:
 - `soul_revision_after`
 - `soul_hash_after`
 - `soulChanged`
+- `state_transition`
+
+`state_transition` is a compact description of the final identity transition (for example, `unchanged` or a short `before -> after` summary). It does not replace the revision/hash fields.
 
 The actual evidence belongs in the Ralph Report's `evidence` field.
 
