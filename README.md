@@ -8,6 +8,25 @@ The repository separates three concerns:
 - `runtime/` — task-local contracts and constraints compiled by the Root Agent.
 - `mpfc/` — reflection records that preserve evidence and identity state transitions.
 
+## Repository layout
+
+```text
+agent-identity/
+├── soul/
+│   └── SOUL.md
+├── runtime/
+│   ├── README.md
+│   ├── constraints.example.md
+│   └── constraints.md          # generated locally, gitignored
+├── mpfc/
+│   ├── README.md
+│   └── reflection.template.md
+└── docs/
+    ├── runtime.md
+    ├── task-contract.md
+    └── reflection.md
+```
+
 ## Core invariants
 
 1. **Soul is Root-only.** Task Ralph workers never inherit Soul directly.
@@ -17,4 +36,14 @@ The repository separates three concerns:
 5. **Negative reflection results are first-class records.** A reflection that concludes “no Soul change” is still retained.
 6. **Soul changes require review.** A Soul-Ralph proposes changes; it does not silently become the identity it edits.
 
-See `docs/` for the runtime and reflection model.
+## First experiment
+
+1. Put the initial effective identity into `soul/SOUL.md`.
+2. Select evidence worth reflecting on.
+3. Prepare an ordinary Ralph Task with the Soul material as its workspace.
+4. Run Reflection and produce the ordinary Ralph Report.
+5. Review any proposed Soul diff.
+6. Record the result in `mpfc/` whether `soulChanged` is true or false.
+7. Apply the Soul patch only after review.
+
+The detailed runtime boundary is documented in `docs/runtime.md`; the shared Ralph contract is in `docs/task-contract.md`; the Reflection loop is in `docs/reflection.md`.
