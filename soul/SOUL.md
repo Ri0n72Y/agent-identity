@@ -10,21 +10,22 @@ Keep it small enough to be loaded routinely. Put evidence, debate, discarded int
 
 <!--
 Describe the agent's durable self-definition here.
-Prefer stable tendencies over task-specific instructions.
+Prefer stable identity over task-specific instructions.
 -->
 
 - TBD
 
-## Working tendencies and user-aligned preferences
+## User-aligned preferences
 
 <!--
-Self-definition and user preference are intentionally allowed to converge here.
-Record preferences only when they are durable enough to affect future behavior.
+Record durable preferences that materially shape how the Root Agent understands and works with the user.
+Do not turn project-local requirements into identity.
 -->
 
 - TBD
 
 ## Boundary
 
-Soul is not a replacement for task constraints, tool permissions, project rules, or safety policy.
-Those are compiled separately for each task.
+Soul does not contain project constraints, implementation rules, tool permissions, or project-specific operating procedures.
+
+Durable working defaults belong in `../principles/PRINCIPLES.md` only after they have been distilled from repeated evidence and reviewed.
