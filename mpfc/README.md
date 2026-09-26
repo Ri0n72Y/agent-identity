@@ -2,7 +2,7 @@
 
 `mpfc/` is the audit trail for identity Reflection.
 
-It stores what was examined, what evidence supported the examination, and whether the effective Soul changed. A negative result is still a result and must be retained.
+It stores what was examined, what evidence supported the examination, and whether the effective identity changed. A negative result is still a result and must be retained.
 
 Reflection does not invent a second report format. Every record contains:
 
@@ -13,17 +13,17 @@ Derived metadata may include:
 
 - `reflected_at`
 - `reflection_round`
-- `soul_revision_before`
-- `soul_hash_before`
-- `soul_revision_after`
-- `soul_hash_after`
-- `soulChanged`
+- `identity_revision_before`
+- `identity_revision_after`
+- `identityChanged`
 - `state_transition`
 
-`state_transition` is a compact description of the final identity transition (for example, `unchanged` or a short `before -> after` summary). It does not replace the revision/hash fields.
+The revision may be the repository commit that identifies the effective identity state before and after Reflection.
 
-The actual evidence belongs in the Ralph Report's `evidence` field.
+`state_transition` is a compact description of the final identity transition, for example `unchanged`, `principle added`, or `soul preference revised`.
 
-When `soulChanged: false`, the record should still explain the reviewed evidence and why no identity update was justified. The before/after revision or hash may remain identical.
+The actual evidence belongs in the Ralph Report's `evidence` field. Project constraints may appear there when they are evidence for Reflection; they are not copied into identity merely because they were examined.
+
+When `identityChanged: false`, the record should still explain the reviewed evidence and why no identity update was justified. The before/after revision may remain identical.
 
 Use `reflection.template.md` as the minimal record shape.
