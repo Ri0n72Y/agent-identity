@@ -6,6 +6,7 @@ soul_hash_before:
 soul_revision_after:
 soul_hash_after:
 soulChanged: false
+state_transition: unchanged
 ---
 
 # Ralph Report
