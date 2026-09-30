@@ -7,7 +7,7 @@ This repository owns identity state. It does **not** own project constraints.
 - `soul/` — the current effective identity presented to the Root Agent.
 - `principles/` — durable cross-project working principles distilled from repeated evidence.
 - `mpfc/` — reflection records that preserve evidence and identity state transitions.
-- `docs/` — integration and Reflection semantics.
+- `docs/` — integration, Reflection semantics, and reusable design references.
 
 ## Repository layout
 
@@ -23,7 +23,8 @@ agent-identity/
 └── docs/
     ├── runtime.md
     ├── task-contract.md
-    └── reflection.md
+    ├── reflection.md
+    └── skill-design.md
 ```
 
 A project keeps its own constraints in that project's workspace. The exact filename and structure are project concerns, not part of the identity schema.
@@ -49,3 +50,5 @@ A project keeps its own constraints in that project's workspace. The exact filen
 7. Apply the identity patch only after review.
 
 The integration boundary is documented in `docs/runtime.md`; the shared Ralph contract is in `docs/task-contract.md`; the Reflection loop is in `docs/reflection.md`.
+
+For reusable skill authoring and review, see `docs/skill-design.md`.
