@@ -7,6 +7,7 @@ This repository owns identity state. It does **not** own project constraints.
 - `soul/` — the current effective identity presented to the Root Agent.
 - `principles/` — durable cross-project working principles distilled from repeated evidence.
 - `mpfc/` — reflection records that preserve evidence and identity state transitions.
+- `skills/` — reusable task-scoped runtime skills.
 - `docs/` — integration, Reflection semantics, and reusable design references.
 
 ## Repository layout
@@ -20,6 +21,9 @@ agent-identity/
 ├── mpfc/
 │   ├── README.md
 │   └── reflection.template.md
+├── skills/
+│   └── skill-authoring/
+│       └── SKILL.md
 └── docs/
     ├── runtime.md
     ├── task-contract.md
@@ -52,4 +56,4 @@ A project keeps its own constraints in that project's workspace. The exact filen
 
 The integration boundary is documented in `docs/runtime.md`; the shared Ralph contract is in `docs/task-contract.md`; the Reflection loop is in `docs/reflection.md`.
 
-For reusable skill authoring and review, see `docs/skill-design.md`. Its comparative research and dogfooding evidence live separately in `docs/skill-design-research.md`.
+The runnable meta-skill for creating and reviewing reusable skills is `skills/skill-authoring/SKILL.md`. Its design rationale lives in `docs/skill-design.md`, with comparative research and dogfooding evidence in `docs/skill-design-research.md`.
