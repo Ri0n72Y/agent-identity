@@ -1,44 +1,40 @@
 # Skill design
 
-> A skill for making skills: how to decide what deserves to become a reusable agent skill, what belongs inside it, and what should be left out.
+> A design reference for deciding what deserves to become a reusable agent skill, what belongs inside it, and what should be left out.
 
-This document is a design reference, not an always-on execution rule. It captures lessons from current agent systems and from this repository's own identity/reflection work.
+This document is not an always-on runtime prompt. It defines the design method from which a concrete skill-authoring skill may be derived.
 
-Its central claim is simple:
+Its central claim is:
 
 > A good skill contains the smallest sufficient set of high-signal instructions that materially improves behavior for a recurring class of work.
 
-A skill should not try to restate everything a capable model already knows. It should preserve the parts that are load-bearing.
+The goal is not minimum length. The goal is minimum sufficient structure.
 
-## 1. What a skill is for
+## 1. Put knowledge at the correct layer
 
 A skill is reusable, task-triggered behavioral knowledge.
 
-It is appropriate when a recurring workflow benefits from one or more of the following:
+Use a skill when recurring work needs behavior that is not reliably supplied by the task alone, such as a domain-specific procedure, a repeated failure correction, a stable tool contract, reusable reference material, or observable completion criteria.
 
-- domain-specific procedure that is not reliably inferred from the task alone;
-- repeated failure modes that need explicit correction;
-- tool or environment usage that requires a stable sequence or contract;
-- canonical validation or completion criteria;
-- task-specific references, scripts, schemas, or examples that should be loaded only when relevant.
-
-A skill is not a substitute for:
+Do not use a skill as a substitute for:
 
 - **Soul** — durable identity;
 - **Principles** — durable cross-project defaults distilled from repeated evidence;
-- **project constraints** — hard requirements owned by the project doing the work;
-- **task context** — facts and instructions specific to the current request;
-- **general model capability** — knowledge or reasoning the model already performs reliably without instruction.
+- **project constraints** — hard requirements owned by the project;
+- **task context** — facts and instructions specific to one request;
+- **general model capability** — behavior the model already performs reliably without extra instruction.
 
-If information belongs to one of those layers, keep it there instead of copying it into a skill.
+References inside a skill should therefore be reusable across instances of that skill. A file, PR, requirement, or fact that belongs only to the current task remains task context.
 
-## 2. Design for progressive disclosure
+If a behavior can be enforced more reliably by a type, schema, test, validator, permission, script, or tool contract, prefer that mechanism over prompt prose.
 
-Do not preload the whole manual.
+## 2. Use progressive disclosure
 
-A skill should expose only enough information for the agent to recognize when it is relevant, then reveal deeper material only when the task actually needs it.
+Do not preload everything that might become relevant.
 
-A useful structure is:
+Expose enough information to recognize and execute the common path, then load deeper references only when the task requires them.
+
+One common implementation shape is:
 
 ```text
 skill metadata
@@ -49,262 +45,74 @@ SKILL.md
     |
     | core workflow and decisions
     v
-optional references / examples / scripts
+references / examples / scripts
     |
-    | loaded only when needed
+    | loaded when needed
     v
 task execution
 ```
 
-The main skill file should remain lean. Large examples, edge cases, source material, forms, schemas, and detailed references should normally live in linked files rather than being copied into the core instructions.
+The exact file layout is runtime-specific; the principle is not.
 
-Prefer references to canonical project files over duplicated content. Duplicated instructions consume context and become stale.
+Keep the runtime core lean. Long examples, domain references, schemas, edge cases, and design history should remain outside the core unless they are required for ordinary execution.
 
-## 3. Put instructions at the right altitude
+Prefer links to canonical sources over duplicated copies. Duplicate knowledge consumes context and drifts out of date.
 
-A useful instruction sits between two failure modes.
+## 3. Write instructions at the right altitude
 
-Too specific:
+A useful instruction tells the model **when behavior must change and how**, without replacing reasoning with a miniature program.
+
+Avoid instructions that are too vague to alter behavior:
+
+```text
+Be rigorous.
+Think deeply.
+Use best practices.
+Produce high-quality work.
+```
+
+Avoid instructions that enumerate cases the model can handle through judgment:
 
 ```text
 If A, do B.
 If A and C, do D.
 If A and C but not E, do F.
-...
 ```
 
-This turns the prompt into brittle program logic, increases maintenance cost, and prevents a capable model from adapting to cases that were not anticipated.
-
-Too vague:
-
-```text
-Be thoughtful.
-Use best practices.
-Think critically.
-Produce high-quality work.
-```
-
-These statements provide little new behavioral signal.
-
-Prefer conditional, observable guidance:
+Prefer conditional, observable rules:
 
 ```text
 When a claim materially affects the result and can be verified, verify it.
 If verification is unavailable, distinguish evidence from inference.
 ```
 
-or:
+Do not add an explicit task taxonomy merely because tasks can be categorized. Add routing rules only when observed routing failures show that explicit routing materially improves behavior.
 
-```text
-Do not accept a user's premise merely because the user proposed it.
-Challenge it when there is a substantive contradiction, missing premise, or unsupported causal claim; otherwise continue without manufacturing disagreement.
-```
+Likewise, do not turn every desirable property into a mandatory checklist. Use a checklist only when each item is independently easy to omit, materially important, broadly applicable to the skill, and observably complete.
 
-The instruction should tell the model **when behavior must change and how** without attempting to enumerate every possible case.
+A skill should constrain known failure modes while preserving model judgment where judgment is useful. Require a fixed sequence only when order affects correctness, safety, state, or reproducibility.
 
-## 4. Test whether an instruction is load-bearing
+## 4. Keep only load-bearing instructions
 
-Before adding a sentence to a skill, ask:
+Before retaining an instruction, test whether it earns its place.
 
-1. If this sentence is removed, does agent behavior materially worsen?
-2. Is it correcting a real or plausibly recurring failure, rather than stating something merely desirable?
-3. Does it apply across the intended scope of this skill?
-4. Is the behavior better enforced somewhere else — by a tool contract, type system, test, linter, script, schema, or project constraint?
-5. Is it knowledge the model can already infer reliably from the current task and environment?
-6. Does the instruction justify the attention budget it consumes?
+An instruction is load-bearing when removing it materially worsens behavior within the intended scope.
 
-If the answer to (1) is no, the sentence is probably honor information rather than an instruction.
+Useful evidence includes repeated failures, a stable ambiguity, a recurring tool mistake, an omitted validation step, premature completion, or another correctness risk that the task itself does not reliably resolve.
 
-If the answer to (4) is yes, prefer the external mechanism. Prompts should not duplicate enforcement that can be made deterministic.
+An instruction is a weak candidate when it merely sounds desirable, restates general competence, protects against a speculative one-off edge case, duplicates deterministic enforcement, or repeats information available from a canonical source.
 
-If the answer to (5) is yes, omit it unless observed failures show that the reminder is actually necessary.
+Do not preserve historical scaffolding by default. A rule that helped an older model may become noise for a newer one.
 
-## 5. Add rules from evidence, not imagination
+Negative evidence matters: if removing a rule does not materially worsen real executions, narrow it, move it out of the runtime core, or delete it.
 
-Do not try to design a complete skill in advance.
+## 5. Let skills evolve from practice
 
-Start with the smallest workflow that can succeed. Run it on real work. Add or revise instructions when evidence shows a recurring failure, ambiguity, or missing boundary.
+Do not try to derive a complete skill from theory before it has been used.
 
-Good reasons to add an instruction include:
+Start with the smallest workflow that can succeed. Run it on real tasks. Observe where execution fails, becomes ambiguous, wastes attention, or reaches an unverifiable conclusion.
 
-- the agent repeatedly makes the same wrong assumption;
-- the agent uses the wrong source of truth;
-- the agent stops before the task is actually complete;
-- the agent repeatedly misuses a tool or interface;
-- a domain-specific validation step is consistently omitted;
-- different reasonable interpretations create an unacceptable correctness risk.
-
-Weak reasons include:
-
-- the sentence sounds professional;
-- the rule is theoretically true;
-- an edge case could conceivably happen once;
-- the author wants to demonstrate methodological completeness.
-
-A negative result matters too. If a suspected problem does not recur, or newer models handle it reliably without help, do not preserve the rule merely because it once seemed useful.
-
-## 6. Keep task classification out of the skill unless routing itself is the skill
-
-Do not begin by teaching the model a taxonomy such as:
-
-```text
-If this is coding, use coding mode.
-If this is research, use research mode.
-If this is product work, use product mode.
-```
-
-Capable models already infer much of this from context. Explicit taxonomies introduce an additional routing decision that can be wrong and encourage mechanical behavior.
-
-A skill may define activation conditions because the runtime needs to know when the skill is relevant. That is different from asking the model to repeatedly classify the task after the skill has already been activated.
-
-Once inside a skill, describe the behavior required for the work rather than restating a category name.
-
-## 7. Avoid checklist inflation
-
-Checklists are useful when every item is genuinely mandatory and independently easy to miss.
-
-They become harmful when every good principle is converted into an obligatory preflight step:
-
-```text
-Before every answer:
-- inspect assumptions;
-- inspect priorities;
-- inspect evidence;
-- inspect uncertainty;
-- inspect scope;
-- inspect alternatives;
-- inspect risks;
-...
-```
-
-This creates ritual rather than judgment.
-
-Prefer a smaller number of rules that naturally constrain behavior. Introduce an explicit checklist only when:
-
-- omission has a material cost;
-- every item applies to the skill's scope;
-- completion can be observed;
-- the list is more reliable than letting the model prioritize dynamically.
-
-## 8. Separate knowledge, procedure, and evidence
-
-A skill becomes easier to maintain when these are not mixed together.
-
-### Core procedure
-
-Keep the stable decisions and workflow in `SKILL.md`.
-
-### Reference knowledge
-
-Put long-lived domain material, schemas, examples, or external documentation in linked reference files.
-
-### Executable enforcement
-
-Use scripts, tests, validators, or tools for deterministic operations whenever possible.
-
-### Evidence
-
-Keep design rationale, experiments, failures, and rejected alternatives outside the runtime core. They may justify future revisions, but they do not need to consume context every time the skill runs.
-
-This repository's Reflection model offers a useful analogy: evidence should support a durable change without being copied wholesale into the durable state.
-
-## 9. Define completion by observable state
-
-Avoid vague completion language such as:
-
-```text
-Make sure the result is good.
-Review everything carefully.
-Finish the task completely.
-```
-
-Prefer conditions that can be checked:
-
-- tests pass;
-- the requested artifact exists;
-- the changed interface is exercised;
-- the cited source actually supports the claim;
-- the requested fields are present;
-- unresolved uncertainty is explicitly identified.
-
-A skill should distinguish between:
-
-- **work performed**;
-- **work verified**;
-- **work inferred but not verified**.
-
-Do not let a successful action call automatically imply task completion.
-
-## 10. Preserve model agency where judgment is useful
-
-A skill should constrain failure, not replace reasoning.
-
-Do not prescribe an exact sequence merely because a sequence can be written down. Require order only where order affects correctness, safety, state, or reproducibility.
-
-Prefer:
-
-```text
-Inspect the relevant implementation before editing it.
-```
-
-over:
-
-```text
-Always read files A, B, C, D, and E in that order before making any change.
-```
-
-Prefer just-in-time retrieval over loading every potentially relevant document up front.
-
-As model capability improves, previously useful scaffolding may become counterproductive. Skills should therefore be periodically pruned, not only expanded.
-
-## 11. Common anti-patterns
-
-### Honor information
-
-Statements that are admirable but do not materially change behavior.
-
-Examples:
-
-- be professional;
-- think deeply;
-- follow best practices;
-- provide a high-quality result.
-
-### Taxonomy as workflow
-
-Teaching categories instead of giving useful behavioral constraints.
-
-### Prompt as style guide archive
-
-Copying large standards, documentation, or repository knowledge into the skill rather than pointing to canonical sources.
-
-### Edge-case accumulation
-
-Adding permanent rules for rare failures until the core workflow is buried.
-
-### Always-read-everything
-
-Forcing unrelated context into every run because it might someday matter.
-
-### Personality in place of conditions
-
-Using traits such as "be critical" or "be rigorous" where an observable decision rule would be clearer.
-
-### Duplicate enforcement
-
-Encoding in prose something already enforced by tests, schemas, types, permissions, or tooling.
-
-### Completion by assertion
-
-Allowing the agent to declare success without evidence that the requested state was reached.
-
-### Historical scaffolding
-
-Keeping instructions that compensated for an older, weaker model even after they cease to improve current behavior.
-
-## 12. A compact authoring loop
-
-Use this loop when creating or revising a skill:
+Then make the smallest change that addresses the observed problem.
 
 ```text
 real task
@@ -313,72 +121,65 @@ real task
 observe failure / friction / repeated workflow
    |
    v
-identify the smallest missing behavioral signal
+identify the missing behavioral signal
    |
    v
 place it at the correct layer
    |
    v
-write the smallest sufficient instruction
+add the smallest sufficient change
    |
    v
-run on real tasks
+run again
    |
-   +--> improves behavior --> keep
+   +--> materially improves behavior --> keep
    |
-   +--> no material effect --> remove or rewrite
+   +--> no material effect --> remove or revise
    |
-   +--> creates rigidity/noise --> narrow, defer, or move to reference/tool
+   +--> creates rigidity or noise --> narrow, defer, or move elsewhere
    |
    v
 repeat
 ```
 
-The skill itself is therefore a provisional model of practice, not a finished constitution.
+The skill is therefore a provisional model of practice, not a finished constitution.
 
-## 13. Review questions
+Its own rules remain subject to empirical revision.
 
-When reviewing a skill, ask:
+## 6. Define completion by observable state
 
-- What recurring work is this skill actually responsible for?
-- What would the model probably do correctly without this skill?
-- Which instructions are truly load-bearing?
-- Which instructions merely restate general competence or desirable behavior?
-- Are any project-specific constraints leaking into reusable guidance?
-- Are references being copied where they could be loaded just in time?
-- Are rare edge cases dominating the common path?
-- Are vague traits used where conditions and actions would be clearer?
-- Can deterministic checks replace prose?
-- Does the skill define what counts as verified completion?
-- Has newer model capability made any old scaffolding unnecessary?
+A skill should make completion distinguishable from activity.
 
-The goal is not the shortest possible skill. The goal is the **smallest sufficient skill**.
+Avoid instructions such as:
 
-## Research basis
+```text
+Review carefully.
+Make sure everything is correct.
+Finish completely.
+```
 
-This document was distilled on 2026-09-30 from a comparative review of current agent instruction practices. The sources are references, not authorities; the principles above are the repository's synthesis.
+Prefer states that can actually be checked: a requested artifact exists, a relevant test passes, a changed path is exercised, a cited source supports the claim, required fields are present, or unresolved uncertainty is explicitly identified.
 
-- OpenAI, *Rethinking skills and prompts for GPT-6 Astra*  
-  https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra
-- Anthropic, *Effective context engineering for AI agents*  
-  https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents
-- Anthropic, *Equipping agents for the real world with Agent Skills*  
-  https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills
-- GitHub Docs, *Optimizing your AI usage to maximize efficiency and reduce cost*  
-  https://docs.github.com/en/copilot/tutorials/optimize-ai-usage
-- GitHub Docs, *About customizing GitHub Copilot responses*  
-  https://docs.github.com/en/copilot/concepts/prompting/response-customization
-- Cursor Docs, *Rules*  
-  https://cursor.com/docs/rules
-- SWE-agent, default agent configuration  
-  https://github.com/SWE-agent/SWE-agent/blob/main/config/default.yaml
-- Kundu et al., *Specific versus General Principles for Constitutional AI*  
-  https://arxiv.org/abs/2310.13798
+Keep these states distinct:
+
+- work performed;
+- work verified;
+- work inferred but not verified.
+
+A successful tool call, code edit, search, or draft is evidence of activity, not automatically evidence that the task is complete.
+
+## 7. Separate runtime guidance from its evidence
+
+The runtime core should contain only the instructions needed to perform the recurring work.
+
+Research, design rationale, experiments, rejected alternatives, historical failures, and source comparisons are valuable evidence for maintaining the skill, but they do not need to consume runtime context.
+
+For this document, that evidence lives in [skill-design-research.md](./skill-design-research.md).
+
+This repository's Reflection model provides the same boundary at a higher level: evidence may justify a durable change without being copied wholesale into durable state.
 
 ## Repository boundary
 
-This document is guidance for designing reusable skills.
+This document guides reusable skill design. It does not make skill instructions part of Soul or Principles, and it does not move project constraints into identity.
 
-It does not make skill instructions part of Soul or Principles, and it does not move project constraints into identity.
-
-A pattern discovered while authoring or running skills may later become Reflection evidence. Only a durable cross-project tendency that survives review should be proposed as a Principle.
+A pattern observed while authoring or running skills may become Reflection evidence. Only a durable cross-project tendency that survives review should be proposed as a Principle.
