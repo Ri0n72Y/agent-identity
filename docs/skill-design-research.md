@@ -22,15 +22,17 @@ OpenAI's recent Codex prompting guidance reaches a related conclusion from a dif
 
 **Design implication:** skill size should be justified by behavioral effect, not by methodological completeness.
 
-### Progressive disclosure is preferable to preload-everything
+### Progressive disclosure is useful when retrieval saves more than it costs
 
 Anthropic's Agent Skills design uses progressive disclosure: expose enough information to identify and use a skill, then load deeper references only when needed.
 
 This contrasts with older memory-bank patterns that required agents to load a broad fixed set of documents before every task.
 
-**Positive lesson:** keep the common execution path small and retrieve deeper material just in time.
+The core-authoring dogfooding added an important qualification: deferred retrieval itself has a cost. A small reference that is load-bearing and needed on nearly every run may be cheaper and more reliable inline, especially when a separate read creates another tool call, cache miss, latency boundary, or retrieval failure mode.
 
-**Negative lesson:** "always read everything first" is safe-looking but can waste attention and introduce irrelevant context.
+**Positive lesson:** defer large or infrequently needed material when doing so reduces effective runtime context.
+
+**Negative lesson:** neither "always read everything first" nor "always split references out" should become a ritual. Optimize the whole execution path, not the apparent cleanliness of the file tree.
 
 ### Instructions need the right level of abstraction
 
@@ -140,6 +142,20 @@ The self-review led to the following changes:
 This dogfooding result is itself evidence for a broader lesson:
 
 > Even when authors explicitly value concise prompts, useful observations naturally accumulate into permanent sections unless the prompt is periodically reviewed for duplicated behavioral signal.
+
+## Dogfooding result: core-authoring single-file revision
+
+The first `core-authoring` candidate followed progressive disclosure mechanically by moving its philosophical interpretation into `references/methodology.md`.
+
+In practice, that interpretation was not optional background. It was required to correctly judge whether a Core rewrite still preserved investigation, concrete contradiction analysis, the mass-line structure, critical-but-non-performative disagreement, and the practice/knowledge loop.
+
+Loading it separately therefore created likely recurring retrieval overhead without meaningful context savings.
+
+The skill was changed back to a single self-contained `SKILL.md`.
+
+This produced a new design principle:
+
+> Progressive disclosure is a context-cost optimization, not a file-organization virtue. Inline small, load-bearing material that the common path usually needs; defer material when the expected context savings outweigh retrieval cost and failure risk.
 
 ## Sources
 
