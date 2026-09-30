@@ -28,13 +28,17 @@ References inside a skill should therefore be reusable across instances of that 
 
 If a behavior can be enforced more reliably by a type, schema, test, validator, permission, script, or tool contract, prefer that mechanism over prompt prose.
 
-## 2. Use progressive disclosure
+## 2. Optimize context loading
 
-Do not preload everything that might become relevant.
+Do not preload everything that might become relevant, but do not split material merely because progressive disclosure is available.
 
-Expose enough information to recognize and execute the common path, then load deeper references only when the task requires them.
+Choose between inline context and deferred retrieval by effective runtime cost.
 
-One common implementation shape is:
+Keep material inline when it is small, load-bearing for the common path, and likely to be needed on most runs. Splitting such material can add tool calls, cache misses, latency, and retrieval failure modes without saving meaningful context.
+
+Defer material when it is large, infrequently needed, or only relevant to narrower branches of the workflow.
+
+One common deferred shape is:
 
 ```text
 skill metadata
@@ -43,7 +47,7 @@ skill metadata
     v
 SKILL.md
     |
-    | core workflow and decisions
+    | common-path workflow and decisions
     v
 references / examples / scripts
     |
@@ -54,9 +58,9 @@ task execution
 
 The exact file layout is runtime-specific; the principle is not.
 
-Keep the runtime core lean. Long examples, domain references, schemas, edge cases, and design history should remain outside the core unless they are required for ordinary execution.
+The objective is the smallest **effective** runtime context, not the smallest individual file.
 
-Prefer links to canonical sources over duplicated copies. Duplicate knowledge consumes context and drifts out of date.
+Prefer links to canonical sources over duplicated copies when deferred retrieval is actually beneficial. Duplicate knowledge still consumes context and drifts out of date.
 
 ## 3. Write instructions at the right altitude
 
