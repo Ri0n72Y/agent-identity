@@ -25,11 +25,15 @@ Use enough specificity for reliable routing, but do not reproduce the skill proc
 
 Do not add a task taxonomy unless observed routing failures show that explicit routing materially improves behavior.
 
-## Use progressive disclosure
+## Optimize context loading
 
 Keep the runtime core focused on the common path.
 
-Move reusable domain knowledge, long examples, schemas, edge cases, and supporting scripts into references or other resources that can be loaded when needed.
+Use progressive disclosure when deferred material is not normally required and the saved context outweighs the cost of retrieving it later.
+
+Keep material inline when it is small, load-bearing for ordinary execution, and likely to be needed on most runs. Avoid splitting content merely to achieve a cleaner file hierarchy if doing so adds an extra tool call, cache miss, or retrieval failure mode without enough context savings.
+
+Move large or infrequently needed domain knowledge, examples, schemas, edge cases, and supporting scripts into references or other resources that can be loaded when needed.
 
 Prefer canonical sources over duplicated copies.
 
