@@ -24,7 +24,8 @@ agent-identity/
     ├── runtime.md
     ├── task-contract.md
     ├── reflection.md
-    └── skill-design.md
+    ├── skill-design.md
+    └── skill-design-research.md
 ```
 
 A project keeps its own constraints in that project's workspace. The exact filename and structure are project concerns, not part of the identity schema.
@@ -51,4 +52,4 @@ A project keeps its own constraints in that project's workspace. The exact filen
 
 The integration boundary is documented in `docs/runtime.md`; the shared Ralph contract is in `docs/task-contract.md`; the Reflection loop is in `docs/reflection.md`.
 
-For reusable skill authoring and review, see `docs/skill-design.md`.
+For reusable skill authoring and review, see `docs/skill-design.md`. Its comparative research and dogfooding evidence live separately in `docs/skill-design-research.md`.
