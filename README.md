@@ -7,7 +7,7 @@ This repository owns identity state. It does **not** own project constraints.
 - `soul/` — the current effective identity presented to the Root Agent.
 - `principles/` — durable cross-project working principles distilled from repeated evidence.
 - `mpfc/` — reflection records that preserve evidence and identity state transitions.
-- `skills/` — reusable task-scoped runtime skills.
+- `.agents/skills/` — reusable task-scoped runtime skills.
 - `docs/` — integration, Reflection semantics, and reusable design references.
 
 ## Repository layout
@@ -21,13 +21,20 @@ agent-identity/
 ├── mpfc/
 │   ├── README.md
 │   └── reflection.template.md
-├── skills/
-│   ├── skill-authoring/
-│   │   └── SKILL.md
-│   ├── core-authoring/
-│   │   └── SKILL.md
-│   └── dependency-risk-testing/
-│       └── SKILL.md
+├── .agents/
+│   └── skills/
+│       ├── ponytail/
+│       │   └── SKILL.md
+│       ├── ralph/
+│       │   └── SKILL.md
+│       ├── systematic-pipeline-debugging/
+│       │   └── SKILL.md
+│       ├── skill-authoring/
+│       │   └── SKILL.md
+│       ├── core-authoring/
+│       │   └── SKILL.md
+│       └── dependency-risk-testing/
+│           └── SKILL.md
 └── docs/
     ├── runtime.md
     ├── task-contract.md
@@ -60,8 +67,8 @@ A project keeps its own constraints in that project's workspace. The exact filen
 
 The integration boundary is documented in `docs/runtime.md`; the shared Ralph contract is in `docs/task-contract.md`; the Reflection loop is in `docs/reflection.md`.
 
-The reusable skill design method lives in `skills/skill-authoring/SKILL.md`. The first dogfooding target, `skills/core-authoring/SKILL.md`, is intentionally self-contained: it combines the Core's Marxist methodological interpretation with the rules for designing and reviewing that Core in one runtime document.
+The reusable skill design method lives in `.agents/skills/skill-authoring/SKILL.md`. The first dogfooding target, `.agents/skills/core-authoring/SKILL.md`, is intentionally self-contained: it combines the Core's Marxist methodological interpretation with the rules for designing and reviewing that Core in one runtime document.
 
-`skills/dependency-risk-testing/SKILL.md` captures a reusable testing method that derives focused stability tests from production dependency risk rather than from feature lists, bug history, or coverage targets.
+`.agents/skills/dependency-risk-testing/SKILL.md` captures a reusable testing method that derives focused stability tests from production dependency risk rather than from feature lists, bug history, or coverage targets.
 
 The broader skill-design rationale is in `docs/skill-design.md`, with comparative research and dogfooding evidence in `docs/skill-design-research.md`.
