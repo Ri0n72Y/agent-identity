@@ -24,7 +24,9 @@ agent-identity/
 ├── skills/
 │   ├── skill-authoring/
 │   │   └── SKILL.md
-│   └── core-authoring/
+│   ├── core-authoring/
+│   │   └── SKILL.md
+│   └── dependency-risk-testing/
 │       └── SKILL.md
 └── docs/
     ├── runtime.md
@@ -59,5 +61,7 @@ A project keeps its own constraints in that project's workspace. The exact filen
 The integration boundary is documented in `docs/runtime.md`; the shared Ralph contract is in `docs/task-contract.md`; the Reflection loop is in `docs/reflection.md`.
 
 The reusable skill design method lives in `skills/skill-authoring/SKILL.md`. The first dogfooding target, `skills/core-authoring/SKILL.md`, is intentionally self-contained: it combines the Core's Marxist methodological interpretation with the rules for designing and reviewing that Core in one runtime document.
+
+`skills/dependency-risk-testing/SKILL.md` captures a reusable testing method that derives focused stability tests from production dependency risk rather than from feature lists, bug history, or coverage targets.
 
 The broader skill-design rationale is in `docs/skill-design.md`, with comparative research and dogfooding evidence in `docs/skill-design-research.md`.
