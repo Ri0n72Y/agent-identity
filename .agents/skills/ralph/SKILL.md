@@ -2,9 +2,9 @@
 name: ralph
 description: >
   Prepare, execute, continue, and hand off bounded Ralph engineering tasks. Use
-  when creating or receiving a `ralph: 1` task, when an active worker can cheaply
-  take a directly adjacent Ralph plan, or when work should cross to another worker
-  with workspace-first recovery and evidence-based completion.
+  when creating or receiving a `ralph: 1` task, when an active worker can take a
+  directly adjacent Ralph plan without reconstructing context, or when work should
+  cross to another worker with workspace-first recovery and evidence-based completion.
 ---
 
 # Ralph
@@ -15,23 +15,9 @@ Ralph is a lightweight protocol for carrying bounded engineering work through on
 
 A full Ralph task has one immutable objective. A Ralph plan is a new bounded adjacent task that may reuse the current worker's useful working context instead of reconstructing it.
 
-Preserve useful working context while it has positive value. Cross a worker boundary when independence requires a different responsible worker, or when the current context has become more costly or misleading than recovering state from the workspace.
+Reuse the current worker when it already holds the material context needed for an adjacent task. Cross a worker boundary when independent judgment requires a different responsible worker, or when retaining the current context is less reliable or efficient than recovering state from the workspace.
 
 The workspace is the source of truth. A Ralph report is only a bounded handoff or terminal record and must never override current workspace evidence.
-
-## Choose continuity deliberately
-
-Continue with the current worker when the next task is small and directly adjacent to work it already understands. The plan may introduce a new bounded goal or narrow task-local constraints; it does not need to remain inside the previous task's objective or constraints.
-
-When independence matters, use a different responsible worker from the one that produced the work being judged. That worker need not be globally fresh if it remains independent of the work and its existing context is still useful.
-
-Use a fresh worker when the current context has become stale or noisy, or when recovering the required state from the workspace is cheaper or safer than retaining the current working context.
-
-For example:
-
-- implementation worker A -> independent review worker B;
-- fix by A -> post-fix review may reuse B;
-- review clean -> merge may continue on B.
 
 ## Full task
 
@@ -57,16 +43,18 @@ previousReport: null
 
 ### Task rules
 
-- Keep `objective` stable for the lifetime of the full task. If the goal changes materially within that task, start another Ralph task or use an adjacent plan when the current worker can continue cheaply.
+- Keep `objective` stable for the lifetime of the full task.
 - Treat the workspace as authoritative.
 - Do not copy workspace-readable facts into `context` unless they are needed to disambiguate intent.
-- Use `previousReport` only as bounded execution continuity. It may guide where to inspect, but material state must be verified against the workspace before relying on it.
-- Preserve valid work already present in the workspace; do not redo completed work merely because a new worker started.
+- Use `previousReport` only as bounded execution continuity. It may guide inspection, but verify material state against the workspace before relying on it.
+- Preserve valid work already present in the workspace.
 - Do not expand scope beyond `objective` and `constraints`.
 
-## Same-worker continuation
+If the next work is a small adjacent task and the current worker already holds the needed context, use a Ralph plan instead of reconstructing a full task.
 
-When the current worker already holds useful context for a small adjacent task, use a minimal Ralph plan instead of reconstructing a full task or generating an intermediate handoff:
+## Adjacent plan
+
+Use a minimal Ralph plan when the current worker can safely execute a small adjacent task from its existing working context:
 
 ```yaml
 ralph: 1
@@ -75,28 +63,30 @@ plan: |
   <small adjacent task, including any new local bounds that matter>
 ```
 
-The plan may define a new bounded goal and may supersede task-local constraints from the previous Ralph task. It should not restate workspace, background context, or constraints that remain obvious and active.
+A plan may define a new bounded goal and may replace constraints that belonged only to the previous Ralph unit.
 
-Use a full task instead when crossing a context boundary or when the next task cannot be understood safely and unambiguously from the worker's current context plus the plan.
+A plan must not override higher-layer instructions or constraints owned by the user, project, tools, permissions, or runtime.
+
+Do not restate workspace, background context, or still-active constraints unless the plan would otherwise be ambiguous.
+
+Use a full task when crossing a context boundary or when the adjacent task cannot be understood safely from the current working context plus the plan.
 
 ## Execution
 
-For a full task:
+- Work from the current relevant workspace state.
+- Use handed-off reports to orient work, not as authority.
+- Perform only the work required by the active Ralph task or plan and its applicable constraints.
+- Verify material completion claims with observable evidence.
+- Do not stop merely because a previous attempt failed while the task remains achievable.
+- Use `blocked` only when the current worker cannot resolve the blocking condition with its available authority, tools, workspace, and applicable constraints.
 
-1. Establish the current relevant workspace state.
-2. Use `previousReport`, if present, to orient continuation without treating it as truth.
-3. Perform the smallest remaining work required by the objective and constraints.
-4. Verify material results using concrete evidence from the workspace, tests, CI, review, or observable behavior as appropriate.
-
-For a continuation plan, use the current worker's working state and execute the new bounded task directly. Do not reconstruct context it already holds unless verification requires it, and do not carry forward superseded task-local constraints merely because they belonged to the previous task.
-
-Do not stop merely because a previous attempt failed. Continue while the current task remains achievable. Use `blocked` only when the current worker cannot resolve the blocking condition with its available authority, tools, workspace, and active constraints.
+When independent judgment is required, the worker making that judgment must be different from the worker responsible for the work being judged. It need not be globally fresh if it remains independent and its retained context is still useful.
 
 ## Report
 
-Every Ralph full task or Ralph plan ends with exactly one terminal Ralph report. A report may also serve as the bounded handoff when work crosses a context boundary.
+Each bounded Ralph task or plan produces exactly one terminal Ralph report when that unit ends. Do not emit reports between its internal steps unless a durable checkpoint is itself required.
 
-Internal same-worker stages do not require intermediate reports unless a durable checkpoint is genuinely useful.
+A terminal report may also serve as the bounded handoff across a context boundary.
 
 Return exactly these five fields:
 
@@ -114,28 +104,27 @@ Do not add extra top-level fields.
 
 ### `continue`
 
-Use when the current Ralph task is not yet satisfied and work should continue after the report.
+Use when the current Ralph unit is not yet satisfied and clear work remains after the report.
 
 - `summary` states the current verified state, not the execution diary or a restatement of the objective.
-- `evidence` contains only concrete facts that materially support the handoff or prevent likely repeated work.
+- `evidence` contains only concrete facts that materially support continuation or prevent likely repeated work.
 - `nextSteps` contains the smallest clear continuation path.
 - `blocker` is an empty string.
 
 ### `complete`
 
-Use when the current Ralph task and its observable completion conditions are satisfied.
+Use when the current Ralph unit and its observable completion conditions are satisfied.
 
 - `summary` states what is now complete.
-- `evidence` contains concrete proof such as repository state, commits, tests, CI, review results, files, commands, or observed behavior.
-- Material negative findings may be evidence, such as an independent review finding no remaining must-fix issue.
+- `evidence` is concrete and sufficient to support completion, including material negative findings when they affect the conclusion.
 - `nextSteps` is an empty array.
 - `blocker` is an empty string.
 
-A successful edit, tool call, or attempted review is activity, not by itself evidence of completion.
+Activity alone is not evidence of completion.
 
 ### `blocked`
 
-Use only when further progress cannot be made within the current worker's available authority, tools, workspace, and active task constraints.
+Use only when further progress cannot be made within the current worker's available authority, tools, workspace, and applicable constraints.
 
 - `summary` states the verified state reached before the block.
 - `evidence` shows the condition preventing further progress.
