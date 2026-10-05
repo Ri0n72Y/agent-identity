@@ -1,94 +1,54 @@
 ---
 name: dependency-risk-testing
-description: Design, review, clean up, or tier automated tests and CI from production dependency risk. Use when deciding what deserves routine CI, replacing feature-, bug-, or coverage-driven suites, reducing brittle scenario tests, or adding focused stability tests around mutable state, ownership boundaries, transformations, timing, side effects, caches, and high fan-in or fan-out dependencies.
+description: Design, review, or simplify automated tests by tracing production dependencies and placing focused stability checks at structurally fragile functions and boundaries. Use when deciding which tests deserve routine CI, reducing duplicate scenario coverage, or replacing feature-, bug-, or coverage-driven test growth.
 ---
 
 # Dependency-risk testing
 
-Choose tests from the production dependency graph, not from the feature list, bug history, issue history, or coverage targets.
+Derive long-lived stability tests from production dependency risk.
 
-## Start from production structure
+Features, bugs, issues, and coverage can reveal risk, but they do not by themselves justify permanent routine tests. Explicit project verification requirements still apply.
 
-Before changing tests, trace the relevant production owners, functions, and dependency edges.
+## Trace the real dependency
 
-Identify where authoritative truth lives, what each unit consumes, who consumes its output, what mutable state it reads or writes, what side effects it can cause, and whether correctness depends on lifecycle, timing, caching, invalidation, or representation changes.
+Before changing tests, inspect the production path that actually carries the behavior: authoritative owner, callers, consumers, mutable state, side effects, transformations, lifecycle or timing dependencies, caches, and error propagation.
 
-Do not start from the existing test inventory. Existing tests are evidence about the current suite, not the specification for what must remain.
+Do not infer this graph from test names, file layout, or intended architecture when the real call path can be inspected.
 
-## Select structurally risky dependencies
+## Protect structurally fragile points
 
-Prioritize nodes and edges that are easy for unrelated changes to destabilize, especially when:
+Prefer focused stability tests where unrelated changes can plausibly destabilize behavior: converging inputs, high fan-out outputs, shared mutable state, state transitions, ordering or timing, side-effect-sensitive queries, representation transforms, cache invalidation, fail-closed boundaries, reset/cancel/retry, or shared owners used by multiple callers.
 
-- several upstream inputs converge;
-- one output has many downstream consumers;
-- the same function reads and mutates shared state;
-- correctness depends on ordering, lifecycle, async behavior, signals, concurrency, or timing;
-- a query, readiness, validation, or availability path must remain side-effect free;
-- one authoritative representation is transformed into another;
-- cache or published state must be invalidated correctly;
-- fail-closed error propagation is part of the boundary;
-- reset, cancel, retry, or re-entry can leave stale state;
-- several callers share the same owner or command path.
-
-Usually give lower priority to trivial getters, immutable constant mappings, leaf presentation formatting, purely graphical fidelity, and states the current architecture cannot legally construct.
+Do not create a permanent stability test merely because a feature exists or a bug once occurred. When a failure reveals a real structural risk, protect that risk.
 
 ## Test at the minimum diagnostic cut
 
-Place the test as close as practical to where the error can originate, not where the user finally observes it.
+Place the test as close as practical to the responsible function or dependency edge.
 
-For a chain:
+If `A -> B -> C -> D` fails and the fragile contract is `B -> C`, test `B -> C` directly unless the complete chain is itself the contract.
 
-```text
-A -> B -> C -> D
-```
+For a high-level failure, identify the first responsible boundary before adding a permanent test.
 
-if the risky dependency is `B -> C`, test that edge directly. Do not route through `A` and `D` unless the complete chain is itself the contract.
-
-A useful failure should point to a specific owner, function, or boundary and make clear whether the problem is wrong output, wrong mutation, an unintended side effect, stale state, or lifecycle/timing behavior.
-
-## Design stability checks from the real risk
-
-For stateful logic, check the precondition, returned result, intended mutation, and that unrelated state remains unchanged. Add repeat, cancel, reset, or retry cases only when those transitions are structurally relevant.
-
-For query-like logic such as readiness, availability, validation, or probes, check both the result and required purity: no unintended mutation, publication, cache change, or lifecycle transition.
-
-Do not create Cartesian state matrices, arbitrary scenario combinations, pixel-level assertions, or tests of private call order unless those details are themselves the supported contract.
-
-## Treat features and bugs as signals, not qualifications
-
-A new feature does not automatically deserve a permanent routine test. If it introduces a structurally risky dependency, test that dependency. If it is mainly leaf behavior or presentation, acceptance or Full Suite coverage may be enough.
-
-A bug does not automatically deserve a permanent regression test. Analyze the root cause. Add or adjust a stability test only when the bug exposes an unprotected structural risk in the dependency graph.
-
-Historical failures may help reveal where the architecture is fragile, but history alone does not determine test placement.
+A useful failure should localize wrong output, wrong mutation, unintended side effects, stale state, or lifecycle/timing behavior without requiring another large scenario to diagnose it.
 
 ## Keep one nearest meaningful protection
 
-Avoid defining the same invariant at several layers.
+Do not define the same invariant at every layer.
 
-If the same truth is checked in an owner test, controller test, scene integration test, and E2E test, keep the protection nearest the authoritative owner unless a higher-level boundary can independently fail and therefore deserves its own focused test.
+Keep the protection nearest the authoritative owner. Add a higher-level test only when that boundary has its own independent failure mode.
 
-Delete or shrink tests when the dependency disappeared, ownership moved, the invalid state became unrepresentable, a more direct test already protects the same risk, or the test has become historical reproduction with little diagnostic value.
+Delete or shrink tests when their dependency disappeared, ownership moved, the invalid state became unrepresentable, or a nearer test already protects the same risk.
 
-Prefer deleting duplicated setup over abstracting it into a larger testing framework.
+Prefer removing duplicated setup over abstracting it into a larger test framework.
 
-## Tier verification by purpose
+Broader acceptance, composition, integration, E2E, or graphical checks may belong in a heavier verification path rather than routine stability CI.
 
-When the project distinguishes routine CI from heavier verification, keep routine CI focused on build/import/static gates plus a small stability suite derived from dependency risk.
+Do not add orchestration machinery merely to implement this method; add it only when actual project scale or execution cost justifies it.
 
-Keep broader feature acceptance, composition, integration, E2E, and graphical verification in a Full Suite or equivalent heavier gate that can run for major refactors, milestone closeout, merge preparation, or suspected cross-subsystem impact.
+## Verification
 
-Do not build dynamic changed-file test selection, dependency-graph tooling, or a generic test framework merely to implement this principle unless the project independently needs them.
+When redesigning a suite, completion requires that:
 
-## Completion
-
-When reviewing or redesigning a test suite, completion should be observable:
-
-- every routine stability test can name the risky production node or edge it protects;
-- each such test is close enough to the owner to provide useful root-cause localization;
-- duplicate black-box coverage has been removed or moved to the appropriate heavier suite;
-- the routine stability suite passes;
-- any relevant Full Suite path that was changed remains runnable and is verified when practical;
-- unrun verification is reported as unverified, not assumed.
-
-A test is justified by the structural risk it protects, not by how important the feature sounds, how memorable the bug was, or how much coverage it adds.
+- each routine stability test can name the structural risk it protects and fail close to that risk;
+- duplicate higher-level coverage has been removed or deliberately retained for an independent boundary;
+- changed verification paths have actually been exercised, and anything not run is reported as unverified.
