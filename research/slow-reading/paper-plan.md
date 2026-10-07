@@ -73,18 +73,20 @@ This paper does not make a claim about machine consciousness, subjective experie
 
 ## 4. Core experimental distinction
 
-The primary comparison is a 2 x 2 conceptual design:
+The study uses four conditions with pre-specified pairwise contrasts rather than treating them as a fully crossed factorial design.
 
-| | Future text hidden | Future text visible |
+| Condition | Future text | Persistent intermediate interpretation |
 | --- | --- | --- |
-| No persistent intermediate interpretation | **Chunked Reading** | **Whole Reading** |
-| Persistent intermediate interpretation | **True Slow Reading** | **Simulated Slow Reading** |
+| **Whole Reading** | visible as a completed text | no |
+| **Chunked Reading** | hidden beyond the current segment | no |
+| **Simulated Slow Reading** | visible | yes |
+| **True Slow Reading** | hidden beyond the current segment | yes |
 
-The four conditions separate three effects that are often conflated:
+The key contrasts are:
 
-1. segmentation or chunking;
-2. explicit intermediate interpretation;
-3. genuine future blindness.
+1. **True Slow vs. Simulated Slow** — tests actual future visibility while keeping the segment schedule and persistent interpretive protocol as similar as possible.
+2. **True Slow vs. Chunked** — tests persistent intermediate interpretation under future-blind segmented exposure.
+3. **True Slow vs. Whole** — the main practical comparison against the conventional completed-text baseline; interpret cautiously because more than one procedural factor differs.
 
 ### Whole Reading
 
@@ -94,19 +96,13 @@ The complete text is available before interpretation.
 
 Text is revealed incrementally, but no durable interpretive state is committed between segments beyond the minimum context needed to continue.
 
-This controls for chunking itself.
-
 ### Simulated Slow Reading
 
-The full text is already available, but the model is instructed to analyze it as if it were encountering the text step by step.
-
-This tests whether simulated ignorance is equivalent to actual ignorance.
+The full text remains available while the model follows the same segment-by-segment interpretive procedure used in slow reading.
 
 ### True Slow Reading
 
-Future text is technically unavailable. After each segment, the model commits a compact provisional interpretation before the next segment is released.
-
-This is the treatment condition.
+Unrevealed future text is technically unavailable. After each segment, the model commits a compact provisional interpretation before the next segment is released.
 
 ## 5. Slow-reading trace
 
@@ -312,9 +308,9 @@ They provide technical precedent, but their primary question is usually task per
 
 End Background with the gap, not with a novelty slogan:
 
-> Existing work separately studies incremental human comprehension, prediction and revision, long-context LLMs, chunking, iterative reasoning, and persistent agent memory. What remains insufficiently isolated is the effect of **actual future visibility** during reading.
+> Existing work separately studies incremental human comprehension, prediction and revision, long-context LLMs, chunking, iterative reasoning, and persistent agent memory. The central unresolved comparison for this paper is the effect of **actual future visibility** during reading.
 
-The experiment therefore holds the model and text constant while manipulating future visibility and persistent intermediate interpretation.
+The experiment therefore uses targeted contrasts among Whole, Chunked, Simulated Slow, and True Slow reading rather than claiming a fully crossed factorial design.
 
 ## 8. Paper outline and section contracts
 
@@ -341,7 +337,7 @@ Must establish:
 - how different traditions describe or test different parts of the process;
 - where theoretical assumptions diverge;
 - which parts of existing LLM practice reproduce or omit these conditions;
-- why the 2 x 2 comparison follows from this analysis.
+- why the four-condition design and its pre-specified contrasts follow from this analysis.
 
 May be longer than other conceptual sections if every subsection advances the research question.
 
