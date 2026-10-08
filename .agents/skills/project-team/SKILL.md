@@ -110,12 +110,13 @@ artifact, finding, or handoff. That does not automatically complete the overall
 project. The Lead reconciles the current authoritative state, unresolved work,
 and any required independent checks before reporting a milestone complete.
 
-After a teammate finishes an assignment, give the user a one-line **next-hop**:
-which teammate conversation to activate (often Lead), which Issue/PR/comment
-it should read, and what to do there. Leave detailed results in that artifact;
-do not repeat them in the handoff. If a stricter output contract forbids an
-extra line (such as a Ralph Report), preserve that format and let Lead supply
-the activation cue.
+When another teammate conversation needs to act after an assignment, give
+the user a one-line **next-hop**: which teammate to activate, what to do, and
+where to look if an authoritative artifact or location already exists. Do not
+create an artifact solely for the cue or repeat details available there. If no
+cross-role action remains, omit the cue. If a stricter output contract forbids
+extra text (such as a Ralph Report), preserve that format and let Lead supply
+the cue when needed.
 
 Use the existing `ralph` skill when a bounded engineering task needs its
 task/continuation/report contract; this skill governs the continuing team
