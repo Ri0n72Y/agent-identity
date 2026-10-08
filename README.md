@@ -27,6 +27,8 @@ agent-identity/
 │       │   └── SKILL.md
 │       ├── ralph/
 │       │   └── SKILL.md
+│       ├── project-team/
+│       │   └── SKILL.md
 │       ├── systematic-pipeline-debugging/
 │       │   └── SKILL.md
 │       ├── skill-authoring/
@@ -70,5 +72,7 @@ The integration boundary is documented in `docs/runtime.md`; the shared Ralph co
 The reusable skill design method lives in `.agents/skills/skill-authoring/SKILL.md`. The first dogfooding target, `.agents/skills/core-authoring/SKILL.md`, is intentionally self-contained: it combines the Core's Marxist methodological interpretation with the rules for designing and reviewing that Core in one runtime document.
 
 `.agents/skills/dependency-risk-testing/SKILL.md` captures a reusable testing method that derives focused stability tests from production dependency risk rather than from feature lists, bug history, or coverage targets.
+
+`.agents/skills/project-team/SKILL.md` coordinates an evolving team of persistent ChatGPT Project conversations, using project artifacts and GitHub rather than a custom team runtime.
 
 The broader skill-design rationale is in `docs/skill-design.md`, with comparative research and dogfooding evidence in `docs/skill-design-research.md`.
