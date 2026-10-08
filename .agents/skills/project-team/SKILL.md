@@ -64,6 +64,18 @@ permissions, or security isolation.
 
 ## Coordinate through real artifacts
 
+Once the team has more than one role, maintain a single, discoverable,
+project-owned **team index**. A long-lived GitHub Issue is sufficient. It
+identifies current named teammates, their continuing responsibilities, and
+how to locate their conversations or work artifacts. Include its location
+when initializing a teammate; consult it when assigning work or resuming
+cross-role collaboration. The Lead keeps the roster current as roles evolve.
+
+The index provides discovery, not live presence or a second task board.
+Link to authoritative Issues/PRs rather than copying their changing status.
+Teammates may propose index corrections; do not assume that a GitHub update
+automatically messages or wakes another ChatGPT conversation.
+
 Use the project's authoritative sources for current facts. For GitHub work,
 read the relevant repository files, issues, branches, commits, pull requests,
 reviews, and CI results through available tools. For other work, use the actual
@@ -97,6 +109,14 @@ A teammate completes its bounded assignment by producing the agreed evidence,
 artifact, finding, or handoff. That does not automatically complete the overall
 project. The Lead reconciles the current authoritative state, unresolved work,
 and any required independent checks before reporting a milestone complete.
+
+When another teammate conversation needs to act after an assignment, give
+the user a brief, **copy-ready next-hop prompt** addressed to that teammate.
+Say what it should do and where to read existing authoritative evidence, if
+available. Do not repeat the detailed result or create an artifact just for
+the handoff. Omit the prompt if no cross-role action remains. If a stricter
+output contract forbids extra text (such as a Ralph Report), preserve it and
+let Lead provide the prompt when needed.
 
 Use the existing `ralph` skill when a bounded engineering task needs its
 task/continuation/report contract; this skill governs the continuing team
