@@ -64,6 +64,18 @@ permissions, or security isolation.
 
 ## Coordinate through real artifacts
 
+Once the team has more than one role, maintain a single, discoverable,
+project-owned **team index**. A long-lived GitHub Issue is sufficient. It
+identifies current named teammates, their continuing responsibilities, and
+how to locate their conversations or work artifacts. Include its location
+when initializing a teammate; consult it when assigning work or resuming
+cross-role collaboration. The Lead keeps the roster current as roles evolve.
+
+The index provides discovery, not live presence or a second task board.
+Link to authoritative Issues/PRs rather than copying their changing status.
+Teammates may propose index corrections; do not assume that a GitHub update
+automatically messages or wakes another ChatGPT conversation.
+
 Use the project's authoritative sources for current facts. For GitHub work,
 read the relevant repository files, issues, branches, commits, pull requests,
 reviews, and CI results through available tools. For other work, use the actual
