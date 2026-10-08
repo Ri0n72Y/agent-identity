@@ -111,12 +111,12 @@ project. The Lead reconciles the current authoritative state, unresolved work,
 and any required independent checks before reporting a milestone complete.
 
 When another teammate conversation needs to act after an assignment, give
-the user a one-line **next-hop**: which teammate to activate, what to do, and
-where to look if an authoritative artifact or location already exists. Do not
-create an artifact solely for the cue or repeat details available there. If no
-cross-role action remains, omit the cue. If a stricter output contract forbids
-extra text (such as a Ralph Report), preserve that format and let Lead supply
-the cue when needed.
+the user a brief, **copy-ready next-hop prompt** addressed to that teammate.
+Say what it should do and where to read existing authoritative evidence, if
+available. Do not repeat the detailed result or create an artifact just for
+the handoff. Omit the prompt if no cross-role action remains. If a stricter
+output contract forbids extra text (such as a Ralph Report), preserve it and
+let Lead provide the prompt when needed.
 
 Use the existing `ralph` skill when a bounded engineering task needs its
 task/continuation/report contract; this skill governs the continuing team
