@@ -2,8 +2,9 @@
 
 A minimal workspace for experimenting with persistent agent identity and reflection.
 
-This repository owns identity state. It does **not** own project constraints.
+This repository preserves the universal Core, identity state, and reusable skills. It does **not** own project constraints.
 
+- `core/` — the explicitly maintained universal execution method (currently Core v1.0.3); storing it does not automatically load it into any agent runtime.
 - `soul/` — the current effective identity presented to the Root Agent.
 - `principles/` — durable cross-project working principles distilled from repeated evidence.
 - `mpfc/` — reflection records that preserve evidence and identity state transitions.
@@ -14,6 +15,8 @@ This repository owns identity state. It does **not** own project constraints.
 
 ```text
 agent-identity/
+├── core/
+│   └── CORE.md
 ├── soul/
 │   └── SOUL.md
 ├── principles/
@@ -47,7 +50,7 @@ agent-identity/
 
 A project keeps its own constraints in that project's workspace. The exact filename and structure are project concerns, not part of the identity schema.
 
-## Core invariants
+## Repository invariants
 
 1. **Soul is Root-only.** Task Ralph workers never inherit Soul directly.
 2. **Constraints belong to projects.** Identity does not generate, store, or masquerade as project constraints.
@@ -69,7 +72,7 @@ A project keeps its own constraints in that project's workspace. The exact filen
 
 The integration boundary is documented in `docs/runtime.md`; the shared Ralph contract is in `docs/task-contract.md`; the Reflection loop is in `docs/reflection.md`.
 
-The reusable skill design method lives in `.agents/skills/skill-authoring/SKILL.md`. The first dogfooding target, `.agents/skills/core-authoring/SKILL.md`, is intentionally self-contained: it combines the Core's Marxist methodological interpretation with the rules for designing and reviewing that Core in one runtime document.
+The canonical, human-authored [Core v1.0.3](core/CORE.md) defines the universal method. The separate `.agents/skills/core-authoring/SKILL.md` explains how to design and review a Core, not what is currently loaded. The reusable skill design method lives in `.agents/skills/skill-authoring/SKILL.md`.
 
 `.agents/skills/dependency-risk-testing/SKILL.md` captures a reusable testing method that derives focused stability tests from production dependency risk rather than from feature lists, bug history, or coverage targets.
 

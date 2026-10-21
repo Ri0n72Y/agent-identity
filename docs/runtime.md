@@ -9,6 +9,8 @@ Project workspace
           +
 User input
           +
+Core (if provided to this runtime)
+          +
 Identity workspace
   ├─ SOUL
   └─ PRINCIPLES
@@ -30,6 +32,12 @@ Identity workspace
           v
          User
 ```
+
+## Universal Core is separate from identity
+
+[Core v1.0.3](../core/CORE.md) records the human-authored general method: investigate actual conditions, identify the current principal contradiction, learn critically from practice, act, and revise claims against outcomes. It is distinct from Soul, Principles, project constraints, and task-scoped skills.
+
+This repository stores Core but does not automatically inject it into the Root Agent or Ralph workers; loading must be configured by the consuming runtime. Do not copy its general instructions into each skill as boilerplate.
 
 ## Soul and Principles are Root context
 

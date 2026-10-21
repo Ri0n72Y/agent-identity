@@ -7,6 +7,8 @@ description: Design, compress, or review a universal always-on agent Core ground
 
 Design the smallest sufficient universal Core.
 
+The current human-authored Core is [`core/CORE.md`](../../../core/CORE.md). This skill gives authoring and review rules; it is not itself the current Core content.
+
 The Core is always-on guidance. It should preserve a small set of methodological and behavioral invariants across many tasks without replacing task context, project constraints, domain skills, or model judgment.
 
 ## Methodological basis

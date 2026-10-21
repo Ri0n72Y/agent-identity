@@ -18,6 +18,7 @@ Use a skill when recurring work needs behavior that is not reliably supplied by 
 
 Do not use a skill as a substitute for:
 
+- **Core** — the universal method for investigating reality, prioritizing contradictions, acting, and revising judgments;
 - **Soul** — durable identity;
 - **Principles** — durable cross-project defaults distilled from repeated evidence;
 - **project constraints** — hard requirements owned by the project;
@@ -25,6 +26,8 @@ Do not use a skill as a substitute for:
 - **general model capability** — behavior the model already performs reliably without extra instruction.
 
 Operational references inside a skill should be reusable across its executions. A file, PR, requirement, or fact needed only for a current task belongs in task context, not runtime guidance. A historical task or PR may instead be documented in a dated provenance archive when its evidence is necessary to recover why a reusable instruction was chosen; that archive is not loaded for ordinary execution.
+
+A skill should add task-specific guidance beyond the [universal Core](../core/CORE.md), not duplicate its general methodology as a checklist. The Core is a methodological starting point; a proposed instruction still needs evidence that it improves this recurring task.
 
 If a behavior can be enforced more reliably by a type, schema, test, validator, permission, script, or tool contract, prefer that mechanism over prompt prose.
 
@@ -55,6 +58,8 @@ references / examples / scripts
     v
 task execution
 ```
+
+The diagram concerns operational references. Historical research archives do not belong to the ordinary task-loading path.
 
 The exact file layout is runtime-specific; the principle is not.
 
@@ -100,7 +105,7 @@ A skill should constrain known failure modes while preserving model judgment whe
 
 Before retaining an instruction, test whether it earns its place.
 
-An instruction is load-bearing when removing it materially worsens behavior within the intended scope.
+An instruction is load-bearing when removing it materially worsens behavior within the intended scope. Assess this against concrete tasks, outcomes, and plausible counterexamples, not only a persuasive source or the author's preference.
 
 Useful evidence includes repeated failures, a stable ambiguity, a recurring tool mistake, an omitted validation step, premature completion, or another correctness risk that the task itself does not reliably resolve.
 
@@ -113,6 +118,8 @@ Negative evidence matters: if removing a rule does not materially worsen real ex
 ## 5. Let skills evolve from practice
 
 Do not try to derive a complete skill from theory before it has been used.
+
+Start from the available concrete tasks and evidence. Where a dominant failure or friction is evident, prioritize it rather than trying to fix every possible weakness at once. For a new skill, act on the best available evidence and test the provisional design in practice.
 
 Start with the smallest workflow that can succeed. Run it on real tasks. Observe where execution fails, becomes ambiguous, wastes attention, or reaches an unverifiable conclusion.
 
@@ -146,7 +153,7 @@ run again
 repeat
 ```
 
-The skill is therefore a provisional model of practice, not a finished constitution.
+The skill is therefore a provisional model of practice, not a finished constitution. Practitioner feedback is useful evidence, not an unquestioned rule: compare reports with artifacts, outcomes, and counterexamples.
 
 Its own rules remain subject to empirical revision.
 
@@ -176,14 +183,14 @@ A successful tool call, code edit, search, or draft is evidence of activity, not
 
 A skill is compressed operational knowledge. Its metadata identifies **when** to activate it; its runtime core contains the smallest sufficient **decisions and workflow** that change recurring behavior. Compression is intentionally lossy: it omits the observations and arguments used to derive those instructions.
 
-The discarded material can still be valuable. A durable rule is revisable only if a future maintainer can recover **why it was chosen, what alternatives were rejected, which sources supported or contradicted it, and under what conditions it was expected to work**.
+The discarded material can still be valuable. A durable rule is easier to review when a future maintainer can recover **why it was chosen, what alternatives were rejected, which sources supported or contradicted it, and under what conditions it was expected to work**. Missing provenance must not prevent correction when current practice disproves a rule.
 
 Keep two kinds of supporting material distinct:
 
 - **Operational references:** schemas, examples, domain details, or procedures needed for some executions. Link or load them conditionally when they improve those executions.
 - **Provenance / research archives:** dated questions, source links, comparisons, practical failures, rejected hypotheses, and decisions behind a skill. They support *re-examination* of the skill, not its normal execution. Store them in the skill's `references/` when skill-specific, or under `docs/` for cross-skill design rationale. They need not be linked from `SKILL.md`.
 
-An archive is not a shadow runtime prompt. Distinguish observations from interpretations and unresolved assumptions; point to canonical primary sources rather than duplicating them indiscriminately. Preserve enough context to challenge the rule, without copying every conversation or making archival work mandatory for a trivial skill revision.
+An archive is not a shadow runtime prompt or proof that the old decision remains valid. Distinguish observations from interpretations and unresolved assumptions; point to canonical primary sources rather than duplicating them indiscriminately. When new practice contradicts the archive's rationale, update the skill instead of defending the archived conclusion. Preserve enough context to challenge the rule, without copying every conversation or making archival work mandatory for a trivial skill revision.
 
 For this design guide, the wider evidence lives in [skill-design-research.md](./skill-design-research.md). The [dependency-risk-testing research history](../.agents/skills/dependency-risk-testing/references/research-history.md) illustrates retaining domain-specific reasoning outside the runtime skill.
 

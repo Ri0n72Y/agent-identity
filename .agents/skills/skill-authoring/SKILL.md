@@ -5,7 +5,7 @@ description: Design, extract, refactor, or review reusable agent skills. Use whe
 
 # Skill authoring
 
-Create the smallest sufficient reusable skill for the recurring work.
+Create the smallest sufficient reusable skill for the recurring work. Treat the universal Core as a method for investigation and revision, not a template whose general instructions must be copied into every skill.
 
 ## Scope the skill correctly
 
@@ -13,7 +13,7 @@ A skill is a reusable, task-scoped package of instructions and resources that ma
 
 Keep one-off facts, files, PRs, requirements, and current-request instructions out of runtime guidance. A selected historical example may appear in a dated provenance archive only when it explains why a reusable rule was adopted or rejected.
 
-Keep durable identity in Soul, cross-project defaults in Principles, and project-owned hard requirements in project constraints.
+Keep the universal execution method in Core, durable identity in Soul, cross-project defaults in Principles, and project-owned hard requirements in project constraints.
 
 When a behavior can be enforced more reliably by a type, schema, test, validator, permission, script, or tool contract, prefer that mechanism over prompt prose.
 
@@ -53,13 +53,13 @@ Retain an instruction only when removing it would materially worsen behavior wit
 
 ## Evolve from evidence
 
-Start with the smallest version that can succeed.
+Start from available real tasks and results. Where a dominant failure or friction is evident, address it before speculative improvements. Start with the smallest version that can succeed; do not wait for evidence that can only emerge from use.
 
 Add or revise rules when real executions reveal a repeated failure, stable ambiguity, tool misuse, omitted validation step, premature completion, or another material correctness risk.
 
 If a rule has no material effect, creates rigidity, duplicates another enforcement mechanism, or compensates for behavior the current model now handles reliably, narrow it, move it out of the runtime core, or remove it.
 
-Treat negative results as evidence too.
+Compare feedback from practitioners with task artifacts, counterexamples, and observed outcomes; one person's preference or a familiar theory is not proof of a reusable rule. Treat negative results as evidence too.
 
 ## Preserve derivation without loading it by default
 
@@ -67,7 +67,7 @@ Treat a skill as compressed operational knowledge: metadata triggers the skill, 
 
 When a substantive investigation informs a skill, preserve enough of the original questions, sources, observations, competing interpretations, rejected alternatives, and decision conditions to reconstruct or challenge the compression. Use an archival file under `references/` when the evidence belongs to that skill; keep repository-wide design research in docs. Mark evidence as historical, distinguish source claims from project judgments, and retain stable source links or identifiers.
 
-An archival reference need not be linked from `SKILL.md` or loaded on activation. Retrieve it when the skill is under review, practice conflicts with its rule, or the original rationale needs to be recovered. Do not require an archive for trivial edits or store raw conversations by default.
+An archival reference need not be linked from `SKILL.md` or loaded on activation. Retrieve it when the skill is under review, practice conflicts with its rule, or the original rationale needs to be recovered. Historical rationale explains the decision, but does not override contradictory results from new practice. Do not require an archive for trivial edits or store raw conversations by default.
 
 ## Define verification when it is meaningful
 

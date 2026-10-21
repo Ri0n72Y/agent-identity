@@ -167,6 +167,16 @@ Compressing the final operational rule again would lose the disagreement, altern
 
 **Design implication:** treat a skill as a small activation-and-decision model, and preserve substantial provenance separately when it provides a meaningful path to revising that model. The archive justifies future review; it does not become a new runtime dependency.
 
+## Review against human-authored Core v1.0.3 (2026-10-21)
+
+[Core v1.0.3](../core/CORE.md) was supplied as the authoritative text and deposited unchanged in the repository. Previously only `core-authoring/SKILL.md` existed; that was an authoring method, not the canonical Core. The repository now explicitly distinguishes universal execution method, Soul, Principles, project constraints, and task-scoped skills. The Git addition is not evidence that a runtime has loaded the Core.
+
+The new skill-authoring guidance was examined against the Core's six methods. Much was already present: concrete execution, concise load-bearing instructions, negative evidence, and observable verification. Repeating all six principles in every skill would add noise rather than capability.
+
+Two gaps justified a narrow change: (1) skill revisions should begin with the *actual* dominant failure in practice rather than an even-handed inventory of plausible improvements, and must test practitioner assertions against artifacts and outcomes; (2) archives preserve the arguments behind a prior decision, but do not give that decision authority against contradictory new experience. The earlier claim that a rule was revisable **only if** provenance survived was too absolute; lost provenance should not block correction.
+
+This was an evidence-based semantic review of the method documents and source file, not a runtime A/B evaluation of skill effectiveness. The `dependency-risk-testing` skill already requires tracing actual dependencies, identifying a closest accountable boundary, and verifying results; this review did not find a reason to mechanically copy Core instructions into that domain skill.
+
 ## Sources
 
 - OpenAI, *Rethinking skills and prompts for GPT-6 Astra*  
