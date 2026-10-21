@@ -24,7 +24,7 @@ Do not use a skill as a substitute for:
 - **task context** — facts and instructions specific to one request;
 - **general model capability** — behavior the model already performs reliably without extra instruction.
 
-References inside a skill should therefore be reusable across instances of that skill. A file, PR, requirement, or fact that belongs only to the current task remains task context.
+Operational references inside a skill should be reusable across its executions. A file, PR, requirement, or fact needed only for a current task belongs in task context, not runtime guidance. A historical task or PR may instead be documented in a dated provenance archive when its evidence is necessary to recover why a reusable instruction was chosen; that archive is not loaded for ordinary execution.
 
 If a behavior can be enforced more reliably by a type, schema, test, validator, permission, script, or tool contract, prefer that mechanism over prompt prose.
 
@@ -172,13 +172,20 @@ Keep these states distinct:
 
 A successful tool call, code edit, search, or draft is evidence of activity, not automatically evidence that the task is complete.
 
-## 7. Separate runtime guidance from its evidence
+## 7. Preserve the derivation, not just the compressed result
 
-The runtime core should contain only the instructions needed to perform the recurring work.
+A skill is compressed operational knowledge. Its metadata identifies **when** to activate it; its runtime core contains the smallest sufficient **decisions and workflow** that change recurring behavior. Compression is intentionally lossy: it omits the observations and arguments used to derive those instructions.
 
-Research, design rationale, experiments, rejected alternatives, historical failures, and source comparisons are valuable evidence for maintaining the skill, but they do not need to consume runtime context.
+The discarded material can still be valuable. A durable rule is revisable only if a future maintainer can recover **why it was chosen, what alternatives were rejected, which sources supported or contradicted it, and under what conditions it was expected to work**.
 
-For this document, that evidence lives in [skill-design-research.md](./skill-design-research.md).
+Keep two kinds of supporting material distinct:
+
+- **Operational references:** schemas, examples, domain details, or procedures needed for some executions. Link or load them conditionally when they improve those executions.
+- **Provenance / research archives:** dated questions, source links, comparisons, practical failures, rejected hypotheses, and decisions behind a skill. They support *re-examination* of the skill, not its normal execution. Store them in the skill's `references/` when skill-specific, or under `docs/` for cross-skill design rationale. They need not be linked from `SKILL.md`.
+
+An archive is not a shadow runtime prompt. Distinguish observations from interpretations and unresolved assumptions; point to canonical primary sources rather than duplicating them indiscriminately. Preserve enough context to challenge the rule, without copying every conversation or making archival work mandatory for a trivial skill revision.
+
+For this design guide, the wider evidence lives in [skill-design-research.md](./skill-design-research.md). The [dependency-risk-testing research history](../.agents/skills/dependency-risk-testing/references/research-history.md) illustrates retaining domain-specific reasoning outside the runtime skill.
 
 This repository's Reflection model provides the same boundary at a higher level: evidence may justify a durable change without being copied wholesale into durable state.
 

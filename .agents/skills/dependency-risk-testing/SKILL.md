@@ -1,54 +1,54 @@
 ---
 name: dependency-risk-testing
-description: Design, review, or simplify automated tests by tracing production dependencies and placing focused stability checks at structurally fragile functions and boundaries. Use when deciding which tests deserve routine CI, reducing duplicate scenario coverage, or replacing feature-, bug-, or coverage-driven test growth.
+description: Design, review, or simplify tests and CI around production dependency risk. Use when choosing stability tests, auditing white-box coupling or weak black-box cases, removing duplicated coverage, or separating routine checks from integration and release verification.
 ---
 
 # Dependency-risk testing
 
-Derive long-lived stability tests from production dependency risk.
+Derive lasting tests from real dependency risk and observable contracts, not feature counts, past bugs, or coverage targets. Explicit project verification requirements still apply.
 
-Features, bugs, issues, and coverage can reveal risk, but they do not by themselves justify permanent routine tests. Explicit project verification requirements still apply.
+## Trace the owned dependency
 
-## Trace the real dependency
+Inspect the actual production path before changing tests: responsible owner, its callers and consumers, public contract, state, side effects, transformations, lifecycle, timing, and error propagation. Do not reconstruct that path from test names or intended architecture.
 
-Before changing tests, inspect the production path that actually carries the behavior: authoritative owner, callers, consumers, mutable state, side effects, transformations, lifecycle or timing dependencies, caches, and error propagation.
+Identify the first boundary where a plausible defect becomes observable. Prefer structural risks: shared mutable state, converging inputs, fan-out, ordering, cancellation, retries, persistence, representation changes, caching, and fail-closed decisions. A past bug alone does not justify a permanent test; the underlying recurring risk might.
 
-Do not infer this graph from test names, file layout, or intended architecture when the real call path can be inspected.
+## Choose the smallest meaningful test
 
-## Protect structurally fragile points
+Keep the test near the responsible function or dependency edge. If `A -> B -> C -> D` fails because of `B -> C`, test that contract rather than replaying the entire chain. Test the whole chain only when its composition has an independent failure mode.
 
-Prefer focused stability tests where unrelated changes can plausibly destabilize behavior: converging inputs, high fan-out outputs, shared mutable state, state transitions, ordering or timing, side-effect-sensitive queries, representation transforms, cache invalidation, fail-closed boundaries, reset/cancel/retry, or shared owners used by multiple callers.
+Separate **design method**, **scope**, and **cadence**:
 
-Do not create a permanent stability test merely because a feature exists or a bug once occurred. When a failure reveals a real structural risk, protect that risk.
+- **White-box:** Use implementation knowledge for local branches, invariants, or function dependencies that genuinely require it. Keep that knowledge inside the owned unit; do not encode unrelated components' internals.
+- **Black-box:** Derive cases from the unit's external contract. Choose meaningful equivalence classes, boundary values, invalid inputs, state transitions, or properties; do not equate black-box testing with E2E or with sheer case volume.
+- **Integration / E2E:** Exercise actual boundaries when unit-level substitutes cannot establish their contract. A mocked integration must not be presented as proof of the real runtime, network, native addon, device, or model.
 
-## Test at the minimum diagnostic cut
+Prefer asserting observable output, state, persistence, errors, and externally meaningful ordering over incidental call sequences. A contract-preserving refactor should ordinarily leave its tests unchanged.
 
-Place the test as close as practical to the responsible function or dependency edge.
+## Make the protection discriminating
 
-If `A -> B -> C -> D` fails and the fragile contract is `B -> C`, test `B -> C` directly unless the complete chain is itself the contract.
+For each test, identify a plausible incorrect implementation that its assertions would reject. Select cases where the contract is fragile, rather than a convenient happy path that would pass almost any implementation.
 
-For a high-level failure, identify the first responsible boundary before adding a permanent test.
+Where useful, check an invariant across representative partitions or transitions instead of enumerating arbitrary examples. Consider rejected inputs and failure effects, not just returned values. No fixed number of boundary cases, tests per function, or coverage percentage is required.
 
-A useful failure should localize wrong output, wrong mutation, unintended side effects, stale state, or lifecycle/timing behavior without requiring another large scenario to diagnose it.
+## Preserve production encapsulation
 
-## Keep one nearest meaningful protection
+Exercise the unit through its supported entry points and observe its real effects. Substitute dependencies only at genuine external ports, preserving the contract relevant to the test.
 
-Do not define the same invariant at every layer.
+Do not bypass initialization, populate private fields, call private orchestration methods, or recreate a fictitious runtime merely to make a test pass. If this seems necessary, reconsider the test boundary first; do not add production abstractions or test-only hooks without an independent design reason.
 
-Keep the protection nearest the authoritative owner. Add a higher-level test only when that boundary has its own independent failure mode.
+## Remove duplication and assign cadence
 
-Delete or shrink tests when their dependency disappeared, ownership moved, the invalid state became unrepresentable, or a nearer test already protects the same risk.
+Keep one nearest meaningful protection per invariant. Remove or shrink another test when it repeats that protection without a distinct failure mode, when ownership changes, or when the invalid state becomes unrepresentable. Prefer deleting duplicated setup to building a fixture framework.
 
-Prefer removing duplicated setup over abstracting it into a larger test framework.
+- **Routine CI:** Keep fast, deterministic checks for structural risks and contracts affected by ordinary changes.
+- **Dependency integration:** Run real compatibility and composition checks when their owning boundary changes, or at a justified scheduled or manual gate.
+- **Release / acceptance:** Reserve costly full-flow, device, model, graphical, or production-like regression for appropriate release gates unless its risk warrants more frequent checks.
 
-Broader acceptance, composition, integration, E2E, or graphical checks may belong in a heavier verification path rather than routine stability CI.
+These are scheduling choices, not definitions of unit, regression, white-box, or black-box tests. Preserve required release gates. Do not add change-detection frameworks, CI matrices, or orchestration solely to reduce a small suite.
 
-Do not add orchestration machinery merely to implement this method; add it only when actual project scale or execution cost justifies it.
+## Review and verify
 
-## Verification
+For each proposed protection, ask: **owner and contract → structural risk → discriminating case → observable failure**. Reconsider tests that break under behavior-preserving refactors or whose substitutes conceal the risk they claim to protect.
 
-When redesigning a suite, completion requires that:
-
-- each routine stability test can name the structural risk it protects and fail close to that risk;
-- duplicate higher-level coverage has been removed or deliberately retained for an independent boundary;
-- changed verification paths have actually been exercised, and anything not run is reported as unverified.
+Remove duplicate protection. Exercise changed verification paths before claiming completion; report anything not run as unverified. Do not count mocked success as real integration acceptance.

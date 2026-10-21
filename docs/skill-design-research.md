@@ -157,6 +157,16 @@ This produced a new design principle:
 
 > Progressive disclosure is a context-cost optimization, not a file-organization virtue. Inline small, load-bearing material that the common path usually needs; defer material when the expected context savings outweigh retrieval cost and failure risk.
 
+## Dogfooding result: preserving the reasoning behind a compressed skill (2026-10-21)
+
+The `dependency-risk-testing` skill was re-evaluated after a real DSH Meeting CI simplification. The original skill had compressed “protect fragile dependency edges,” but subsequent practice surfaced another issue: tests can reproduce internal orchestration by fabricating private service state, becoming coupled to the implementation without validating the real plugin runtime.
+
+A discussion of white-box versus black-box design and CI cadence was compared against ISTQB terminology, Google Testing Blog, the Practical Test Pyramid, Google's SMURF analysis, and Microsoft's Engineering Playbook. This produced narrower rules about discriminating test cases, respecting production encapsulation, and separating method, scope and cadence. Counterarguments mattered: white-box is not intrinsically function-only, regression is not necessarily full-flow, and expensive end-to-end checks are not always release-only.
+
+Compressing the final operational rule again would lose the disagreement, alternatives and evidence useful when the practice changes. Therefore the complete analysis was saved as a **historical, non-runtime** [reference](../.agents/skills/dependency-risk-testing/references/research-history.md) alongside the skill, with no mandatory reference-loading instruction in its `SKILL.md`.
+
+**Design implication:** treat a skill as a small activation-and-decision model, and preserve substantial provenance separately when it provides a meaningful path to revising that model. The archive justifies future review; it does not become a new runtime dependency.
+
 ## Sources
 
 - OpenAI, *Rethinking skills and prompts for GPT-6 Astra*  

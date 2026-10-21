@@ -11,7 +11,7 @@ Create the smallest sufficient reusable skill for the recurring work.
 
 A skill is a reusable, task-scoped package of instructions and resources that materially improves a recurring class of work.
 
-Keep one-off facts, files, PRs, requirements, and current-request instructions in task context rather than copying them into the skill.
+Keep one-off facts, files, PRs, requirements, and current-request instructions out of runtime guidance. A selected historical example may appear in a dated provenance archive only when it explains why a reusable rule was adopted or rejected.
 
 Keep durable identity in Soul, cross-project defaults in Principles, and project-owned hard requirements in project constraints.
 
@@ -60,6 +60,14 @@ Add or revise rules when real executions reveal a repeated failure, stable ambig
 If a rule has no material effect, creates rigidity, duplicates another enforcement mechanism, or compensates for behavior the current model now handles reliably, narrow it, move it out of the runtime core, or remove it.
 
 Treat negative results as evidence too.
+
+## Preserve derivation without loading it by default
+
+Treat a skill as compressed operational knowledge: metadata triggers the skill, and `SKILL.md` retains only the decisions and procedures needed for ordinary execution. Do not make the runtime instructions double as a research archive.
+
+When a substantive investigation informs a skill, preserve enough of the original questions, sources, observations, competing interpretations, rejected alternatives, and decision conditions to reconstruct or challenge the compression. Use an archival file under `references/` when the evidence belongs to that skill; keep repository-wide design research in docs. Mark evidence as historical, distinguish source claims from project judgments, and retain stable source links or identifiers.
+
+An archival reference need not be linked from `SKILL.md` or loaded on activation. Retrieve it when the skill is under review, practice conflicts with its rule, or the original rationale needs to be recovered. Do not require an archive for trivial edits or store raw conversations by default.
 
 ## Define verification when it is meaningful
 
