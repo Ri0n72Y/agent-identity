@@ -90,3 +90,5 @@ The canonical, human-authored [Core v1.0.3](core/CORE.md) defines the universal 
 The broader skill-design rationale is in `docs/skill-design.md`, with comparative research and dogfooding evidence in `docs/skill-design-research.md`.
 
 The [React + Cordis Web guide](library/react-cordis.md) distills the plugin/runtime/UI integration pattern as an on-demand reference.
+
+The [Function-first Cordis Plugin Programming guide](library/function-first-cordis-plugin-programming.md) records practical patterns for explicit state, pure computation, and lifecycle-owned effects without banning Cordis `Service` classes.
