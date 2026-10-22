@@ -10,6 +10,7 @@ This repository preserves the universal Core, identity state, and reusable skill
 - `mpfc/` — reflection records that preserve evidence and identity state transitions.
 - `.agents/skills/` — reusable task-scoped runtime skills.
 - `docs/` — integration, Reflection semantics, and reusable design references.
+- `library/` — reusable, on-demand technical development guides (not runtime Skills).
 
 ## Repository layout
 
@@ -40,12 +41,14 @@ agent-identity/
 │       │   └── SKILL.md
 │       └── dependency-risk-testing/
 │           └── SKILL.md
-└── docs/
-    ├── runtime.md
-    ├── task-contract.md
-    ├── reflection.md
-    ├── skill-design.md
-    └── skill-design-research.md
+├── docs/
+│   ├── runtime.md
+│   ├── task-contract.md
+│   ├── reflection.md
+│   ├── skill-design.md
+│   └── skill-design-research.md
+└── library/
+    └── react-cordis.md
 ```
 
 A project keeps its own constraints in that project's workspace. The exact filename and structure are project concerns, not part of the identity schema.
@@ -79,3 +82,5 @@ The canonical, human-authored [Core v1.0.3](core/CORE.md) defines the universal 
 `.agents/skills/project-team/SKILL.md` coordinates an evolving team of persistent ChatGPT Project conversations, using project artifacts and GitHub rather than a custom team runtime.
 
 The broader skill-design rationale is in `docs/skill-design.md`, with comparative research and dogfooding evidence in `docs/skill-design-research.md`.
+
+The [React + Cordis Web guide](library/react-cordis.md) distills the plugin/runtime/UI integration pattern as an on-demand reference.
