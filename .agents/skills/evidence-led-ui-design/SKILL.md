@@ -7,6 +7,12 @@ description: Design, redesign, or review an interactive web or desktop UI with A
 
 目标是设计**连贯、可理解且符合产品体验目标**的界面，而不只是生成合格的页面。Understand → Explore → Materialize → Evaluate 是可回返的思考循环，不是必须完成的四张表。遵循项目约束；只做研究或评审时不修改 UI 代码。
 
+## 设计发现对话（新系统或关键形态未定时）
+
+如果请求是在**定义新产品、较大改版、跨多个界面的交互**，或初始提示词缺少会影响产品形态的决策，先运行 [Design Discovery Dialogue](references/05-design-discovery.md)，不要直接开始布局或编码。将原提示词填入一份逐步更新的设计简报，再依据尚未明确的重要决策与用户交谈；询问系统**最终如何工作和被体验**，而不只是有哪些功能。用户不懂设计术语时，用可比较的具体情景和候选模型帮助选择。
+
+讨论完成后，用简短的设计意图、关键对象、核心体验、已确认的形态和开放假设向用户回放确认，再进入 Understand/Explore。**改变已有设计中范围明确的按钮、文案或局部表现时，不强制单独访谈。** 与产品提出者的讨论不能代替目标用户研究。
+
 ## Understand：理解整个体验
 
 从真实需求、现有产品、代码、组件、反馈和使用条件出发，先识别**用户最终想实现什么**；不要把需求里的按钮或页面清单直接视为最佳问题定义。
@@ -57,6 +63,7 @@ description: Design, redesign, or review an interactive web or desktop UI with A
 
 ## 按需参考
 
+- [05-design-discovery.md](references/05-design-discovery.md)：初始提示词入纲、动态追问、设计简报回放（新系统设计前读取）。
 - [01-research.md](references/01-research.md)：方法依据、反面观点及开放假设（审阅 Skill 时读取）。
 - [02-evaluation.md](references/02-evaluation.md)：认知走查、连续性检查与可访问性范围（评审时读取）。
 - [03-designer-review.md](references/03-designer-review.md)：外部设计师审阅及纸面案例（方法审查时读取）。
