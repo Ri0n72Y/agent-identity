@@ -1,6 +1,6 @@
 ---
 name: evidence-led-ui-design
-description: Design, redesign, or review an interactive web or desktop UI with AI. Understand the end-to-end experience, explore interaction and visual alternatives when choices matter, materialize representative states, and evaluate observable use without treating AI opinions as user evidence.
+description: Use when planning, designing, redesigning, or reviewing a UI/UX, application interface, or interactive workflow. Includes early product design from vague requirements, design discovery dialogue, user experience planning, interaction and visual exploration, prototyping, and usability review. Not for unrelated frontend logic changes.
 ---
 
 # Evidence-led UI design（v0.2 · 待专业与用户验证）
@@ -9,7 +9,7 @@ description: Design, redesign, or review an interactive web or desktop UI with A
 
 ## 设计发现对话（新系统或关键形态未定时）
 
-新产品、较大改版或关键交互形态未定时，使用 [Design Discovery Dialogue](references/05-design-discovery.md) 先把原始提示词与已有材料填入设计简报，区分**目标、明确约束、候选方案、观察证据和开放假设**。AI 主动理解完整体验，并提出有依据的设计方向，不把功能清单或用户提出的布局当作已验证的最佳方案。
+新产品、较大改版或关键交互形态未定时，先读取 [Design Discovery Dialogue](references/05-design-discovery.md)，再把原始提示词与已有材料填入设计简报，区分**目标、明确约束、候选方案、观察证据和开放假设**。AI 主动理解完整体验，并提出有依据的设计方向，不把功能清单或用户提出的布局当作已验证的最佳方案。
 
 **仅当**信息确实不足、缺口会改变重要设计方向、且无法用低风险可逆假设继续时，才向用户追问。否则自行提出合理默认方案，标明假设，并用草图或原型修正。新系统或重大改版在关键方向明确时做简短 Playback，确认重要意图与约束，不要求用户逐项批准细节。**明确的局部修改不强制完整对话。** 委托者确认不等于目标用户研究。
 
@@ -49,7 +49,7 @@ description: Design, redesign, or review an interactive web or desktop UI with A
 
 ## Evaluate：验证体验而不自封成功
 
-有可运行产物时，**观察真实渲染和操作**，不只检查 JSX/CSS。对重要或新的操作用 [轻量认知走查](references/02-evaluation.md)：目标意图、发现操作、理解关联、辨认结果；跨页面/会话时按已记录的行为契约核对对象归属、连续性、反馈与恢复。让专业审查关注整体体验、视觉表达和设计风险，技术检查覆盖可复现行为。
+有可运行产物时，**观察真实渲染和操作**，不只检查 JSX/CSS。对重要或新的操作，先读取 [轻量认知走查](references/02-evaluation.md) 并按其中的方法检查：目标意图、发现操作、理解关联、辨认结果；跨页面/会话时按已记录的行为契约核对对象归属、连续性、反馈与恢复。让专业审查关注整体体验、视觉表达和设计风险，技术检查覆盖可复现行为。
 
 对适用 WCAG 的 Web 界面，键盘可操作、可见焦点、正确控件语义等**适用基本要求不因任务小而可选**；只把检查范围限制到变更及受影响的流程，不把局部检查冒充全站合规。根据产品风险扩展设备、读屏、窗口、输入、性能等验证。
 
