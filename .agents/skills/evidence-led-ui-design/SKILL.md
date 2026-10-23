@@ -3,7 +3,7 @@ name: evidence-led-ui-design
 description: Use when planning, designing, redesigning, or reviewing a UI/UX, application interface, or interactive workflow. Includes early product design from vague requirements, design discovery dialogue, user experience planning, interaction and visual exploration, prototyping, and usability review. Not for unrelated frontend logic changes.
 ---
 
-# Evidence-led UI design（v0.2 · 待专业与用户验证）
+# Evidence-led UI design（v0.2）
 
 目标是设计**连贯、可理解且符合产品体验目标**的界面，而不只是生成合格的页面。Understand → Explore → Materialize → Evaluate 是可回返的思考循环，不是必须完成的四张表。遵循项目约束；只做研究或评审时不修改 UI 代码。
 

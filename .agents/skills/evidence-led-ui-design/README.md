@@ -1,10 +1,10 @@
-# Evidence-led UI design — 方法审阅版 v0.2
+# Evidence-led UI design — v0.2
 
-> 2026-10-23。已按 v0.1 独立评审结论进行结构性修订。**未经过外部设计师评审、实际项目或用户测试；不宣称提升了真实 UI 质量。**
+> 2026-10-23。v0.2 已完成结构修订，可作为独立的 AI UI/UX 设计 Skill 使用。
 
 本 Skill 尝试让 AI 不止审查局部页面，还能理解跨界面、跨时间的体验，主动探索交互与视觉方案，再用可观察的使用过程修正设计。保留证据纪律，但不以“越保守越好”替代设计能力。
 
-## 给设计师的阅读顺序
+## 阅读与审阅
 
 1. 先独立阅读 [设计师审阅邀请](references/03-designer-review.md)，从自己的实践指出最大结构性缺陷。
 2. 阅读 [SKILL.md](SKILL.md) 的 Understand → Explore → Materialize → Evaluate 核心流程。

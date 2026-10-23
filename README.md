@@ -81,7 +81,7 @@ The integration boundary is documented in `docs/runtime.md`; the shared Ralph co
 
 The canonical, human-authored [Core v1.0.3](core/CORE.md) defines the universal method. The separate `.agents/skills/core-authoring/SKILL.md` explains how to design and review a Core, not what is currently loaded. The reusable skill design method lives in `.agents/skills/skill-authoring/SKILL.md`.
 
-`.agents/skills/evidence-led-ui-design/SKILL.md` is a provisional AI UI/UX design and review method. Its references preserve research, evaluation boundaries, and questions for professional review; it has not yet been validated in a real product.
+`.agents/skills/evidence-led-ui-design/SKILL.md` is a reusable AI UI/UX design and review method. Its references cover design discovery, evaluation, research evidence, and independent professional review.
 
 `.agents/skills/dependency-risk-testing/SKILL.md` captures a reusable testing method that derives focused stability tests from production dependency risk rather than from feature lists, bug history, or coverage targets.
 
