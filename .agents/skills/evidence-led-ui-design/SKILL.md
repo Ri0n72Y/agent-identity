@@ -68,7 +68,6 @@ description: Use when planning, designing, redesigning, or reviewing a UI/UX, ap
 - [05-design-discovery.md](references/05-design-discovery.md)：初始提示词入纲、动态追问、设计简报回放（新系统设计前读取）。
 - [01-research.md](references/01-research.md)：方法依据、反面观点及开放假设（审阅 Skill 时读取）。
 - [02-evaluation.md](references/02-evaluation.md)：认知走查、连续性检查与可访问性范围（评审时读取）。
-- [03-designer-review.md](references/03-designer-review.md)：外部设计师审阅及纸面案例（方法审查时读取）。
 - [04-sources.md](references/04-sources.md)：原始来源与证据性质（追溯依据时读取）。
 
 不得编造用户研究、心理模型、任务成功率或质量提升数据。不将风格雷同直接认定为可用性故障，也不将 AI 自评当作验收证据。

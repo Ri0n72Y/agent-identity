@@ -1,17 +1,13 @@
 # Evidence-led UI design — v0.2
 
-> 2026-10-23。v0.2 已完成结构修订，可作为独立的 AI UI/UX 设计 Skill 使用。
+一套适用于 AI 的轻量 UI/UX 设计方法：理解完整体验，按需探索交互与视觉方向，实现可体验的方案，并通过运行和用户观察修正设计。小修改按风险裁剪流程。
 
-本 Skill 尝试让 AI 不止审查局部页面，还能理解跨界面、跨时间的体验，主动探索交互与视觉方案，再用可观察的使用过程修正设计。保留证据纪律，但不以“越保守越好”替代设计能力。
+## 使用入口
 
-## 阅读与审阅
+- [SKILL.md](SKILL.md)：Understand → Explore → Materialize → Evaluate 的执行方法和触发条件。
+- [05-design-discovery.md](references/05-design-discovery.md)：新系统或关键交互形态未定时的设计发现对话。
+- [02-evaluation.md](references/02-evaluation.md)：关键交互的认知走查、连续性检查和评价依据。
+- [01-research.md](references/01-research.md)：研究依据与方法边界。
+- [04-sources.md](references/04-sources.md)：参考资料及其证据性质。
 
-1. 先独立阅读 [设计师审阅邀请](references/03-designer-review.md)，从自己的实践指出最大结构性缺陷。
-2. 阅读 [SKILL.md](SKILL.md) 的 Understand → Explore → Materialize → Evaluate 核心流程。
-3. 按需核查 [研究与争议](references/01-research.md)、[评价方法](references/02-evaluation.md) 和 [来源索引](references/04-sources.md)。
-
-对**新系统或重要形态未定**的任务，先运行 [设计发现对话](references/05-design-discovery.md)：从原始提示词建立简报，经动态提问和方案回放确认用户想要的系统形态。
-
-四阶段是循环而非门禁。小改动可以只处理局部，重大体验变更才扩大研究和验证。Experience Model 是思考框架，不是强制输出的模板。视觉与交互共同形成体验。
-
-**当前验证边界：** 文档结构与三项假设场景可做纸面检查，尚无真实设计师反馈、用户行为数据或现场原型验证。案例是方法说明而非既有产品测评。不更改生产 UI 代码。
+示例与纸面推演不代表实际用户测试结果；对真实 UI 的效果判断应以观察和可复现证据为依据。
