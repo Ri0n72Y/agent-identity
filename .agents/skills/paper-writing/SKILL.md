@@ -180,4 +180,4 @@ A manuscript is not complete merely because every heading contains prose.
 
 ## References
 
-Read [../../../docs/skill-design.md](../../../docs/skill-design.md) when deciding whether a writing rule belongs in this reusable skill or in a project-specific paper plan.
+Read [../skill-authoring/references/design-rationale.md](../skill-authoring/references/design-rationale.md) when deciding whether a writing rule belongs in this reusable skill or in a project-specific paper plan.

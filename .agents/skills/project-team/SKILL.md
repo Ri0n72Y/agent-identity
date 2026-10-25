@@ -130,6 +130,6 @@ registry, queue, orchestration engine, or shadow GitHub task board.
 
 ## Reference
 
-Read [../../../docs/skill-design.md](../../../docs/skill-design.md) when
+Read [../skill-authoring/references/design-rationale.md](../skill-authoring/references/design-rationale.md) when
 revising this skill's scope or deciding whether an additional rule belongs in
 the runtime core.

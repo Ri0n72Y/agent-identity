@@ -1,6 +1,6 @@
 # Skill design research notes
 
-> Evidence and comparative notes behind [skill-design.md](./skill-design.md).
+> Evidence and comparative notes behind [design-rationale.md](./design-rationale.md).
 
 This file is not runtime guidance. It records the observations that motivated the current skill-design principles so those principles can later be challenged, revised, or removed without carrying the full research history into every execution.
 
@@ -120,7 +120,7 @@ Risk: unfinished or unverified work is reported as complete.
 
 ## Dogfooding result: 2026-09-30
 
-The first version of `skill-design.md` reproduced several of the failure modes it described.
+The first version of `design-rationale.md` reproduced several of the failure modes it described.
 
 It had:
 
@@ -163,13 +163,13 @@ The `dependency-risk-testing` skill was re-evaluated after a real DSH Meeting CI
 
 A discussion of white-box versus black-box design and CI cadence was compared against ISTQB terminology, Google Testing Blog, the Practical Test Pyramid, Google's SMURF analysis, and Microsoft's Engineering Playbook. This produced narrower rules about discriminating test cases, respecting production encapsulation, and separating method, scope and cadence. Counterarguments mattered: white-box is not intrinsically function-only, regression is not necessarily full-flow, and expensive end-to-end checks are not always release-only.
 
-Compressing the final operational rule again would lose the disagreement, alternatives and evidence useful when the practice changes. Therefore the complete analysis was saved as a **historical, non-runtime** [reference](../.agents/skills/dependency-risk-testing/references/research-history.md) alongside the skill, with no mandatory reference-loading instruction in its `SKILL.md`.
+Compressing the final operational rule again would lose the disagreement, alternatives and evidence useful when the practice changes. Therefore the complete analysis was saved as a **historical, non-runtime** [reference](../../dependency-risk-testing/references/research-history.md) alongside the skill, with no mandatory reference-loading instruction in its `SKILL.md`.
 
 **Design implication:** treat a skill as a small activation-and-decision model, and preserve substantial provenance separately when it provides a meaningful path to revising that model. The archive justifies future review; it does not become a new runtime dependency.
 
 ## Review against human-authored Core v1.0.3 (2026-10-21)
 
-[Core v1.0.3](../core/CORE.md) was supplied as the authoritative text and deposited unchanged in the repository. Previously only `core-authoring/SKILL.md` existed; that was an authoring method, not the canonical Core. The repository now explicitly distinguishes universal execution method, Soul, Principles, project constraints, and task-scoped skills. The Git addition is not evidence that a runtime has loaded the Core.
+[Core v1.0.3](../../../../core/CORE.md) was supplied as the authoritative text and deposited unchanged in the repository. Previously only `core-authoring/SKILL.md` existed; that was an authoring method, not the canonical Core. The repository now explicitly distinguishes universal execution method, Soul, Principles, project constraints, and task-scoped skills. The Git addition is not evidence that a runtime has loaded the Core.
 
 The new skill-authoring guidance was examined against the Core's six methods. Much was already present: concrete execution, concise load-bearing instructions, negative evidence, and observable verification. Repeating all six principles in every skill would add noise rather than capability.
 

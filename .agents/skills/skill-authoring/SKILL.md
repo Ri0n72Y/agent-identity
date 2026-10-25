@@ -79,6 +79,6 @@ Do not treat a successful tool call, edit, search, or draft as proof that the re
 
 ## References
 
-Read [../../../docs/skill-design.md](../../../docs/skill-design.md) when design rationale or layer placement is ambiguous.
+Read [references/design-rationale.md](references/design-rationale.md) when design rationale or layer placement is ambiguous.
 
-Read [../../../docs/skill-design-research.md](../../../docs/skill-design-research.md) only when evaluating or revising the methodology itself.
+Read [references/research-history.md](references/research-history.md) only when evaluating or revising the methodology itself.

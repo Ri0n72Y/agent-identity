@@ -36,7 +36,10 @@ agent-identity/
 │       ├── systematic-pipeline-debugging/
 │       │   └── SKILL.md
 │       ├── skill-authoring/
-│       │   └── SKILL.md
+│       │   ├── SKILL.md
+│       │   └── references/
+│       │       ├── design-rationale.md
+│       │       └── research-history.md
 │       ├── core-authoring/
 │       │   └── SKILL.md
 │       ├── dependency-risk-testing/
@@ -48,9 +51,7 @@ agent-identity/
 ├── docs/
 │   ├── runtime.md
 │   ├── task-contract.md
-│   ├── reflection.md
-│   ├── skill-design.md
-│   └── skill-design-research.md
+│   └── reflection.md
 └── library/
     └── react-cordis.md
 ```
@@ -87,7 +88,7 @@ The canonical, human-authored [Core v1.0.3](core/CORE.md) defines the universal 
 
 `.agents/skills/project-team/SKILL.md` coordinates an evolving team of persistent ChatGPT Project conversations, using project artifacts and GitHub rather than a custom team runtime.
 
-The broader skill-design rationale is in `docs/skill-design.md`, with comparative research and dogfooding evidence in `docs/skill-design-research.md`.
+The broader skill-design rationale lives in [design-rationale.md](.agents/skills/skill-authoring/references/design-rationale.md), with comparative research and dogfooding evidence in [research-history.md](.agents/skills/skill-authoring/references/research-history.md).
 
 The [React + Cordis Web guide](library/react-cordis.md) distills the plugin/runtime/UI integration pattern as an on-demand reference.
 

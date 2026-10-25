@@ -8,7 +8,7 @@ The investigation asked what a concise and effective repository `AGENTS.md` shou
 
 Process: (1) inspect the open AGENTS.md convention and runtime documentation; (2) examine real repository files, especially DeepSeek Harness (DSH) and the OpenAI Agents Python SDK; (3) compare the GitHub practitioner guide with formal Copilot documentation; (4) read two empirical studies with different outcomes; (5) translate the findings into small, testable authoring decisions.
 
-The target repository `Ri0n72Y/agent-identity` was also inspected on its default branch on 2026-10-25. No `agents-md-authoring` Skill or repository `AGENTS.md` existed in its tree. Its `skill-authoring/SKILL.md` and `docs/skill-design.md` already establish the separation of compressed runtime decisions from dated provenance archives. This research stays in the new Skill rather than duplicating repository-wide design documents.
+The target repository `Ri0n72Y/agent-identity` was also inspected on its default branch on 2026-10-25. No `agents-md-authoring` Skill or repository `AGENTS.md` existed in its tree. Its `skill-authoring/SKILL.md` and `.agents/skills/skill-authoring/references/design-rationale.md` already establish the separation of compressed runtime decisions from dated provenance archives. This research stays in the new Skill rather than duplicating shared skill-design material.
 
 ## 2. Sources and direct observations
 

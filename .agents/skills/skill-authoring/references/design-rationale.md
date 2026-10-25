@@ -27,7 +27,7 @@ Do not use a skill as a substitute for:
 
 Operational references inside a skill should be reusable across its executions. A file, PR, requirement, or fact needed only for a current task belongs in task context, not runtime guidance. A historical task or PR may instead be documented in a dated provenance archive when its evidence is necessary to recover why a reusable instruction was chosen; that archive is not loaded for ordinary execution.
 
-A skill should add task-specific guidance beyond the [universal Core](../core/CORE.md), not duplicate its general methodology as a checklist. The Core is a methodological starting point; a proposed instruction still needs evidence that it improves this recurring task.
+A skill should add task-specific guidance beyond the [universal Core](../../../../core/CORE.md), not duplicate its general methodology as a checklist. The Core is a methodological starting point; a proposed instruction still needs evidence that it improves this recurring task.
 
 If a behavior can be enforced more reliably by a type, schema, test, validator, permission, script, or tool contract, prefer that mechanism over prompt prose.
 
@@ -192,7 +192,7 @@ Keep two kinds of supporting material distinct:
 
 An archive is not a shadow runtime prompt or proof that the old decision remains valid. Distinguish observations from interpretations and unresolved assumptions; point to canonical primary sources rather than duplicating them indiscriminately. When new practice contradicts the archive's rationale, update the skill instead of defending the archived conclusion. Preserve enough context to challenge the rule, without copying every conversation or making archival work mandatory for a trivial skill revision.
 
-For this design guide, the wider evidence lives in [skill-design-research.md](./skill-design-research.md). The [dependency-risk-testing research history](../.agents/skills/dependency-risk-testing/references/research-history.md) illustrates retaining domain-specific reasoning outside the runtime skill.
+For this design guide, the wider evidence lives in [research-history.md](./research-history.md). The [dependency-risk-testing research history](../../dependency-risk-testing/references/research-history.md) illustrates retaining domain-specific reasoning outside the runtime skill.
 
 This repository's Reflection model provides the same boundary at a higher level: evidence may justify a durable change without being copied wholesale into durable state.
 
