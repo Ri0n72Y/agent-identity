@@ -47,7 +47,7 @@ A normal Ralph worker does not inherit the identity workspace directly. It recei
 
 ## Memory is a separate runtime concern
 
-The [memory model](memory-model.md) distinguishes live context, cross-context Short, consolidated Episode, concrete facts in a Bookshelf, and LTM as its index. Relevant experience can inform mPFC, while SOUL contains the resulting identity conclusions without their explanations.
+The [memory model](memory-model.md) distinguishes live context, cross-context Short, consolidated Episode, concrete facts in a Bookshelf, and LTM as its index. Episode owns the event record and conclusion; mPFC holds the interpretation and rationale for how relevant experience informs self-understanding. SOUL contains current identity conclusions, which may begin with a human-authored definition and can later be revised through reviewed Reflection.
 
 This repository describes these relationships but does not provision a universal memory store or automatically load, consolidate, or retrieve those layers. The consuming runtime and owning projects supply the actual evidence and retrieval mechanism. When the Root needs to explain or reconsider a SOUL conclusion, it can consult mPFC and the underlying episodes and sources, subject to the runtime's available access.
 

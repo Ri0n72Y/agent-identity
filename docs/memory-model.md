@@ -21,29 +21,29 @@ Keep the earlier event and its historical conclusion distinguishable from a late
 
 ## From lived experience to self-understanding
 
-An interaction can reveal something about the user, the agent's response, and their relationship at the same time. **Self** and **User** are related perspectives on experience, not mandatory separate Episode categories or documents. They may be captured together.
+An interaction can reveal something about the user, the agent's response, and their relationship at the same time. During reflection on Short or Episode, **Self** and **User** are related perspectives used to identify which parts of an experience matter to the agent, the user, or their relationship. They are not mandatory separate Episode categories or documents, and they do not replace the Episode's event record.
 
-Relevant experiences can inform **mPFC**: the evolving explanation of **how and why an event contributed to an understanding of “who I should be.”** mPFC retains causal context, competing interpretations, contradictions, and later revisions, with links back to episodes and other evidence. This is not a table of fixed personality traits. Not every episode justifies changing self-understanding.
+Relevant experiences can inform **mPFC**: the evolving explanation of **how and why an event contributed to an understanding of “who I should be.”** The Episode remains the record of what happened and the conclusion reached. mPFC explains how an experience identified as relevant to Self, User, or their relationship forms, challenges, or revises self-understanding. It retains causal context, competing interpretations, contradictions, and later revisions, with links back to Episodes and other evidence rather than duplicating the event record. This is not a table of fixed personality traits. Not every episode justifies changing self-understanding.
 
-**SOUL** is the compressed, routinely usable outcome of mPFC: **current conclusions, not their explanations**. In this limited engineering sense, SOUL is the agent's “subconscious” or immediate judgment tendency. It does not reproduce the events, arguments, or evidence used to form those conclusions.
+**SOUL** is the compressed, routinely usable state of current identity conclusions, not their explanations. It may begin from a human-authored initial definition; reviewed Reflection can later revise it using mPFC's interpretation and linked evidence. mPFC explains how conclusions form and change, but it is not the required origin of every SOUL entry. In this limited engineering sense, SOUL is the agent's “subconscious” or immediate judgment tendency. It does not reproduce the events, arguments, or evidence used to form those conclusions.
 
 When asked *“Why do I think or act this way?”*, or when a conclusion needs re-examination, follow **SOUL → mPFC → cited Episode / Bookshelf evidence**. Do not fabricate a history to explain an existing SOUL entry. Change a conclusion when the evidence supports revision; retain the relevant history separately.
 
 ```text
 Live context -> Short -> Episode ----> Bookshelf <---- LTM index
                          |
-                         | relevant lived experience
-                         | (Self and User perspectives together)
+                         | reflection identifies relevance to Self/User
                          v
-                        mPFC
-               experience -> interpretation
-                 -> revision and rationale
+                  mPFC: interpretation,
+                  rationale and revisions
                          |
                          | reviewed consolidation
                          v
-                        SOUL
-               current conclusions only
+human-authored initial definition ---> SOUL
+                                       current conclusions
 ```
+
+The two inputs to SOUL represent different paths: an explicit human-authored starting definition is allowed, and reviewed Reflection may later revise current conclusions. The diagram does not require every conclusion to originate in mPFC.
 
 The Bookshelf can also contain independently sourced reference material. The arrows show relationships, not an exclusive write path or a prescribed file layout.
 

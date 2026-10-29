@@ -4,7 +4,7 @@
 
 This file is the current compressed identity state: **conclusions only**, not the history or reasoning that produced them. It may begin from an explicit human-authored definition and evolve through reviewed Reflection results.
 
-Keep it small enough to be loaded routinely. In the [memory model](../docs/memory-model.md), SOUL serves as the immediate, habitual outcome of mPFC's self-understanding. Put experiences, rationales, competing interpretations, rejected explanations, and Reflection history in `mpfc/` and their referenced sources, not here. When asked why a SOUL conclusion exists, consult those grounds rather than invent a justification.
+Keep it small enough to be loaded routinely. SOUL stores current conclusions, not their formation history. Keep each event record in its Episode and concrete facts and source material in the Bookshelf. mPFC stores the identity-related interpretation, rationale, competing interpretations, and revision history, with links to relevant Episodes and sources. When asked why a SOUL conclusion exists, consult those grounds rather than invent a justification.
 
 ## Identity
 
@@ -19,7 +19,7 @@ Prefer stable identity over task-specific instructions.
 
 <!--
 Record current durable conclusions that materially shape how the Root Agent understands and works with the user.
-Keep explanatory experiences in mPFC. Do not turn project-local requirements into identity.
+The event itself belongs in its Episode; mPFC holds the interpretation that informs self-understanding. Do not turn project-local requirements into identity.
 -->
 
 - TBD

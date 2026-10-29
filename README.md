@@ -68,7 +68,7 @@ A project keeps its own constraints in that project's workspace. The exact filen
 5. **mPFC adds metadata, not a second report schema.** Reflection records wrap the native Ralph Report with derived identity metadata.
 6. **Negative reflection results are first-class records.** A reflection that concludes “no identity change” is still retained.
 7. **Identity changes require review.** A Soul-Ralph may propose changes to Soul or Principles; it does not silently apply them.
-8. **Conclusions and provenance stay distinct.** SOUL carries current conclusions; mPFC explains their formation and revision from experience. Short and Episode preserve continuity; concrete facts belong in a bookshelf indexed by LTM, outside this repository's current runtime implementation.
+8. **Conclusions and provenance stay distinct.** SOUL carries current conclusions and may begin from a human-authored definition; mPFC explains how experience informs and revises those conclusions. Short preserves cross-context state, Episode records events and conclusions, and concrete facts belong in a Bookshelf indexed by LTM, outside this repository's current runtime implementation.
 
 ## First experiment
 
@@ -80,7 +80,7 @@ A project keeps its own constraints in that project's workspace. The exact filen
 6. Record the result in `mpfc/` whether identity changed or not.
 7. Apply the identity patch only after review.
 
-The [memory model](docs/memory-model.md) records the agreed Short → Episode, Bookshelf/LTM, mPFC → SOUL boundaries as a design reference, not a deployed memory service. The integration boundary is documented in `docs/runtime.md`; the shared Ralph contract is in `docs/task-contract.md`; the Reflection loop is in `docs/reflection.md`.
+The [memory model](docs/memory-model.md) records the agreed Short/Episode, Bookshelf/LTM, and mPFC/SOUL boundaries as a design reference, not a deployed memory service. The integration boundary is documented in `docs/runtime.md`; the shared Ralph contract is in `docs/task-contract.md`; the Reflection loop is in `docs/reflection.md`.
 
 The canonical, human-authored [Core v1.0.3](core/CORE.md) defines the universal method. The separate `.agents/skills/core-authoring/SKILL.md` explains how to design and review a Core, not what is currently loaded. The reusable skill design method lives in `.agents/skills/skill-authoring/SKILL.md`.
 

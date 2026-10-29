@@ -70,11 +70,11 @@ A reviewed Reflection that makes no change is still useful evidence for later, d
 
 ## How experience becomes self-understanding
 
-The [memory model](memory-model.md) separates three things: an Episode records when and why an interaction took place and what was concluded; the Bookshelf stores the concrete facts; mPFC explains how relevant experiences affect the agent's understanding of **who it should be**.
+The [memory model](memory-model.md) separates three responsibilities: an Episode records when and why an interaction took place, what was discussed or done, and what conclusion was reached; the Bookshelf stores concrete facts and source material; mPFC explains how relevant experiences affect the agent's understanding of **who it should be**.
 
-Self and User are connected perspectives in the same lived interaction. They can be examined together; they are not required to become separate files or fixed categories. Reflection should link any proposed identity conclusion to the relevant event and supporting evidence, including tensions and corrections. It must not turn every episode or temporary reaction into a lasting identity trait.
+During reflection on Short or Episode, identify whether an experience is relevant to Self, User, or their relationship. These are related perspectives, not separate required files or fixed Episode categories. Link any proposed identity conclusion to the relevant Episode and supporting evidence, including tensions and corrections. mPFC preserves the interpretation, competing explanations, and revisions; it does not replace or duplicate the event record. Do not turn every episode or temporary reaction into a lasting identity trait.
 
-SOUL retains only the **current conclusions** of that process. Reasons, source events, rejected interpretations, and revision history remain recoverable through mPFC and its linked evidence. If the agent needs to explain why it holds a SOUL conclusion, it should retrieve those grounds rather than invent a retrospective explanation.
+SOUL retains only the **current conclusions** of this process. It may begin from a human-authored definition and later change through reviewed Reflection. The rationale and revision history remain recoverable through mPFC and its linked Episodes and sources. If the agent needs to explain why it holds a SOUL conclusion, it should retrieve those grounds rather than invent a retrospective explanation.
 
 ## Human review
 
