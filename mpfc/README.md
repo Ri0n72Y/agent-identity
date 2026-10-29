@@ -1,6 +1,6 @@
 # mPFC
 
-mPFC is the agent's **evolving account of how experience informs “who I should be.”** An Episode records an event and its conclusion; mPFC explains how an experience identified as relevant to Self, User, or their relationship forms, challenges, or revises self-understanding. It preserves interpretations, contradictions, and revisions, with links to the underlying Episodes and evidence. Self and User are related perspectives, not separate required documents.
+mPFC is the agent's **evolving account of how experience informs “who I should be.”** Episodes are classified as **Experience** when relevance to Self, User, or their relationship has been identified, and **Event** otherwise. mPFC explains how Experiences form, challenge, or revise self-understanding. It preserves interpretations, contradictions, and revisions, with links to the underlying Episodes and evidence. Self and User are related perspectives, not separate required documents.
 
 The current `mpfc/` directory is the **audit trail for reviewed identity Reflection**, not a complete deployed autobiographical memory service. It stores what was examined, the evidence and reasoning supporting an identity conclusion or non-change, and whether the effective identity changed. A negative result is still a result and must be retained. The retained reports may support a later synthesis of self-understanding without defining a separate report schema.
 
