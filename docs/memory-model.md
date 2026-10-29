@@ -47,6 +47,16 @@ The two inputs to SOUL represent different paths: an explicit human-authored sta
 
 The Bookshelf can also contain independently sourced reference material. The arrows show relationships, not an exclusive write path or a prescribed file layout.
 
+## Harness responsibilities and optional Diary index
+
+This model defines the meaning and relationships of memory records; it does not define a parallel runtime. Use the consuming Harness and project workspace for capabilities they already provide, including session persistence, context compaction, task and plan state, search and retrieval, Skill/Workflow execution, permissions, scheduling, and execution audit. Do not reproduce these facilities as new identity-memory layers. If a concrete gap remains, first identify it against the actual runtime and prefer extending or integrating the existing mechanism over creating a competing subsystem.
+
+Failures and corrections belong to the existing time-ordered history. Short can be updated as an ongoing situation develops. Preserve prior states and conclusions; a later Short update or Episode can correct or supersede an earlier understanding without rewriting the original Session or making later evidence appear to have been known earlier. Reflection can use these records to retain what failed, what changed, and why; no separate failure-memory layer is required.
+
+The Bookshelf already owns concrete facts, source material, and supporting knowledge. Episodes, mPFC records, and other memory views may link to or index Bookshelf entries. Do not add separate Facts or Resource layers merely to duplicate these responsibilities.
+
+**Diary is optional, not a required cognitive stage or authoritative record.** Add it only if the consuming Harness's existing search cannot adequately find relevant Episodes from natural-language descriptions. If needed, Diary is a rebuildable navigation index that points to Episodes; it must not become a second source of truth or duplicate Episode events and Bookshelf facts. If existing search is sufficient, do not add Diary.
+
 ## Repository and runtime boundaries
 
 - This repository maintains the **identity model**, SOUL, and the mPFC Reflection record contract. It does **not** currently implement Short, Episode, Bookshelf, or LTM persistence, ingestion, retrieval, or scheduling.
