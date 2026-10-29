@@ -50,6 +50,8 @@ A normal Ralph worker does not inherit the identity workspace directly. It recei
 The [memory model](memory-model.md) distinguishes live context, cross-context Short, consolidated Episode, concrete facts in a Bookshelf, and LTM as its index. Episode owns the event record and conclusion; mPFC holds the interpretation and rationale for how relevant experience informs self-understanding. SOUL contains current identity conclusions, which may begin with a human-authored definition and can later be revised through reviewed Reflection.
 
 This repository describes these relationships but does not provision a universal memory store or automatically load, consolidate, or retrieve those layers. The consuming runtime and owning projects supply the actual evidence and retrieval mechanism. When the Root needs to explain or reconsider a SOUL conclusion, it can consult mPFC and the underlying episodes and sources, subject to the runtime's available access.
+The identity repository must not duplicate runtime services that the consuming Harness or project already provides. Reuse native session persistence, context compaction, task/plan state, search and retrieval, Skill/Workflow execution, permissions, scheduling, and audit mechanisms where available. The memory model defines semantic ownership and links between records, not a competing execution or storage framework. Diary is not required: consider a rebuildable natural-language Episode index only if native search is insufficient. See [memory model](memory-model.md) for the boundary and constraints.
+
 
 ## Constraints are project-owned
 
