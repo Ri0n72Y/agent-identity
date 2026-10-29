@@ -10,7 +10,8 @@ A Reflection Ralph is **not** a worker that inherits or embodies Soul. It is a n
 Current SOUL + PRINCIPLES
           +
 selected evidence
-(project constraints, decisions,
+(relevant episodes, bookshelf sources,
+user/agent interactions, decisions,
 reviews, outcomes, prior mPFC records)
           |
           v
@@ -66,6 +67,14 @@ Evidence may support:
 - explicitly making no identity change.
 
 A reviewed Reflection that makes no change is still useful evidence for later, deeper Reflection.
+
+## How experience becomes self-understanding
+
+The [memory model](memory-model.md) separates three things: an Episode records when and why an interaction took place and what was concluded; the Bookshelf stores the concrete facts; mPFC explains how relevant experiences affect the agent's understanding of **who it should be**.
+
+Self and User are connected perspectives in the same lived interaction. They can be examined together; they are not required to become separate files or fixed categories. Reflection should link any proposed identity conclusion to the relevant event and supporting evidence, including tensions and corrections. It must not turn every episode or temporary reaction into a lasting identity trait.
+
+SOUL retains only the **current conclusions** of that process. Reasons, source events, rejected interpretations, and revision history remain recoverable through mPFC and its linked evidence. If the agent needs to explain why it holds a SOUL conclusion, it should retrieve those grounds rather than invent a retrospective explanation.
 
 ## Human review
 
