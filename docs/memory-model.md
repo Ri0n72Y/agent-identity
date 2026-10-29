@@ -32,7 +32,7 @@ Diary helps navigate and maintain continuity across periods. Its summaries and l
 
 ## From lived experience to self-understanding
 
-An interaction can reveal something about the user, the agent's response, and their relationship at the same time. During reflection on Short or Episode, **Self** and **User** are related perspectives used to identify which parts of an experience matter to the agent, the user, or their relationship. They are not mandatory separate Episode categories or documents, and they do not replace the Episode's event record.
+An interaction can reveal something about the user, the agent's response, and their relationship at the same time. During reflection on Short or Episode, **Self** and **User** are related perspectives used to identify which parts of an experience matter to the agent, the user, or their relationship. They are not mandatory separate Episode categories or documents, and they do not replace the Episode record.
 
 Relevant experiences can inform **mPFC**: the evolving explanation of **how and why an event contributed to an understanding of “who I should be.”** The Episode remains the record of what happened and the conclusion reached. mPFC explains how an experience identified as relevant to Self, User, or their relationship forms, challenges, or revises self-understanding. It retains causal context, competing interpretations, contradictions, and later revisions, with links back to Episodes and other evidence rather than duplicating the event record. This is not a table of fixed personality traits. Not every episode justifies changing self-understanding.
 
