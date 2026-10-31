@@ -27,35 +27,34 @@ agent-identity/
 │   └── reflection.template.md
 ├── .agents/
 │   └── skills/
-│       ├── ponytail/
-│       │   └── SKILL.md
-│       ├── ralph/
-│       │   └── SKILL.md
-│       ├── project-team/
-│       │   └── SKILL.md
-│       ├── systematic-pipeline-debugging/
-│       │   └── SKILL.md
-│       ├── skill-authoring/
-│       │   ├── SKILL.md
-│       │   └── references/
-│       │       ├── design-rationale.md
-│       │       └── research-history.md
+│       ├── agents-md-authoring/
 │       ├── core-authoring/
-│       │   └── SKILL.md
 │       ├── dependency-risk-testing/
-│       │   └── SKILL.md
-│       └── evidence-led-ui-design/
-│           ├── SKILL.md
-│           ├── README.md
-│           └── references/
+│       ├── evidence-led-ui-design/
+│       ├── frontend-development/
+│       ├── paper-writing/
+│       ├── ponytail/
+│       ├── project-team/
+│       ├── ralph/
+│       ├── react-component-coding/
+│       ├── react-component-review/
+│       ├── skill-authoring/
+│       └── systematic-pipeline-debugging/
 ├── docs/
 │   ├── memory-model.md
+│   ├── reflection.md
 │   ├── runtime.md
-│   ├── task-contract.md
-│   └── reflection.md
-└── library/
-    └── react-cordis.md
+│   └── task-contract.md
+├── library/
+│   ├── function-first-cordis-plugin-programming.md
+│   └── react-cordis.md
+└── research/
+    └── slow-reading/
+        ├── background.md
+        └── paper-plan.md
 ```
+
+Each Skill directory contains a `SKILL.md`; some also contain on-demand `references/` or other supporting files. The layout above lists primary entries rather than every reference file.
 
 A project keeps its own constraints in that project's workspace. The exact filename and structure are project concerns, not part of the identity schema.
 
@@ -80,7 +79,7 @@ A project keeps its own constraints in that project's workspace. The exact filen
 6. Record the result in `mpfc/` whether identity changed or not.
 7. Apply the identity patch only after review.
 
-The [memory model](docs/memory-model.md) records the agreed Short/Episode, Bookshelf/LTM, and mPFC/SOUL boundaries as a design reference, not a deployed memory service. The integration boundary is documented in `docs/runtime.md`; the shared Ralph contract is in `docs/task-contract.md`; the Reflection loop is in `docs/reflection.md`.
+The [memory model](docs/memory-model.md) records the agreed Short → Reflection → Episode (Experience/Event) consolidation path, Diary indexing, Bookshelf/LTM, and mPFC/SOUL boundaries as a design reference, not a deployed memory service. The integration boundary is documented in `docs/runtime.md`; the shared Ralph contract is in `docs/task-contract.md`; the Reflection loop is in `docs/reflection.md`.
 
 The canonical, human-authored [Core v1.0.3](core/CORE.md) defines the universal method. The separate `.agents/skills/core-authoring/SKILL.md` explains how to design and review a Core, not what is currently loaded. The reusable skill design method lives in `.agents/skills/skill-authoring/SKILL.md`.
 
