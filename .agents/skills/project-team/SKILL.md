@@ -123,7 +123,7 @@ the receiving teammate's role. Role changes require an explicit role-contract
 update. If a received task conflicts with the conversation's established role,
 surface the mismatch instead of adopting an implied new role.
 
-Use the consuming Harness's existing task and handoff capabilities for bounded engineering work. This skill coordinates continuing responsibilities across conversations. Do not create another task-report protocol, session registry, queue, orchestration engine, or shadow GitHub task board.
+For bounded engineering work, use the available tools and project artifacts to carry task context and results. This skill coordinates continuing responsibilities across conversations. Do not create another task-report protocol, session registry, queue, orchestration engine, or shadow GitHub task board.
 
 ## Reference
 
