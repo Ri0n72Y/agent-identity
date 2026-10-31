@@ -18,13 +18,13 @@ Identity workspace
           v
       Root Agent
           |
-          | prepares Ralph Task
+          | prepares task
           | constraints come from the project/request,
           | not from identity
           v
-      Ralph worker
+      task worker
           |
-          | native Ralph Report
+          | native task result
           v
       Root Agent
           |
@@ -37,17 +37,17 @@ Identity workspace
 
 [Core v1.0.3](../core/CORE.md) records the human-authored general method: investigate actual conditions, identify the current principal contradiction, learn critically from practice, act, and revise claims against outcomes. It is distinct from Soul, Principles, project constraints, and task-scoped skills.
 
-This repository stores Core but does not automatically inject it into the Root Agent or Ralph workers; loading must be configured by the consuming runtime. Do not copy its general instructions into each skill as boilerplate.
+This repository stores Core but does not automatically inject it into the Root Agent or task workers; loading must be configured by the consuming runtime. Do not copy its general instructions into each skill as boilerplate.
 
 ## Soul and Principles are Root context
 
 The Root Agent may use `soul/SOUL.md` and `principles/PRINCIPLES.md` when interpreting the user, selecting emphasis, and deciding how to approach work.
 
-A normal Ralph worker does not inherit the identity workspace directly. It receives only the task contract required for its work.
+A normal task worker does not inherit the identity workspace directly. It receives only the task contract required for its work.
 
 ## Memory is a separate runtime concern
 
-The [memory model](memory-model.md) distinguishes live context, cross-context Short, consolidated Episode, concrete facts in a Bookshelf, and LTM as its index. Episode owns the dated interaction record and conclusion, classified as Experience or Event; mPFC holds the interpretation and rationale for how relevant experience informs self-understanding. SOUL contains current identity conclusions, which may begin with a human-authored definition and can later be revised through reviewed Reflection.
+The [memory model](memory-model.md) distinguishes live context, cross-context Short, consolidated Episode, concrete facts in a Bookshelf, and Diary as its Episode index. Episode owns the dated interaction record and conclusion, classified as Experience or Event; mPFC holds the interpretation and rationale for how relevant experience informs self-understanding. SOUL contains current identity conclusions, which may begin with a human-authored definition and can later be revised through reviewed Reflection.
 
 This repository describes these relationships but does not provision a universal memory store or automatically load, consolidate, or retrieve those layers. The consuming runtime and owning projects supply the actual evidence and retrieval mechanism. When the Root needs to explain or reconsider a SOUL conclusion, it can consult mPFC and the underlying episodes and sources, subject to the runtime's available access.
 
@@ -57,7 +57,7 @@ The identity repository must not duplicate runtime services that the consuming H
 
 Hard operational constraints belong in the project that owns the work.
 
-The Root Agent may select, normalize, or summarize relevant project constraints when preparing a Ralph Task, but identity is not the source of those constraints.
+The Root Agent may select, normalize, or summarize relevant project constraints when preparing a task, but identity is not the source of those constraints.
 
 Current user instructions, tool/safety requirements, and project-local constraints may all contribute to the task contract. Soul and Principles do not become hidden mandatory constraints merely because they are loaded by the Root.
 
