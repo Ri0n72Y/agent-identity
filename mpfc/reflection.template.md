@@ -7,16 +7,20 @@ identityChanged: false
 state_transition: unchanged
 ---
 
-# Ralph Report
+# Identity Reflection
 
-Replace this example with the actual native Ralph Report, retaining exactly its five fields and their JSON value types. The frontmatter above is Reflection metadata, not part of the report object.
+## Experiences and sources
 
-```json
-{
-  "status": "complete",
-  "summary": "",
-  "evidence": [],
-  "nextSteps": [],
-  "blocker": ""
-}
-```
+Reference the relevant Episode (Experience or Event), Bookshelf material, and the earlier interpretation or identity state. Keep original sources available rather than copying complete event records here.
+
+## Interpretation and competing explanations
+
+Describe how the evidence supports, challenges, or fails to change the current self-understanding. Include significant contradictions and corrections.
+
+## Reviewed conclusion
+
+State the decision and its rationale, including why no change was justified when `identityChanged: false`.
+
+## Identity change, if accepted
+
+Link to the reviewed SOUL or PRINCIPLES change and the resulting identity revision. Leave this section as “no change” when no change was approved.
