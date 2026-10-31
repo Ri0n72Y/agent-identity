@@ -14,7 +14,7 @@
 | **Bookshelf** | Stores concrete facts, source material, and supporting knowledge, including facts extracted from episodes. | Facts and references live here rather than inside Episode as a separate `Facts` category. |
 | **LTM** | A lightweight index into the bookshelf. | The index points to material; it does not repeat the bookshelf as another knowledge body. |
 
-The progression is **Working → Short → Episode** for records worth consolidating, with the corresponding **Diary** period created or updated in the same operation. Concrete facts and their sources are stored in the **Bookshelf**, with **LTM** as its index. This is a conceptual flow, not a requirement that every chat, fact, or external source pass through each layer.
+The conceptual progression is **Working → Short → Reflection → Episode** for records worth consolidating, with the corresponding **Diary** period created or updated in the same consolidation operation. Here, Reflection means examining and classifying Short history before consolidation; it does not require a separate runtime or a Soul-Ralph identity review for every event. An Experience can later inform the reviewed identity Reflection that produces mPFC evidence. Concrete facts and their sources are stored in the **Bookshelf**, with **LTM** as its index. This is a conceptual flow, not a requirement that every chat, fact, or external source pass through each layer.
 
 An Episode answers: *When and why did we discuss this? What did we discuss? What did we conclude?* The Bookshelf answers: *What concrete information or source supports a claim?* An episode may link to bookshelf material instead of embedding it.
 
@@ -41,19 +41,23 @@ Relevant experiences can inform **mPFC**: the evolving explanation of **how and 
 When asked *“Why do I think or act this way?”*, or when a conclusion needs re-examination, follow **SOUL → mPFC → cited Episode / Bookshelf evidence**. Do not fabricate a history to explain an existing SOUL entry. Change a conclusion when the evidence supports revision; retain the relevant history separately.
 
 ```text
-Live context -> Short -> Episode (Experience | Event) ----> Bookshelf <---- LTM index
-                         |                 |
-                         |                 +---- same consolidation ----> Diary
-                         |                                               period summary + Episode index
-                         | Experience informs Reflection
-                         v
-                  mPFC: interpretation,
-                  rationale and revisions
-                         |
-                         | reviewed consolidation
-                         v
+Live context -> Short -> Reflection -> Episode (Experience | Event)
+                  (consolidation)       |                 |
+                                        |                 +--> Diary (same consolidation)
+                                        |                      period summary + Episode index
+                                        +--> Bookshelf <---- LTM index
+                                        |
+                                    Experience
+                                        |
+                               reviewed identity Reflection
+                                        v
+                                       mPFC
+                            interpretation and revisions
+                                        |
+                                reviewed conclusion
+                                        v
 human-authored initial definition ---> SOUL
-                                       current conclusions
+                                 current conclusions
 ```
 
 The two inputs to SOUL represent different paths: an explicit human-authored starting definition is allowed, and reviewed Reflection may later revise current conclusions. The diagram does not require every conclusion to originate in mPFC.
