@@ -115,7 +115,7 @@ the user a brief, **copy-ready next-hop prompt** addressed to that teammate.
 Say what it should do and where to read existing authoritative evidence, if
 available. Do not repeat the detailed result or create an artifact just for
 the handoff. Omit the prompt if no cross-role action remains. If a stricter
-output contract forbids extra text (such as a Ralph Report), preserve it and
+output contract forbids extra text, preserve it and
 let Lead provide the prompt when needed.
 
 Next-hop prompts carry tasks, not identity: do not assign, reaffirm, or redefine
@@ -123,10 +123,7 @@ the receiving teammate's role. Role changes require an explicit role-contract
 update. If a received task conflicts with the conversation's established role,
 surface the mismatch instead of adopting an implied new role.
 
-Use the existing `ralph` skill when a bounded engineering task needs its
-task/continuation/report contract; this skill governs the continuing team
-around such tasks. Do not duplicate Ralph's report schema or build a session
-registry, queue, orchestration engine, or shadow GitHub task board.
+Use the consuming Harness's existing task and handoff capabilities for bounded engineering work. This skill coordinates continuing responsibilities across conversations. Do not create another task-report protocol, session registry, queue, orchestration engine, or shadow GitHub task board.
 
 ## Reference
 
