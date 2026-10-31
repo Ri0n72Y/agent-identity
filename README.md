@@ -35,7 +35,6 @@ agent-identity/
 │       ├── paper-writing/
 │       ├── ponytail/
 │       ├── project-team/
-│       ├── ralph/
 │       ├── react-component-coding/
 │       ├── react-component-review/
 │       ├── skill-authoring/
@@ -44,8 +43,7 @@ agent-identity/
 │   ├── memory-model.md
 │   ├── memory-workflow.md
 │   ├── reflection.md
-│   ├── runtime.md
-│   └── task-contract.md
+│   └── runtime.md
 ├── library/
 │   ├── function-first-cordis-plugin-programming.md
 │   └── react-cordis.md
@@ -61,26 +59,26 @@ A project keeps its own constraints in that project's workspace. The exact filen
 
 ## Repository invariants
 
-1. **Soul is Root-only.** Task Ralph workers never inherit Soul directly.
+1. **SOUL is Root-only.** Task workers do not inherit the identity workspace by default.
 2. **Constraints belong to projects.** Identity does not generate, store, or masquerade as project constraints.
 3. **Principles are distilled defaults, not constraints.** They may emerge from repeated project evidence, but explicit project constraints always remain project-owned.
-4. **Reflection is still Ralph.** Reflection uses the same Ralph Task and Ralph Report contract as ordinary work.
-5. **mPFC adds metadata, not a second report schema.** Reflection records wrap the native Ralph Report with derived identity metadata.
+4. **Reflection uses the consuming Harness.** The identity model does not prescribe a separate worker protocol or execution framework.
+5. **mPFC preserves reviewed reasoning and evidence.** Reflection records retain interpretations, relevant sources, and identity state transitions without prescribing a worker report schema.
 6. **Negative reflection results are first-class records.** A reflection that concludes “no identity change” is still retained.
-7. **Identity changes require review.** A Soul-Ralph may propose changes to Soul or Principles; it does not silently apply them.
-8. **Conclusions and provenance stay distinct.** SOUL carries current conclusions and may begin from a human-authored definition; mPFC explains how experience informs and revises those conclusions. Short preserves cross-context state, Episode records events and conclusions, and concrete facts belong in a Bookshelf indexed by LTM, outside this repository's current runtime implementation.
+7. **Identity changes require review.** Reflection may propose changes to SOUL or Principles; it does not silently apply them.
+8. **Conclusions and provenance stay distinct.** SOUL carries current conclusions and may begin from a human-authored definition; mPFC explains how experience informs and revises those conclusions. Short preserves cross-context state, Episode records events and conclusions, and concrete facts and source materials belong in a Bookshelf, outside this repository's current runtime implementation.
 
 ## First experiment
 
 1. Put the initial effective identity into `soul/SOUL.md`.
 2. Keep any durable initial working defaults in `principles/PRINCIPLES.md`.
 3. Select evidence from real work, including project constraints when they are relevant evidence.
-4. Run an ordinary Reflection Ralph over the identity workspace and selected evidence.
+4. Review relevant evidence through the consuming Harness's available reflection process.
 5. Review any proposed Soul or Principle diff.
 6. Record the result in `mpfc/` whether identity changed or not.
 7. Apply the identity patch only after review.
 
-The [memory model](docs/memory-model.md) defines the agreed Short → Reflection → Episode (Experience/Event) consolidation path, Diary indexing, Bookshelf/LTM, and mPFC/SOUL boundaries. The [memory workflow guide](docs/memory-workflow.md) explains the lifecycle, contents, retrieval routes, and illustrative file layout. Both describe the design, not a deployed memory service. The integration boundary is documented in `docs/runtime.md`; the shared Ralph contract is in `docs/task-contract.md`; the identity Reflection loop is in `docs/reflection.md`.
+The [memory model](docs/memory-model.md) defines the agreed Short → Reflection → Episode (Experience/Event) consolidation path, Diary indexing, Bookshelf, and mPFC/SOUL boundaries. The [memory workflow guide](docs/memory-workflow.md) explains the lifecycle, contents, retrieval routes, and illustrative file layout. Both describe the design, not a deployed memory service. The integration boundary is documented in `docs/runtime.md`; the identity Reflection loop is in `docs/reflection.md`.
 
 The canonical, human-authored [Core v1.0.3](core/CORE.md) defines the universal method. The separate `.agents/skills/core-authoring/SKILL.md` explains how to design and review a Core, not what is currently loaded. The reusable skill design method lives in `.agents/skills/skill-authoring/SKILL.md`.
 
