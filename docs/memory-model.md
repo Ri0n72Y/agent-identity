@@ -42,7 +42,7 @@ When asked *“Why do I think or act this way?”*, or when a conclusion needs r
 
 ```text
 Live context -> Short -> Reflection -> Episode (Experience | Event)
-                  (consolidation)       |                 |
+                         (consolidation)       |                 |
                                         |                 +--> Diary (same consolidation)
                                         |                      period summary + Episode index
                                         +--> Bookshelf <---- LTM index
