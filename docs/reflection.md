@@ -1,10 +1,8 @@
 # Reflection
 
-The memory model also describes reflection as part of Short-to-Episode consolidation. That conceptual classification step does not require a Soul-Ralph run for each event. This document defines the **reviewed identity Reflection** used when evidence may affect mPFC, SOUL, or Principles.
+The memory model also describes reflection as part of Short-to-Episode consolidation. That conceptual classification step does not require a separate identity review for each event. This document defines the **reviewed identity Reflection** used when evidence may affect mPFC, SOUL, or Principles.
 
-Identity Reflection is an ordinary Ralph process aimed at the identity workspace.
-
-A Reflection Ralph is **not** a worker that inherits or embodies Soul. It is a normal Ralph whose workspace is the identity material it has been asked to examine.
+Identity Reflection examines selected evidence against the current identity workspace. It can use the consuming Harness's available agent or review workflow. The review process does not inherit or embody SOUL as a separate identity; it reads only the evidence and identity material needed to assess a proposed change.
 
 ## Flow
 
@@ -17,12 +15,12 @@ user/agent interactions, decisions,
 reviews, outcomes, prior mPFC records)
           |
           v
-Root prepares Reflection Ralph Task
+Root selects evidence and review scope
           |
           v
-Soul-Ralph examines identity workspace
+Identity Reflection examines evidence
           |
-          | native Ralph Report
+          | review record and cited grounds
           | + proposed identity diff when justified
           v
 Human review
@@ -84,8 +82,6 @@ Reflection may propose an identity change, but canonical Soul or Principles are 
 
 For this repository, a Git diff or pull request is the simplest review surface: identity changes are visible, the associated mPFC record is preserved, and a negative Reflection can be committed without modifying Soul or Principles.
 
-## Record shape
+## Record content
 
-Use the native Ralph Report exactly as defined in `task-contract.md`.
-
-Wrap it only with Reflection metadata from `../mpfc/reflection.template.md`.
+Retain the review time, relevant identity revisions, evidence and its sources, the interpretations considered, the decision and why it was justified. Record both accepted changes and negative results without replacing the original Episode. See [mPFC](../mpfc/README.md) and its [reference template](../mpfc/reflection.template.md). This model does not prescribe a separate worker protocol or fixed execution report schema.

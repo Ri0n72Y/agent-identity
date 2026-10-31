@@ -36,7 +36,7 @@ Harness live session / current context
                    |
         Source Session / evidence
 
- Facts and external materials <--> Bookshelf <--- LTM index
+ Facts and external materials <--> Bookshelf
          ^                      ^
          |                      |
          +-- Episode/Diary/mPFC links (without duplicating facts)
@@ -60,8 +60,8 @@ Harness live session / current context
 
 This drawing separates **two uses of Reflection**:
 
-1. **Consolidation reflection** examines evolving Short history, recognizes relevant developments, and records an Episode as Experience or Event. It does **not** require a separate Soul-Ralph run or human approval for each Episode.
-2. **Identity Reflection** considers selected Experiences and evidence to decide whether the agent's self-understanding or durable principles should change. In this repository it is an ordinary Ralph task with human review. It records the result in mPFC even when the answer is *no change*.
+1. **Consolidation reflection** examines evolving Short history, recognizes relevant developments, and records an Episode as Experience or Event. It does **not** require an identity review or human approval for each Episode.
+2. **Identity Reflection** considers selected Experiences and evidence to decide whether the agent's self-understanding or durable principles should change. In this repository it is a reviewable process using the consuming Harness's available capabilities. It records the result in mPFC even when the answer is *no change*.
 
 The path is not a claim that every message must enter every layer. Routine task and session management remain the Harness's work.
 
@@ -77,7 +77,6 @@ The path is not a claim that every message must enter every layer. Routine task 
 | **Event** | What happened without identified Self/User relevance? | The other official Episode classification, still historically useful. | A permanent assertion that the event can never become relevant. |
 | **Diary** | Where in our evolving history was this discussed? | Natural-language summaries and dated pointers to Episodes, in weekly/monthly periods. | New authority over what an Episode said; facts copied into a second store. |
 | **Bookshelf** | What concrete fact, source, or knowledge material supports this? | Long-lived facts, documents, references, their supporting material and corrections. | Episode chronology or a separate Resource/Facts layer. |
-| **LTM** | Which Bookshelf material should be opened? | Index/pointers into Bookshelf, not an additional knowledge body. | Independent copies of Bookshelf facts. |
 | **mPFC** | How and why did an Experience shape, challenge, or revise self-understanding? | Identity interpretations, evidence links, competing explanations and revisions; reviewed Reflection records. | Rewriting Episode events or embedding all source material. |
 | **SOUL** | What are the current durable identity conclusions? | Small, normally available conclusions; may start with a human-authored definition. | Detailed explanations, tasks, permissions, project constraints. |
 | **PRINCIPLES** | What durable cross-project working defaults have been distilled? | Reviewed, reusable tendencies supported by repeated evidence. | Hard rules for a particular project. |
@@ -127,7 +126,7 @@ Diary needs not recreate Harness search. It adds **human-readable aggregation an
 
 An Experience is **eligible evidence**, not an automatic personality update.
 
-The Root selects relevant Experiences, Bookshelf sources, existing SOUL/PRINCIPLES and earlier mPFC records. An ordinary Reflection Ralph examines them and may propose a change. A human reviews the proposed change. Accepted changes update the effective identity; an unchanged or rejected result is still retained as mPFC evidence.
+The Root selects relevant Experiences, Bookshelf sources, existing SOUL/PRINCIPLES and earlier mPFC records. The reflection process examines them and may propose a change. A human reviews the proposed change. Accepted changes update the effective identity; an unchanged or rejected result is still retained as mPFC evidence.
 
 mPFC should preserve *why* a conclusion was formed, reinforced, challenged, revised, or not adopted, using references to actual Episodes and sources. It must not become another Episode transcript.
 
@@ -142,7 +141,7 @@ This is an **illustration**, not an existing memory record or proof of an identi
 1. **Conversation / Short:** An agent proposes an extra memory service. The user explains that the Harness already provides the relevant session and task infrastructure. Short records the correction and current decision, with a source Session pointer.
 2. **Consolidation Reflection:** The interaction matters to how the agent works with the user, so the dated Episode is classified as **Experience**. It records the earlier proposal, the correction, and the conclusion *at that time*. The original Session is not rewritten.
 3. **Diary:** In the same consolidation, the current weekly/monthly Diary gets a natural-language entry pointing to the new Experience. Earlier periods remain sealed.
-4. **Bookshelf/LTM:** If a concrete Harness capability or a reference document is needed to support the conclusion, the factual material belongs in Bookshelf and can be found through LTM. Neither the Diary nor mPFC copies that document.
+4. **Bookshelf:** If a concrete Harness capability or a reference document is needed to support the conclusion, the factual material belongs in Bookshelf and can be retrieved using the consuming Harness's existing search. Neither the Diary nor mPFC copies that document.
 5. **Identity review:** One correction may be too narrow to change identity. A reviewed Reflection can record **no identity change** in mPFC. If similar evidence repeatedly supports a durable working default, a later reviewed Reflection may propose a Principle or SOUL revision, keeping its justification in mPFC.
 6. **Future recall:** To recall what was said, follow Diary → Episode → Session. To understand a reviewed identity decision, follow SOUL/PRINCIPLES → mPFC → cited Experience and Bookshelf evidence.
 
@@ -156,7 +155,7 @@ Ask what the user or Root needs before choosing which material to read:
 | --- | --- | --- |
 | Continue a recent conversation after compaction | Harness Session / Short, with source lookup when needed | Recover current state without reloading all history. |
 | “What did we discuss last month, and how did our view change?” | Diary period → Episode blocks → source Session as needed | Recover the timeline, not only the latest answer. |
-| “What is the current documented fact or source?” | LTM → Bookshelf → original reference as needed | Keep factual material separate from a narrative summary. |
+| “What is the current documented fact or source?” | Harness search → Bookshelf → original reference as needed | Keep factual material separate from a narrative summary. |
 | “Why did we adopt this conclusion?” | Diary/Episode for decision history; Bookshelf for grounds | Distinguish decision chronology from sources. |
 | “Why do I behave or identify this way?” | SOUL → mPFC → referenced Experience/Bookshelf | Explain actual identity rationale, not a made-up backstory. |
 | “What should the worker do next?” | Harness task/project state and project constraints | Identity memory is not the task board or permission system. |
@@ -176,8 +175,7 @@ agent-identity/
 │   ├── memory-model.md       # Canonical semantic boundaries
 │   ├── memory-workflow.md    # This lifecycle and layout guide
 │   ├── reflection.md         # Reviewed identity Reflection
-│   ├── runtime.md            # Harness/Root/worker boundaries
-│   └── task-contract.md      # Identity use of native Ralph contract
+│   └── runtime.md            # Harness/Root/worker boundaries
 ├── mpfc/
 │   ├── README.md             # mPFC purpose and audit record semantics
 │   └── reflection.template.md
@@ -192,7 +190,7 @@ agent-identity/
 └── research/slow-reading/    # Research drafts, not runtime memory
 ~~~
 
-This guide and the other `docs/` files describe the system; they **do not** create the Short, Episode, Diary, Bookshelf, or LTM stores shown below.
+This guide and the other `docs/` files describe the system; they **do not** create the Short, Episode, Diary, or Bookshelf stores shown below.
 
 ### 5.2 Example of a consuming workspace (proposed, non-binding)
 
@@ -211,11 +209,9 @@ Here is **one possible** file layout if a consuming Harness does not already off
 │   └── 2026/
 │       ├── 2026-W43.md            # Archived period
 │       └── 2026-W44.md            # Carry-forward + current detail
-├── bookshelf/
-│   ├── topics/                    # Concrete facts and knowledge
-│   └── sources/                   # References and source material
-└── ltm/
-    └── index.md                   # Pointers into bookshelf only
+└── bookshelf/
+    ├── topics/                    # Concrete facts and knowledge
+    └── sources/                   # References and source material
 
 # Identity remains in agent-identity/soul/, principles/, and mpfc/.
 # Session logs, tasks, permissions, and execution history remain Harness-owned.
@@ -276,7 +272,7 @@ Revised the grouping decision to allow activity-dependent periods.
 Episode: example-002
 ~~~
 
-**Bookshelf / LTM:** Bookshelf holds the referenced facts and documents; LTM points to those items. Neither copies the Episode/Diary narrative as its own factual record. **mPFC:** when an Experience leads to reviewed self-understanding, its existing Ralph Report and metadata record the rationale and links; the SOUL file holds only the effective conclusion.
+**Bookshelf:** Bookshelf holds the referenced facts and documents; Episode and Diary do not copy that body of knowledge. **mPFC:** when an Experience leads to reviewed self-understanding, the reflection record preserves its reasoning and evidence links; the SOUL file holds only the effective conclusion.
 
 These examples illustrate content ownership. The field labels are **not** a proposed mandatory parser contract; `example-001` and the placeholder references are not real Session IDs.
 
@@ -286,7 +282,7 @@ These examples illustrate content ownership. The field labels are **not** a prop
 2. **Short is cross-context.** It is not merely a name for the current prompt window, nor a replacement transcript archive.
 3. **Episode has exactly two formal types.** Experience is Self/User-related; Event is otherwise. Self/User are relevance lenses, not required files.
 4. **Diary and Episode are updated together at consolidation.** Diary is a dated natural-language index and carry-forward summary, not an independent store of facts.
-5. **Bookshelf owns facts and supporting materials; LTM indexes Bookshelf.** Other records may link to Bookshelf. Do not create a duplicate Facts or Resource layer.
+5. **Bookshelf owns facts and supporting materials.** Other records may link to Bookshelf; discovery uses the consuming Harness's existing retrieval capability. Do not create a duplicate Facts or Resource layer.
 6. **mPFC explains identity evolution; Episode records what happened.** A retrieved Experience does not automatically become an identity trait.
 7. **SOUL is small and conclusion-only.** Human initialization is allowed. Later changes follow reviewed Reflection; no invented origin stories.
 8. **Project constraints, task state, workflows, permissions, session logs, and execution facilities remain with their owners.** The memory model does not grant authority or implement a second Harness.
@@ -295,7 +291,7 @@ These examples illustrate content ownership. The field labels are **not** a prop
 
 ## 7. What has not been implemented or decided
 
-This repository does not yet supply a DSH memory implementation, storage backend, schema, scheduler, parser, migrated dataset, or running index. A consumer still must decide **where and how** to represent Short, Episode, Diary, Bookshelf and LTM in the Harness it actually uses.
+This repository does not yet supply a DSH memory implementation, storage backend, schema, scheduler, parser, migrated dataset, or running index. A consumer still must decide **where and how** to represent Short, Episode, Diary and Bookshelf in the Harness it actually uses.
 
 Specific filename patterns, stable identifiers, rollover triggers, cross-file atomicity, and retrieval indexes are not defined here. They should be chosen only after inspecting the actual Harness capabilities and testing a concrete gap.
 
