@@ -263,7 +263,7 @@ Revised the grouping decision to allow activity-dependent periods.
 Episode: example-002
 ~~~
 
-**Bookshelf / LTM:** Bookshelf holds the referenced facts and documents; LTM points to those items. Neither copies the Episode/Dairy narrative as its own factual record. **mPFC:** when an Experience leads to reviewed self-understanding, its existing Ralph Report and metadata record the rationale and links; the SOUL file holds only the effective conclusion.
+**Bookshelf / LTM:** Bookshelf holds the referenced facts and documents; LTM points to those items. Neither copies the Episode/Diary narrative as its own factual record. **mPFC:** when an Experience leads to reviewed self-understanding, its existing Ralph Report and metadata record the rationale and links; the SOUL file holds only the effective conclusion.
 
 These examples illustrate content ownership. The field labels are **not** a proposed mandatory parser contract; `example-001` and the placeholder references are not real Session IDs.
 
