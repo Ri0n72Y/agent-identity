@@ -4,7 +4,7 @@ Identity does not introduce a special worker protocol. Ordinary work and Reflect
 
 ## Ralph Task
 
-The task object uses only these fields:
+The **full** Ralph Task uses only these fields:
 
 - `ralph`
 - `objective`
@@ -17,9 +17,9 @@ The `constraints` field belongs to task execution. Its content comes from the cu
 
 Identity may help the Root Agent interpret or prioritize work, but Soul and Principles are not themselves copied into `constraints`.
 
-Do not add parallel fields such as `plan`, `background`, `reasoning`, `decisions`, or `acceptanceCriteria` merely for identity work. Put necessary information into the existing contract.
+An **adjacent Ralph Plan** is a separate, supported task form with only `ralph` and `plan`, for a bounded nearby objective when the same worker already holds sufficient context. It is **not** an extra field to add to a full Ralph Task. When crossing a worker or context boundary, use the full task form.
 
-The `ralph` operation may be used by the Ralph skill for its normal `prepare`, `execute`, and `report` flow.
+Identity work must not invent parallel full-task fields such as `background`, `reasoning`, `decisions`, or `acceptanceCriteria`. Use the existing contract instead. The [Ralph Skill](../.agents/skills/ralph/SKILL.md) is the authority for the current full Task, adjacent Plan, execution, and report semantics; this document only states identity-specific boundaries.
 
 ## Ralph Report
 

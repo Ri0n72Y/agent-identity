@@ -9,12 +9,14 @@ state_transition: unchanged
 
 # Ralph Report
 
-## status
+Replace this example with the actual native Ralph Report, retaining exactly its five fields and their JSON value types. The frontmatter above is Reflection metadata, not part of the report object.
 
-## summary
-
-## evidence
-
-## nextSteps
-
-## blocker
+```json
+{
+  "status": "complete",
+  "summary": "",
+  "evidence": [],
+  "nextSteps": [],
+  "blocker": ""
+}
+```

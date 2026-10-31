@@ -1,6 +1,8 @@
 # Reflection
 
-Reflection is an ordinary Ralph process aimed at the identity workspace.
+The memory model also describes reflection as part of Short-to-Episode consolidation. That conceptual classification step does not require a Soul-Ralph run for each event. This document defines the **reviewed identity Reflection** used when evidence may affect mPFC, SOUL, or Principles.
+
+Identity Reflection is an ordinary Ralph process aimed at the identity workspace.
 
 A Reflection Ralph is **not** a worker that inherits or embodies Soul. It is a normal Ralph whose workspace is the identity material it has been asked to examine.
 
