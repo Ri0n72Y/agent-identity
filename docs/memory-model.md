@@ -12,9 +12,8 @@
 | **Episode** | A consolidated, durable record from relevant Short state. Classify it as **Experience** when relevant to Self, User, or their relationship; otherwise classify it as an **Event**. Capture **when**, **why the interaction happened**, **what was discussed or done**, and **what conclusion was reached**. | Preserve temporal context and historical conclusions. Split long histories into dated blocks when useful; later corrections must not rewrite earlier records or source Sessions. |
 | **Diary** | A period-partitioned natural-language index that aggregates Episode blocks. Update it in the same consolidation operation that turns Short into Episode. | Each period opens with a compressed carry-forward of earlier activity, then detailed records for the current period. Archive completed periods and link to Episodes rather than replacing them. |
 | **Bookshelf** | Stores concrete facts, source material, and supporting knowledge, including facts extracted from episodes. | Facts and references live here rather than inside Episode as a separate `Facts` category. |
-| **LTM** | A lightweight index into the bookshelf. | The index points to material; it does not repeat the bookshelf as another knowledge body. |
 
-The conceptual progression is **Working → Short → Reflection → Episode** for records worth consolidating, with the corresponding **Diary** period created or updated in the same consolidation operation. Here, Reflection means examining and classifying Short history before consolidation; it does not require a separate runtime or a Soul-Ralph identity review for every event. An Experience can later inform the reviewed identity Reflection that produces mPFC evidence. Concrete facts and their sources are stored in the **Bookshelf**, with **LTM** as its index. This is a conceptual flow, not a requirement that every chat, fact, or external source pass through each layer.
+The conceptual progression is **Working → Short → Reflection → Episode** for records worth consolidating, with the corresponding **Diary** period created or updated in the same consolidation operation. Here, Reflection means examining and classifying Short history before consolidation; it does not require a separate runtime or a reviewed identity update for every event. An Experience can later inform the reviewed identity Reflection that produces mPFC evidence. Concrete facts and their sources are stored in the **Bookshelf**, and may be located using the consuming Harness's existing retrieval capabilities. This is a conceptual flow, not a requirement that every chat, fact, or external source pass through each layer.
 
 An Episode answers: *When and why did we discuss this? What did we discuss? What did we conclude?* The Bookshelf answers: *What concrete information or source supports a claim?* An episode may link to bookshelf material instead of embedding it.
 
@@ -45,7 +44,7 @@ Live context -> Short -> Reflection -> Episode (Experience | Event)
                          (consolidation)       |                 |
                                         |                 +--> Diary (same consolidation)
                                         |                      period summary + Episode index
-                                        +--> Bookshelf <---- LTM index
+                                        +--> Bookshelf (facts and sources)
                                         |
                                     Experience
                                         |
@@ -74,8 +73,8 @@ The Bookshelf owns concrete facts, source material, and supporting knowledge. Ep
 
 ## Repository and runtime boundaries
 
-- This repository maintains the **identity model**, SOUL, and the mPFC Reflection record contract. It does **not** currently implement Short, Episode, Bookshelf, or LTM persistence, ingestion, retrieval, or scheduling.
-- The `mpfc/` directory currently preserves **reviewed Reflection evidence and state transitions**. These records can ground evolving self-understanding; the model does not require separate Self/User documents or a new report schema.
+- This repository maintains the **identity model**, SOUL, and the mPFC Reflection evidence model. It does **not** currently implement Short, Episode, Diary, or Bookshelf persistence, ingestion, retrieval, or scheduling.
+- The `mpfc/` directory currently preserves **reviewed Reflection evidence and state transitions**. These records can ground evolving self-understanding; the model does not require separate Self/User documents or a special worker report schema.
 - SOUL remains Root-only. Task workers receive the task evidence they need, not identity by default.
 - Project facts and hard constraints remain project-owned. Becoming evidence for Reflection does not make them an identity rule.
 - Proposed SOUL or Principle changes require review under [Reflection](reflection.md). No automatic identity rewrite is implied by this model.
