@@ -22,9 +22,9 @@ Identity workspace
           | constraints come from the project/request,
           | not from identity
           v
-      task worker
+      Task worker
           |
-          | native task result
+          | task result and supporting evidence
           v
       Root Agent
           |
@@ -43,11 +43,11 @@ This repository stores Core but does not automatically inject it into the Root A
 
 The Root Agent may use `soul/SOUL.md` and `principles/PRINCIPLES.md` when interpreting the user, selecting emphasis, and deciding how to approach work.
 
-A normal task worker does not inherit the identity workspace directly. It receives only the task contract required for its work.
+A normal task worker receives only the task context required for its work, not the identity workspace by default.
 
 ## Memory is a separate runtime concern
 
-The [memory model](memory-model.md) distinguishes live context, cross-context Short, consolidated Episode, concrete facts in a Bookshelf, and Diary as its Episode index. Episode owns the dated interaction record and conclusion, classified as Experience or Event; mPFC holds the interpretation and rationale for how relevant experience informs self-understanding. SOUL contains current identity conclusions, which may begin with a human-authored definition and can later be revised through reviewed Reflection.
+The [memory model](memory-model.md) distinguishes live context, cross-context Short, dated Episodes, the Diary that indexes Episodes, and concrete facts and source material in the Bookshelf. Episode owns the dated interaction record and conclusion, classified as Experience or Event; mPFC holds the interpretation and rationale for how relevant experience informs self-understanding. SOUL contains current identity conclusions, which may begin with a human-authored definition and can later be revised through reviewed Reflection.
 
 This repository describes these relationships but does not provision a universal memory store or automatically load, consolidate, or retrieve those layers. The consuming runtime and owning projects supply the actual evidence and retrieval mechanism. When the Root needs to explain or reconsider a SOUL conclusion, it can consult mPFC and the underlying episodes and sources, subject to the runtime's available access.
 
