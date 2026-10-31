@@ -135,6 +135,19 @@ SOUL retains only the current conclusions. It can initially be human-authored, s
 
 There is **no automatic propagation** from a single Experience to SOUL.
 
+### 3.5 Worked example: a correction that may become Experience
+
+This is an **illustration**, not an existing memory record or proof of an identity update:
+
+1. **Conversation / Short:** An agent proposes an extra memory service. The user explains that the Harness already provides the relevant session and task infrastructure. Short records the correction and current decision, with a source Session pointer.
+2. **Consolidation Reflection:** The interaction matters to how the agent works with the user, so the dated Episode is classified as **Experience**. It records the earlier proposal, the correction, and the conclusion *at that time*. The original Session is not rewritten.
+3. **Diary:** In the same consolidation, the current weekly/monthly Diary gets a natural-language entry pointing to the new Experience. Earlier periods remain sealed.
+4. **Bookshelf/LTM:** If a concrete Harness capability or a reference document is needed to support the conclusion, the factual material belongs in Bookshelf and can be found through LTM. Neither the Diary nor mPFC copies that document.
+5. **Identity review:** One correction may be too narrow to change identity. A reviewed Reflection can record **no identity change** in mPFC. If similar evidence repeatedly supports a durable working default, a later reviewed Reflection may propose a Principle or SOUL revision, keeping its justification in mPFC.
+6. **Future recall:** To recall what was said, follow Diary → Episode → Session. To understand a reviewed identity decision, follow SOUL/PRINCIPLES → mPFC → cited Experience and Bookshelf evidence.
+
+The same procedure applies to unsuccessful attempts and later corrections; they do not require separate failure-memory infrastructure.
+
 ## 4. Read and retrieval paths
 
 Ask what the user or Root needs before choosing which material to read:
