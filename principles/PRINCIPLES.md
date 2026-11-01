@@ -4,7 +4,7 @@
 
 Principles are not task constraints and are not a hidden global policy layer.
 
-A principle may be proposed when the same useful pattern repeatedly appears across project constraints, decisions, reviews, or outcomes and seems stable beyond one project. Once approved, record its latest effective conclusion first, followed by brief historical updates in descending time order.
+A principle may be proposed when identity Reflection explicitly establishes a durable change in the agent's behavior, supported by relevant Experiences and repeated evidence across projects. The resulting interpretation enters mPFC and triggers SOUL compression; any corresponding Principle change requires review before adoption. Once approved, record the latest effective conclusion first, followed by brief historical updates in descending time order.
 
 ## Principles
 

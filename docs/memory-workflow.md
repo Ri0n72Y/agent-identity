@@ -12,58 +12,39 @@
 
 The design has a **cognitive consolidation path**, two **navigation/knowledge paths**, and a **reviewed identity path**. They have different jobs but can link to one another.
 
-~~~text
-Harness live session / current context
-                 |
-                 v
-       Short (cross-context, evolving)
-                 |
-                 v
-     Reflection for consolidation
-   (select, compare, classify, revise)
-                 |
-                 v
-      Episode (dated, historical)
-        /                \
- Experience             Event
- (identity-relevant)   (other event)
-        |                    |
-        +----------+---------+
-                   |
-               Diary
-        (weekly/monthly natural-language
-         index; same consolidation)
-                   |
-              Episode IDs
-                   |
-        Source Session / evidence
+~~~
+Harness Session / Working → Short → consolidation Reflection → Episode
+                                                         |
+                                             +-----------+-----------+
+                                             |                       |
+                                         Experience                Event
+                                    (agent/user-related)          (other)
+                                             |
+                                             v
+                                     identity Reflection
+                                             |
+                               change in cognition or behavior?
+                                    /                   \
+                                   no                   yes
+                                   |                     |
+                           keep with Experience         mPFC
+                                                         |
+                                                   SOUL compression
+                                                         |
+                                                 proposed SOUL
+                                                         |
+                                                    human review
+                                                         |
+                                                 effective SOUL
 
- Facts and external materials <--> Bookshelf
-         ^                      ^
-         |                      |
-         +-- Episode/Diary/mPFC links (without duplicating facts)
-
- Experience + relevant evidence + current SOUL/PRINCIPLES
-                 |
-                 v
-       Reviewed identity Reflection
-                 |
-                 v
-       mPFC (interpretation, rationale,
-             counterevidence, revisions)
-                 |
-                 v
-          reviewed update, if justified
-                 |
-                 v
-       SOUL / PRINCIPLES
-   (compressed effective conclusions)
+Episode → Diary (synchronous consolidation for both types)
+Episode / Reflection → Bookshelf references (facts and sources)
 ~~~
 
 This drawing separates **two uses of Reflection**:
 
 1. **Consolidation reflection** examines evolving Short history, recognizes relevant developments, and records an Episode as Experience or Event. It does **not** require an identity review or human approval for each Episode.
-2. **Identity Reflection** considers selected Experiences and evidence to decide whether the agent's self-understanding or durable principles should change. In this repository it is a reviewable process using the consuming Harness's available capabilities. It records the result in mPFC even when the answer is *no change*.
+2. **Identity Reflection** assesses Experiences for an explicit change to the agent's self-understanding or behavior. Only a positive result enters mPFC and triggers SOUL compression. A no-change result remains with the Experience.
 
 The path is not a claim that every message must enter every layer. Routine task and session management remain the Harness's work.
 
@@ -75,12 +56,12 @@ The path is not a claim that every message must enter every layer. Routine task 
 | **Short** | What recent state must survive a context boundary? | Recent events, evolving conclusions, current relevant facts, unresolved questions; concise enough to keep active. | Full transcript, permanent fact collection. |
 | **Consolidation Reflection** | What actually happened, what changed, and what belongs in long-term experience? | Compare the evolving Short with earlier state and evidence; select and classify material. | A second runtime or automatic SOUL rewrite. |
 | **Episode** | When, why, what happened, and what was concluded? | Durable, dated sequence with contemporaneous conclusions and later linked corrections. | A duplicate Bookshelf, a rewritten source Session. |
-| **Experience** | What enduring insight does this interaction offer about the agent's conduct, self-understanding, or collaboration? | Episode classification that can supply evidence to identity Reflection. | Automatic identity change. |
-| **Event** | What happened without an identified lasting impact on the agent's conduct or collaboration? | The other Episode classification, retaining the historical occurrence and its conclusion. | A claim that its significance can never change. |
+| **Experience** | Does this concern the agent, the user, or their interaction? | Episode classification based on relevance, whether or not it changes identity or behavior. | Automatic mPFC promotion. |
+| **Event** | What happened without involving the agent or user? | Episode classification for other historically relevant events and conclusions. | A claim that its relevance can never change. |
 | **Diary** | Where in our evolving history was this discussed? | Latest period synthesis followed by dated Episode pointers, newest first; weekly/monthly archives. | New authority over what an Episode said; facts copied into a second store. |
 | **Bookshelf** | What concrete fact, source, or knowledge material supports this? | Long-lived facts, documents, references, their supporting material and corrections. | Episode chronology or a separate Resource/Facts layer. |
-| **mPFC** | How and why did an Experience shape, challenge, or revise self-understanding? | Identity interpretations, evidence links, competing explanations and revisions; reviewed Reflection records. | Rewriting Episode events or embedding all source material. |
-| **SOUL** | What are the current durable identity conclusions? | Small, normally available conclusions; may start with a human-authored definition. | Detailed explanations, tasks, permissions, project constraints. |
+| **mPFC** | What confirmed change to self-understanding or behavior follows from Reflection, and why? | Only positive identity/behavior changes and their evidence, interpretations, and revisions. | No-change Reflection logs or copied Episode text. |
+| **SOUL** | What are the current durable identity and behavior conclusions? | Small effective identity state produced by compression after qualifying mPFC updates; may start human-authored. | Detailed explanations, unreviewed changes, or project constraints. |
 | **PRINCIPLES** | What durable cross-project working defaults have been distilled? | Reviewed, reusable tendencies supported by repeated evidence. | Hard rules for a particular project. |
 
 A historical Episode conclusion can be wrong without being erased. An mPFC interpretation can be challenged without pretending the prior interpretation never existed. The current SOUL is a compressed *result*, not a narrative of everything that caused it.
@@ -101,14 +82,14 @@ At consolidation, examine the relevant Short history and available evidence.
 
 1. Identify the time, trigger, topic/action, conclusion at that moment, and relevant source links.
 2. Preserve earlier views, results, and corrections as dated history below the latest conclusion, newest first.
-3. Classify the Episode as **Experience** when it offers lasting insight into the agent's conduct, self-understanding, or collaboration; otherwise **Event**.
+3. Classify the Episode as **Experience** if it concerns the agent, the user, or their interaction; otherwise **Event**. This does not depend on a proven lasting effect.
 4. Put concrete facts and reference material in Bookshelf or link to material already there. Do not embed an entire factual knowledge base in Episode.
 5. Store the Episode in a bounded dated block. If a topic is long-running, add further blocks instead of growing one unbounded file.
 6. **Within the same consolidation operation**, update the relevant Diary period and its Episode references.
 
 “Same operation” expresses the required consistency of Episode and Diary updates. It **does not prescribe** a new database, scheduler, transaction manager, or background agent. Use the existing Harness/storage mechanisms. If an implementation has an interrupted write, restore consistency before treating the Diary pointer as complete; the concrete recovery mechanism is an implementation decision.
 
-Later evidence may establish the significance of an earlier Event to the agent's behavior or collaboration. Record the new classification through a dated linked update, preserve the original entry, and use the resulting Experience in later reflection. Do not silently rewrite history.
+Later evidence may show that an earlier Event concerns the agent or user. Record the new classification through a dated linked update, preserve the original entry, and use the resulting Experience in later reflection. Do not silently rewrite history.
 
 ### 3.3 Episode → Diary and period rollover
 
@@ -122,17 +103,17 @@ The Diary is a **natural-language aggregate index** of Episode blocks, not a sec
 
 Diary needs not recreate Harness search. It adds **human-readable aggregation and temporal continuity** over the existing Episode and search facilities.
 
-### 3.4 Episode/Bookshelf → identity Reflection → mPFC → SOUL
+### 3.4 Experience → identity Reflection → mPFC → SOUL compression
 
-An Experience is **eligible evidence**, not an automatic personality update.
+Any Episode related to the agent, the user, or their interaction belongs in **Experience**. This classification alone does not make it an identity update.
 
-The Root selects relevant Experiences, Bookshelf sources, existing SOUL/PRINCIPLES and earlier mPFC records. The reflection process examines them and may propose a change. A human reviews the proposed change. Accepted changes update the effective identity; an unchanged or rejected result is still retained as mPFC evidence.
+1. **Reflect:** Assess the Experience against current self-understanding and behavior, using its evidence, relevant Bookshelf sources, existing SOUL/PRINCIPLES and earlier mPFC changes.
+2. **Gate:** If Reflection does not explicitly conclude that the Experience changes self-understanding or behavior, retain its outcome within Experience history (or the Harness review log). **Do not write mPFC or trigger SOUL compression.**
+3. **mPFC:** If Reflection does explicitly conclude there is a change, record the new interpretation, behavioral implications, supporting and conflicting evidence, and source links in mPFC. Do not copy the Episode.
+4. **Compress:** The qualifying mPFC update triggers **SOUL compression**, which distills the updated interpretation alongside effective identity into a concise SOUL proposal.
+5. **Review and apply:** A human reviews the proposed SOUL/PRINCIPLES patch before it becomes effective. Rejected proposals do not alter the effective state; retain the review outcome in the related Experience or Harness audit.
 
-mPFC should preserve *why* a conclusion was formed, reinforced, challenged, revised, or not adopted, using references to actual Episodes and sources. It must not become another Episode transcript.
-
-SOUL retains only the current conclusions. It can initially be human-authored, so an initial entry may have **no mPFC origin**. Do not invent a retrospective causal explanation for such an entry. Future evolution through Reflection must keep its actual review history. PRINCIPLES similarly hold reviewed durable defaults, not project-local instructions.
-
-There is **no automatic propagation** from a single Experience to SOUL.
+SOUL may start from a human-authored definition with no mPFC origin. PRINCIPLES hold separately reviewed cross-project defaults. This process does not require a parallel memory scheduler or runtime.
 
 ### 3.5 Worked example: a correction that may become Experience
 
@@ -142,7 +123,7 @@ This is an **illustration**, not an existing memory record or proof of an identi
 2. **Consolidation Reflection:** The interaction matters to how the agent works with the user, so the dated Episode is classified as **Experience**. It records the earlier proposal, the correction, and the conclusion *at that time*. The original Session is not rewritten.
 3. **Diary:** In the same consolidation, the current weekly/monthly Diary gets a natural-language entry pointing to the new Experience. Earlier periods remain sealed.
 4. **Bookshelf:** If a concrete Harness capability or a reference document is needed to support the conclusion, the factual material belongs in Bookshelf and can be retrieved using the consuming Harness's existing search. Neither the Diary nor mPFC copies that document.
-5. **Identity review:** One correction may be too narrow to change identity. A reviewed Reflection can record **no identity change** in mPFC. If similar evidence repeatedly supports a durable working default, a later reviewed Reflection may propose a Principle or SOUL revision, keeping its justification in mPFC.
+5. **Identity Reflection:** If this correction does not change self-understanding or behavior, keep the result in Experience; do not write mPFC. If later evidence confirms such a change, write it to mPFC, trigger SOUL compression, and review the proposed effective state.
 6. **Future recall:** To recall what was said, follow Diary → Episode → Session. To understand a reviewed identity decision, follow SOUL/PRINCIPLES → mPFC → cited Experience and Bookshelf evidence.
 
 The same procedure applies to unsuccessful attempts and later corrections; they do not require separate failure-memory infrastructure.
@@ -287,11 +268,11 @@ Bookshelf owns concrete facts and supporting material. The source documents keep
 **mPFC — reviewed identity interpretation**
 
 ~~~text
-[2026-11-01 11:40:00][demo-app:reflection] Review outcome: no identity change; one interaction is insufficient to establish a durable working principle. Evidence: <Experience reference>.
-- [2026-11-01 11:10:00] Assessed whether the correction indicated a lasting collaboration pattern; source: <review reference>.
+[2026-11-01 11:40:00][demo-app:reflection] Experience changed the agent's implementation approach: check interaction requirements before visual refinement. Evidence: <Experience reference>.
+- [2026-11-01 11:10:00] Reconsidered the earlier approach using user feedback and linked sources: <review reference>.
 ~~~
 
-An unchanged outcome is still a result. mPFC retains the explanation, alternatives, and evidence references.
+Only a positive self-understanding or behavior change creates an mPFC record. A no-change result stays with Experience. This qualifying entry triggers SOUL compression; review is required before the resulting proposal becomes effective.
 
 **SOUL / PRINCIPLES — compact approved conclusions**
 
@@ -308,13 +289,13 @@ The format applies to memory entries. Harness Sessions, raw source documents, an
 
 1. **History is not overwritten.** Corrections create new, linked states. Old Sessions and historical conclusions remain distinguishable.
 2. **Short is cross-context.** It is not merely a name for the current prompt window, nor a replacement transcript archive.
-3. **Episode has exactly two formal types.** Experience records enduring significance for the agent's conduct or collaboration; Event records other historical occurrences.
+3. **Episode has exactly two formal types.** Experience includes content concerning the agent or user; Event records other historical occurrences. Neither requires a prior identity-change judgment.
 4. **Diary and Episode are updated together at consolidation.** Diary is a dated natural-language index and carry-forward summary, not an independent store of facts.
 5. **Bookshelf owns facts and supporting materials.** Other records may link to Bookshelf; discovery uses the consuming Harness's existing retrieval capability. Do not create a duplicate Facts or Resource layer.
-6. **mPFC explains identity evolution; Episode records what happened.** A retrieved Experience does not automatically become an identity trait.
-7. **SOUL is small and conclusion-only.** Human initialization is allowed. Later changes follow reviewed Reflection; no invented origin stories.
+6. **Only changes enter mPFC.** Experience records what happened; only Reflection-confirmed changes to the agent's self-understanding or behavior enter mPFC and trigger SOUL compression.
+7. **SOUL is compressed and conclusion-only.** A qualifying mPFC update triggers compression; the proposed effective change requires review. Human initialization is allowed.
 8. **Project constraints, task state, workflows, permissions, session logs, and execution facilities remain with their owners.** The memory model does not grant authority or implement a second Harness.
-9. **Negative results and disagreements matter.** A failed attempt may remain an Episode; a Reflection ending in no identity change still produces an mPFC record.
+9. **No-change results remain in Experience.** Failed attempts and rejected interpretations retain their history, but do not create mPFC entries or trigger SOUL compression.
 10. **This is a design description, not performance evidence.** No automatic consolidation, storage consistency, retrieval quality, or long-term cognition has been verified by this document.
 
 ## 7. What has not been implemented or decided

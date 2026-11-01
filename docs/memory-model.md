@@ -9,11 +9,11 @@
 | --- | --- | --- |
 | **Working** | The live conversation and task context. | It is not itself a durable record. |
 | **Short** | Short-lived **factual memory across context boundaries**: recent events, current state, decisions, and unresolved matters needed to continue. | It is not a full transcript or a permanent knowledge store. |
-| **Episode** | A consolidated, durable record from relevant Short state. Classify it as **Experience** when it provides a meaningful insight into the agent's conduct, self-understanding, or ongoing collaboration; otherwise classify it as an **Event**. Capture **when**, **why the interaction happened**, **what was discussed or done**, and **what conclusion was reached**. | Preserve temporal context and historical conclusions. Split long histories into dated blocks when useful; later corrections must not rewrite earlier records or source Sessions. |
+| **Episode** | A consolidated, durable record from relevant Short state. Classify it as **Experience** whenever it concerns the agent, the user, or their interaction; otherwise classify it as an **Event**. The classification requires relevance, not demonstrated identity or behavior change. Capture **when**, **why the interaction happened**, **what was discussed or done**, and **what conclusion was reached**. | Preserve temporal context and historical conclusions. Split long histories into dated blocks when useful; later corrections must not rewrite earlier records or source Sessions. |
 | **Diary** | A period-partitioned natural-language index that aggregates Episode blocks. Update it in the same consolidation operation that turns Short into Episode. | The latest dated synthesis comes first and carries compressed prior context; historical entries for the current period follow newest-first. Archive completed periods and link to Episodes. |
 | **Bookshelf** | Stores concrete facts, source material, and supporting knowledge, including facts extracted from episodes. | Facts and references live here rather than inside Episode as a separate `Facts` category. |
 
-The conceptual progression is **Working → Short → Reflection → Episode** for records worth consolidating, with the corresponding **Diary** period created or updated in the same consolidation operation. Here, Reflection means examining and classifying Short history before consolidation; it does not require a separate runtime or a reviewed identity update for every event. An Experience can later inform the reviewed identity Reflection that produces mPFC evidence. Concrete facts and their sources are stored in the **Bookshelf**, and may be located using the consuming Harness's existing retrieval capabilities. This is a conceptual flow, not a requirement that every chat, fact, or external source pass through each layer.
+The conceptual progression is **Working → Short → Reflection → Episode** for records worth consolidating, with the corresponding **Diary** period created or updated in the same consolidation operation. Here, Reflection means examining and classifying Short history before consolidation; it does not require a separate runtime or a reviewed identity update for every event. An Experience is eligible for identity Reflection. Only a Reflection that explicitly concludes it should change the agent's self-understanding or behavior passes the mPFC gate; writing mPFC then triggers SOUL compression. Concrete facts and their sources are stored in the **Bookshelf**, and may be located using the consuming Harness's existing retrieval capabilities. This is a conceptual flow, not a requirement that every chat, fact, or external source pass through each layer.
 
 An Episode answers: *When and why did we discuss this? What did we discuss? What did we conclude?* The Bookshelf answers: *What concrete information or source supports a claim?* An episode may link to bookshelf material instead of embedding it.
 
@@ -35,7 +35,7 @@ This syntax defines the readable structure of a memory entry. Each entry has a t
 
 ## Episode types, temporal blocks, and Diary
 
-**Experience** records an interaction or outcome with lasting relevance to the agent's conduct, self-understanding, or collaboration. It can inform identity Reflection and mPFC. **Event** records other historically relevant occurrences. These are the two Episode classifications. If later evidence establishes the relevance of an Event to identity or collaboration, add a dated linked update without rewriting the earlier record.
+**Experience** records an event, interaction, or outcome related to the agent, the user, or their relationship, including ordinary preferences, feedback, and corrections. This relevance alone is sufficient; no lasting identity effect is required. **Event** records other historically relevant occurrences. These are the two Episode classifications. If an Event is later found to concern the agent or user, add a dated linked reclassification without rewriting the original history.
 
 Episode history may be divided into dated blocks so that a long-running topic does not become one unbounded record. Preserve the sequence and the state known at each point. New evidence can correct or supersede an earlier conclusion, but must not alter what the earlier record said at the time.
 
@@ -45,33 +45,41 @@ Diary helps navigate and maintain continuity across periods. Its summaries and l
 
 ## From lived experience to self-understanding
 
-Relevant experiences can inform **mPFC**: the evolving explanation of **how and why an event contributed to an understanding of “who I should be.”** The Episode remains the record of what happened and the conclusion reached. mPFC explains how a relevant Experience forms, challenges, or revises self-understanding. It retains causal context, competing interpretations, contradictions, and later revisions, with links back to Episodes and other evidence rather than duplicating the event record. This is not a table of fixed personality traits. Not every episode justifies changing self-understanding.
+Experience enters **identity Reflection** for assessment, but does not enter mPFC merely because it concerns the agent or user. If Reflection explicitly concludes that an Experience **changes the agent's self-understanding or behavior**, record the resulting interpretation and its evidence in **mPFC**. Otherwise retain the Experience and the reflection outcome in its Episode history; do not create an mPFC entry. mPFC preserves causal context, competing interpretations, contradictions, and revisions linked to their Episodes and other evidence. It is not a second event archive or a table of fixed traits.
 
-**SOUL** is the compressed, routinely usable state of current identity conclusions, not their explanations. It may begin from a human-authored initial definition; reviewed Reflection can later revise it using mPFC's interpretation and linked evidence. mPFC explains how conclusions form and change, but it is not the required origin of every SOUL entry. In this limited engineering sense, SOUL is the agent's “subconscious” or immediate judgment tendency. It does not reproduce the events, arguments, or evidence used to form those conclusions.
+**SOUL** is the compressed, routinely usable state of current identity conclusions, not their explanations. A substantive mPFC update **triggers SOUL compression**, which distills the updated self-understanding and behavioral conclusions into a concise proposed identity state. Review the proposed change before applying it to the effective SOUL; do not silently rewrite identity. SOUL may begin from a human-authored initial definition, so mPFC is not the origin of every SOUL entry. SOUL contains no duplicate event narratives or reasoning.
 
 When asked *“Why do I think or act this way?”*, or when a conclusion needs re-examination, follow **SOUL → mPFC → cited Episode / Bookshelf evidence**. Do not fabricate a history to explain an existing SOUL entry. Change a conclusion when the evidence supports revision; retain the relevant history separately.
 
-```text
-Live context -> Short -> Reflection -> Episode (Experience | Event)
-                         (consolidation)       |                 |
-                                        |                 +--> Diary (same consolidation)
-                                        |                      period summary + Episode index
-                                        +--> Bookshelf (facts and sources)
-                                        |
-                                    Experience
-                                        |
-                               reviewed identity Reflection
-                                        v
-                                       mPFC
-                            interpretation and revisions
-                                        |
-                                reviewed conclusion
-                                        v
-human-authored initial definition ---> SOUL
-                                 current conclusions
+```
+Live context -> Short -> consolidation Reflection -> Episode
+                                                 | 
+                              +------------------+------------------+
+                              |                                     |
+                      Experience (agent/user)                   Event (other)
+                              |
+                              v
+                      identity Reflection
+                              |
+                      change to cognition or behavior?
+                        /                    \
+                     no change              change
+                        |                    |
+                  keep in Experience        mPFC
+                                             |
+                                       SOUL compression
+                                             |
+                                     proposed SOUL change
+                                             |
+                                       human review
+                                             |
+                                       effective SOUL
+
+Episode -> Diary (same consolidation, for Experience and Event)
+Episode / reflection -> Bookshelf references (facts and sources)
 ```
 
-The two inputs to SOUL represent different paths: an explicit human-authored starting definition is allowed, and reviewed Reflection may later revise current conclusions. The diagram does not require every conclusion to originate in mPFC.
+The initial SOUL can be written by a human. Subsequent Experience-based changes follow the gated mPFC → SOUL compression path. A no-change Reflection does not update mPFC or trigger SOUL compression.
 
 The Bookshelf can also contain independently sourced reference material. The arrows show relationships, not an exclusive write path or a prescribed file layout.
 
@@ -86,10 +94,10 @@ The Bookshelf owns concrete facts, source material, and supporting knowledge. Ep
 ## Repository and runtime boundaries
 
 - This repository maintains the **identity model**, SOUL, and the mPFC Reflection evidence model. It does **not** currently implement Short, Episode, Diary, or Bookshelf persistence, ingestion, retrieval, or scheduling.
-- The `mpfc/` directory currently preserves **reviewed Reflection evidence and state transitions**, with interpretations and source links rather than a separate worker report schema.
+- The `mpfc/` directory preserves **positive identity-change interpretations and their supporting evidence**. Reflections that do not establish a change remain with their Experiences or Harness review records.
 - SOUL remains Root-only. Task workers receive the task evidence they need, not identity by default.
 - Project facts and hard constraints remain project-owned. Becoming evidence for Reflection does not make them an identity rule.
-- Proposed SOUL or Principle changes require review under [Reflection](reflection.md). No automatic identity rewrite is implied by this model.
+- An eligible mPFC update triggers SOUL compression; its proposed SOUL or Principle changes require review under [Reflection](reflection.md) before becoming effective.
 - This description does not claim machine consciousness, human-like cognition, or that the proposed memory process has been empirically validated.
 
 For the write/read lifecycle, the common latest-first memory entry notation, Diary period organization, and a non-binding example file layout, see the memory workflow guide: [English](memory-workflow.md) / [简体中文](memory-workflow_ZH.md). See [Reflection](reflection.md), [runtime integration](runtime.md), [mPFC](../mpfc/README.md), and [SOUL](../soul/SOUL.md) for the current identity-specific rules.
