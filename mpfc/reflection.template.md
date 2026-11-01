@@ -1,13 +1,12 @@
-# Identity Reflection
+# mPFC — Identity / Behavior Change
 
-Use the same latest-first memory entry format as Short, Episode, Diary, Bookshelf, SOUL, and PRINCIPLES. The most recent **reviewed** conclusion comes first, including an explicit no-change result when appropriate. Keep earlier interpretations and their evidence in descending date order. Reference source Episodes, Bookshelf materials, and any approved identity revision inline.
+Create an entry **only after Reflection explicitly determines that an Experience changes the agent's self-understanding or behavior**. Relevance without change is retained in Experience, not mPFC.
 
 ~~~text
-[YYYY-MM-DD HH:MM:SS][项目[:会话]] 最终审核结论：身份已修改或保持不变；说明当前依据及必要的修订引用
-- [YYYY-MM-DD HH:MM:SS] 当时的审核结论、解释变化与证据引用
-- [YYYY-MM-DD HH:MM:SS] 最初的判断、经历引用、争议或待验证的认识
+[YYYY-MM-DD HH:MM:SS][项目[:会话]] 本次经历改变了什么自我认知或行为；为什么；证据：<Experience / Bookshelf 引用>
+- [YYYY-MM-DD HH:MM:SS] 此前相关的认识、行为或反证，及其修订依据
 ~~~
 
-The history bullets preserve what was known and decided at each time. An accepted SOUL/PRINCIPLES change must reference the corresponding review. An unchanged decision is still recorded. Do not rewrite earlier Episodes or invent the origin of an initial human-authored SOUL entry.
+A substantive mPFC update triggers SOUL compression. The resulting concise SOUL proposal must be reviewed before it becomes effective. Do not put entire Episodes or unverified facts in mPFC. Keep earlier conclusions in reverse chronological order, and use real timestamps and source references.
 
-This is a natural-language record template, not a mandatory parser or separate report schema.
+No-change reflections and rejected proposals are recorded alongside the relevant Experience or in the Harness audit trail; neither is an accepted SOUL change.
