@@ -10,6 +10,7 @@ This repository preserves the universal Core, identity state, and reusable skill
 - `mpfc/` — reflection records that preserve evidence and identity state transitions.
 - `.agents/skills/` — reusable task-scoped runtime skills.
 - `docs/` — memory and self-continuity design, runtime integration, Reflection semantics, and reusable references.
+- `research/slow-reading/` — slow-reading study plans, manuscript background, and the shared experimental protocol; study records remain project-owned, not identity memory.
 - `library/` — reusable, on-demand technical development guides (not runtime Skills).
 
 ## Repository layout
@@ -51,7 +52,8 @@ agent-identity/
 └── research/
     └── slow-reading/
         ├── background.md
-        └── paper-plan.md
+        ├── paper-plan.md
+        └── protocol.md
 ```
 
 Each Skill directory contains a `SKILL.md`; some also contain on-demand `references/` or other supporting files. The layout above lists primary entries rather than every reference file.
@@ -94,3 +96,5 @@ The broader skill-design rationale lives in [design-rationale.md](.agents/skills
 The [React + Cordis Web guide](library/react-cordis.md) distills the plugin/runtime/UI integration pattern as an on-demand reference.
 
 The [Function-first Cordis Plugin Programming guide](library/function-first-cordis-plugin-programming.md) records practical patterns for explicit state, pure computation, and lifecycle-owned effects without banning Cordis `Service` classes.
+
+The [slow-reading experimental protocol](research/slow-reading/protocol.md) defines future-blind reveal/commit boundaries, trace and audit requirements, and the four study conditions. It is the execution specification shared by the paper, experiment Skill, and any DSH plugin; [paper-plan.md](research/slow-reading/paper-plan.md) remains the research and writing plan.
