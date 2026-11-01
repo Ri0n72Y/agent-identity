@@ -9,7 +9,7 @@
 | --- | --- | --- |
 | **Working** | The live conversation and task context. | It is not itself a durable record. |
 | **Short** | Short-lived **factual memory across context boundaries**: recent events, current state, decisions, and unresolved matters needed to continue. | It is not a full transcript or a permanent knowledge store. |
-| **Episode** | A consolidated, durable record from relevant Short state. Classify it as **Experience** when relevant to Self, User, or their relationship; otherwise classify it as an **Event**. Capture **when**, **why the interaction happened**, **what was discussed or done**, and **what conclusion was reached**. | Preserve temporal context and historical conclusions. Split long histories into dated blocks when useful; later corrections must not rewrite earlier records or source Sessions. |
+| **Episode** | A consolidated, durable record from relevant Short state. Classify it as **Experience** when it provides a meaningful insight into the agent's conduct, self-understanding, or ongoing collaboration; otherwise classify it as an **Event**. Capture **when**, **why the interaction happened**, **what was discussed or done**, and **what conclusion was reached**. | Preserve temporal context and historical conclusions. Split long histories into dated blocks when useful; later corrections must not rewrite earlier records or source Sessions. |
 | **Diary** | A period-partitioned natural-language index that aggregates Episode blocks. Update it in the same consolidation operation that turns Short into Episode. | Each period opens with a compressed carry-forward of earlier activity, then detailed records for the current period. Archive completed periods and link to Episodes rather than replacing them. |
 | **Bookshelf** | Stores concrete facts, source material, and supporting knowledge, including facts extracted from episodes. | Facts and references live here rather than inside Episode as a separate `Facts` category. |
 
@@ -21,7 +21,7 @@ Keep the earlier event and its historical conclusion distinguishable from a late
 
 ## Episode types, temporal blocks, and Diary
 
-**Experience** is an Episode whose relevance to Self, User, or their relationship has been identified. It is a direct candidate for Reflection that may inform mPFC. **Event** is an Episode for which no such relevance has been identified. These are the two formal Episode classifications, not separate memory systems or required separate files. If later reflection identifies Self/User relevance in an Event, preserve the original record and add a linked update rather than silently rewriting its history.
+**Experience** records an interaction or outcome with lasting relevance to the agent's conduct, self-understanding, or collaboration. It can inform identity Reflection and mPFC. **Event** records other historically relevant occurrences. These are the two Episode classifications. If later evidence establishes the relevance of an Event to identity or collaboration, add a dated linked update without rewriting the earlier record.
 
 Episode history may be divided into dated blocks so that a long-running topic does not become one unbounded record. Preserve the sequence and the state known at each point. New evidence can correct or supersede an earlier conclusion, but must not alter what the earlier record said at the time.
 
@@ -31,9 +31,7 @@ Diary helps navigate and maintain continuity across periods. Its summaries and l
 
 ## From lived experience to self-understanding
 
-An interaction can reveal something about the user, the agent's response, and their relationship at the same time. During reflection on Short or Episode, **Self** and **User** are related perspectives used to identify which parts of an experience matter to the agent, the user, or their relationship. They are not mandatory separate Episode categories or documents, and they do not replace the Episode record.
-
-Relevant experiences can inform **mPFC**: the evolving explanation of **how and why an event contributed to an understanding of “who I should be.”** The Episode remains the record of what happened and the conclusion reached. mPFC explains how an experience identified as relevant to Self, User, or their relationship forms, challenges, or revises self-understanding. It retains causal context, competing interpretations, contradictions, and later revisions, with links back to Episodes and other evidence rather than duplicating the event record. This is not a table of fixed personality traits. Not every episode justifies changing self-understanding.
+Relevant experiences can inform **mPFC**: the evolving explanation of **how and why an event contributed to an understanding of “who I should be.”** The Episode remains the record of what happened and the conclusion reached. mPFC explains how a relevant Experience forms, challenges, or revises self-understanding. It retains causal context, competing interpretations, contradictions, and later revisions, with links back to Episodes and other evidence rather than duplicating the event record. This is not a table of fixed personality traits. Not every episode justifies changing self-understanding.
 
 **SOUL** is the compressed, routinely usable state of current identity conclusions, not their explanations. It may begin from a human-authored initial definition; reviewed Reflection can later revise it using mPFC's interpretation and linked evidence. mPFC explains how conclusions form and change, but it is not the required origin of every SOUL entry. In this limited engineering sense, SOUL is the agent's “subconscious” or immediate judgment tendency. It does not reproduce the events, arguments, or evidence used to form those conclusions.
 
@@ -74,7 +72,7 @@ The Bookshelf owns concrete facts, source material, and supporting knowledge. Ep
 ## Repository and runtime boundaries
 
 - This repository maintains the **identity model**, SOUL, and the mPFC Reflection evidence model. It does **not** currently implement Short, Episode, Diary, or Bookshelf persistence, ingestion, retrieval, or scheduling.
-- The `mpfc/` directory currently preserves **reviewed Reflection evidence and state transitions**. These records can ground evolving self-understanding; the model does not require separate Self/User documents or a special worker report schema.
+- The `mpfc/` directory currently preserves **reviewed Reflection evidence and state transitions**, with interpretations and source links rather than a separate worker report schema.
 - SOUL remains Root-only. Task workers receive the task evidence they need, not identity by default.
 - Project facts and hard constraints remain project-owned. Becoming evidence for Reflection does not make them an identity rule.
 - Proposed SOUL or Principle changes require review under [Reflection](reflection.md). No automatic identity rewrite is implied by this model.
