@@ -84,4 +84,4 @@ For this repository, a Git diff or pull request is the simplest review surface: 
 
 ## Record content
 
-Retain the review time, relevant identity revisions, evidence and its sources, the interpretations considered, the decision and why it was justified. Record both accepted changes and negative results without replacing the original Episode. See [mPFC](../mpfc/README.md) and its [reference template](../mpfc/reflection.template.md). This model does not prescribe a separate worker protocol or fixed execution report schema.
+Use the common latest-first memory entry shape: `[YYYY-MM-DD HH:MM:SS][项目[:会话]] 最终结论`, followed by historical `- [YYYY-MM-DD HH:MM:SS]` bullets from newer to older. The head states the latest reviewed decision, including an explicit no-change outcome when applicable. Historical bullets retain the earlier interpretations, evidence links, identity revisions, and why the decision changed. Do not replace an original Episode. See [mPFC](../mpfc/README.md) and its [reference template](../mpfc/reflection.template.md). No separate worker protocol or report schema is required.
