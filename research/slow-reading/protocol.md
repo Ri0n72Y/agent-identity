@@ -67,7 +67,7 @@
 
 True Slow Reading 的核心顺序必须为：
 
-\`\`\`text
+```text
 Reveal(segment i)
     ↓
 Observe current permitted text
@@ -87,7 +87,7 @@ Record any revision
 Commit(state i + 1)
     ↓
 ...
-\`\`\`
+```
 
 每次 Reveal 后，模型先处理**新增信息相对先前承诺的作用**，再形成当前解释；没有相关旧承诺时，不必制造比较或修订。
 
@@ -153,7 +153,7 @@ Simulated Slow 条件必须真的允许未来文本被模型访问；如果在�
 
 沿用双方讨论过的人类可读历史标记：
 
-\`\`\`text
+```text
 [日期][文档:运行][时间][阶段]
 
 新信息：
@@ -162,7 +162,7 @@ Simulated Slow 条件必须真的允许未来文本被模型访问；如果在�
 预测（可选）：
 与先前解释相比发生了什么：
 来源段落：
-\`\`\`
+```
 
 这个标记是方便审阅的**展示约定**，不是必须用正则解析的唯一存储格式，也不是 Identity 的 Short/Episode 规范。
 
