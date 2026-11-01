@@ -12,35 +12,33 @@
 
 The design has a **cognitive consolidation path**, two **navigation/knowledge paths**, and a **reviewed identity path**. They have different jobs but can link to one another.
 
-~~~text
+~~~
 Harness Session / Working → Short → consolidation Reflection → Episode
-                                                         /           \
-                                              Experience           Event
-                                           (agent/user-related)    (other)
-                                                         \          /
-                                                          ↘        ↙
-                                                            Diary
-                                              (synchronous Episode index)
+                                                         |
+                                             +-----------+-----------+
+                                             |                       |
+                                         Experience                Event
+                                    (agent/user-related)          (other)
+                                             |
+                                             v
+                                     identity Reflection
+                                             |
+                               change in cognition or behavior?
+                                    /                   \
+                                   no                   yes
+                                   |                     |
+                           keep with Experience         mPFC
+                                                         |
+                                                   SOUL compression
+                                                         |
+                                                 proposed SOUL
+                                                         |
+                                                    human review
+                                                         |
+                                                 effective SOUL
 
-Experience + cited evidence → identity Reflection
-                                     |
-                         change in self-understanding
-                         or behavior confirmed?
-                             /           \
-                            no            yes
-                            |              |
-                     retain result         v
-                    with Experience       mPFC
-                                          |
-                                     SOUL compression
-                                          |
-                                  proposed concise SOUL
-                                          |
-                                    human review
-                                          |
-                                   effective SOUL
-
-Bookshelf ← linked facts and source documents
+Episode → Diary (synchronous consolidation for both types)
+Episode / Reflection → Bookshelf references (facts and sources)
 ~~~
 
 This drawing separates **two uses of Reflection**:
