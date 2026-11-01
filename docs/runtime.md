@@ -47,7 +47,7 @@ A normal task worker receives only the task context required for its work, not t
 
 ## Memory is a separate runtime concern
 
-The [memory model](memory-model.md) distinguishes live context, cross-context Short, dated Episodes, the Diary that indexes Episodes, and concrete facts and source material in the Bookshelf. Episode owns the dated interaction record and conclusion, classified as Experience or Event; mPFC holds the interpretation and rationale for how relevant experience informs self-understanding. SOUL contains current identity conclusions, which may begin with a human-authored definition and can later be revised through reviewed Reflection.
+The [memory model](memory-model.md) distinguishes live context, cross-context Short, dated Episodes, the Diary that indexes Episodes, and concrete facts and source material in the Bookshelf. Episode owns the dated interaction record and conclusion: content involving the agent or user is Experience, and other content is Event. Identity Reflection assesses Experience; only a confirmed change to the agent's self-understanding or behavior enters mPFC. Each qualifying mPFC update triggers SOUL compression and proposes a concise identity revision. The resulting change must be reviewed before effective SOUL is updated. SOUL may begin from a human-authored definition.
 
 This repository describes these relationships but does not provision a universal memory store or automatically load, consolidate, or retrieve those layers. The consuming runtime and owning projects supply the actual evidence and retrieval mechanism. When the Root needs to explain or reconsider a SOUL conclusion, it can consult mPFC and the underlying episodes and sources, subject to the runtime's available access.
 
