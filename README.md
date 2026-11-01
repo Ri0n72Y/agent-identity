@@ -45,7 +45,8 @@ agent-identity/
 │   ├── memory-workflow.md
 │   ├── memory-workflow_ZH.md
 │   ├── reflection.md
-│   └── runtime.md
+│   ├── runtime.md
+│   └── slow-reading-workflow.md
 ├── library/
 │   ├── function-first-cordis-plugin-programming.md
 │   └── react-cordis.md
