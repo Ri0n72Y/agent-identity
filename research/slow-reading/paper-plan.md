@@ -3,7 +3,7 @@
 > Status: research plan, not manuscript prose
 > Purpose: keep the research question, argument, evidence, experiment, and writing boundaries stable before drafting.
 > Working title: **Slow Reading for Large Language Models: What Changes When the Model Cannot See the Future?**
-> Execution contract: [protocol.md](protocol.md) defines the normative experimental conditions and trace boundaries; this plan explains hypotheses, background, and drafting scope.
+> General reading method: [slow-reading-workflow.md](../../docs/slow-reading-workflow.md) describes slow reading as an ordinary execution workflow. This paper plan remains separate research material; its study comparisons do not define the general workflow.
 
 ## 1. Research question
 
