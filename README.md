@@ -81,7 +81,7 @@ A project keeps its own constraints in that project's workspace. The exact filen
 6. Record the result in `mpfc/` whether identity changed or not.
 7. Apply the identity patch only after review.
 
-The [memory model](docs/memory-model.md) defines the agreed Short → Reflection → Episode (Experience/Event) consolidation path, Diary indexing, Bookshelf, and mPFC/SOUL boundaries. The memory workflow guides — [English](docs/memory-workflow.md) / [简体中文](docs/memory-workflow_ZH.md) — explain the lifecycle, Short/Episode entry notation, Diary aggregation, retrieval routes, and illustrative file layout. Both describe the design, not a deployed memory service. The integration boundary is documented in `docs/runtime.md`; the identity Reflection loop is in `docs/reflection.md`.
+The [memory model](docs/memory-model.md) defines the agreed Short → Reflection → Episode (Experience/Event) consolidation path, Diary indexing, Bookshelf, and mPFC/SOUL boundaries. The memory workflow guides — [English](docs/memory-workflow.md) / [简体中文](docs/memory-workflow_ZH.md) — explain the lifecycle, the shared latest-first memory entry notation, Diary aggregation, retrieval routes, and illustrative file layout. Both describe the design, not a deployed memory service. The integration boundary is documented in `docs/runtime.md`; the identity Reflection loop is in `docs/reflection.md`.
 
 The canonical, human-authored [Core v1.0.3](core/CORE.md) defines the universal method. The separate `.agents/skills/core-authoring/SKILL.md` explains how to design and review a Core, not what is currently loaded. The reusable skill design method lives in `.agents/skills/skill-authoring/SKILL.md`.
 
