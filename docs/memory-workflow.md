@@ -222,9 +222,9 @@ Nothing here requires Experience and Event to occupy distinct folders. Both may 
 
 For a DSH plugin, first map these conceptual paths to existing Sessions, search, project files, and plugin storage. Only introduce a new artifact when those existing facilities cannot represent the required semantics. Do **not** add separate stores for failures, facts, resources, rules, tasks, or workflows merely because another agent system uses those names.
 
-### 5.3 One shared latest-first memory entry format
+### 5.3 Memory entry format and examples
 
-All memory items use the same human-readable structure. This **replaces** the separate date, project, time, and reflection-status brackets formerly used in illustrative entries.
+Use one natural-language format for Short, Episode (Experience and Event), Diary, Bookshelf, mPFC, SOUL, and PRINCIPLES:
 
 ~~~text
 [YYYY-MM-DD HH:MM:SS][项目[:会话]] 最终结论
@@ -232,75 +232,77 @@ All memory items use the same human-readable structure. This **replaces** the se
 - [YYYY-MM-DD HH:MM:SS] 最开始的结论、动作、讨论内容、想法等
 ~~~
 
-The head is the most recent effective conclusion, not the earliest event. The entries underneath are historical states **newest first**, ending with the earliest meaningful conclusion, action, discussion, or idea. Use the time when each state actually existed; do not invent timestamps, backdate knowledge, or silently replace old records. The project is required at the head; the session is optional. A new item can contain only the head. Sources and cross-record references may be written inline rather than as additional mandatory fields. The notation does not establish a parser, a new storage service, or an extra processing-status bracket.
+The first line states the current conclusion at its actual time. History below is ordered from newest to oldest. The project is required; the session is optional. A new entry may contain only the first line. Source references can appear in the natural-language content. Keep the scope, length, and review requirements of each memory type.
 
-**Short — current state with enough revision history to resume:**
+The following records are **fictional format examples**; they do not assert that a task occurred or an identity change was approved.
+
+**Short — current state and relevant changes**
 
 ~~~text
-[2026-11-01 12:52:00][agent-identity:memory] All memory entries use a latest-first head, with earlier conclusions kept as dated bullets.
-- [2026-10-30 10:15:00] The earlier design used separate date and time brackets; it needed alignment with the consolidated record model.
-- [2026-10-29 15:29:00] First discussed retaining historical decisions while continuously updating the current memory.
+[2026-11-01 11:00:00][demo-app:navigation] Use native links for navigation and buttons for actions.
+- [2026-10-31 09:00:00] Confirmed that navigation must allow opening destinations in a new tab.
+- [2026-10-30 16:00:00] Began reviewing the navigation component's interaction requirements.
 ~~~
 
-Short remains concise. As the state changes, move the previous conclusion into the descending history, retaining source Session references where useful. Do not turn Short into an unbounded transcript.
+Short stays concise. When the conclusion changes, keep the prior conclusion as dated history. Preserve the original Session separately.
 
-**Episode — one format, two classifications:**
+**Episode — Experience and Event**
 
 ~~~md
 ## Experience
 
-[2026-11-01 12:52:00][agent-identity:memory] Keep the agent's memory design aligned with the user's corrections and existing Harness responsibilities.
-- [2026-10-30 10:15:00] Reconsidered the earlier proposal and removed a duplicated memory responsibility; evidence: <Session reference>.
-- [2026-10-29 15:29:00] Initially considered adding an independent memory service; evidence: <Session reference>.
+[2026-11-01 11:10:00][demo-app:review] Confirm actual user interaction needs before choosing a component implementation.
+- [2026-10-31 09:00:00] Feedback exposed a missing navigation requirement and prompted a design correction; source: <Session reference>.
+- [2026-10-30 16:00:00] The initial review focused on visual consistency rather than link behavior; source: <Session reference>.
 
 ## Event
 
-[2026-11-01 13:02:00][agent-identity:docs] The memory architecture documents now use one record notation.
-- [2026-10-31 21:10:00] Published the initial architecture guide; see <Episode or Session reference>.
+[2026-11-01 11:20:00][demo-app:implementation] Navigation components passed keyboard and new-tab behavior checks.
+- [2026-11-01 10:40:00] Replaced navigation buttons with links where the control opens a destination; source: <change reference>.
 ~~~
 
-The Experience/Event heading is a presentation of the classification, not an extra field in the item. Episode preserves **what the understanding was at each recorded time**. Earlier sealed date blocks stay unchanged. If a correction crosses the block boundary, publish the newer head in the current block and link the earlier Episode instead of rewriting it.
+The classifications identify the Episode's role, not a separate header field. Episodes may be split into dated blocks. A correction after a block is archived is recorded in a new block with a link to the earlier Episode.
 
-**Diary — weekly/monthly aggregation with the same latest-first entry order:**
+**Diary — period synthesis and Episode navigation**
 
 ~~~md
 # Diary — 2026-W44
 
-[2026-11-01 13:02:00][agent-identity:memory] This period finalized the memory entry format, following earlier work on Episode types and Diary continuity. See <previous Diary period> for older history.
-- [2026-10-31 21:10:00] Consolidated memory architecture documentation; Episode: <Episode reference>.
-- [2026-10-29 15:29:00] Defined Experience/Event and period-based Diary indexing; Episodes: <Episode references>.
+[2026-11-01 11:30:00][demo-app:weekly-review] Completed navigation behavior review and accessibility fixes; related earlier context: <previous Diary period>.
+- [2026-11-01 11:20:00] Verified link behavior and keyboard access; Episode: <Event reference>.
+- [2026-10-31 09:00:00] Identified the missing new-tab interaction requirement; Episode: <Experience reference>.
 ~~~
 
-The first line is the current period's compressed synthesis, including carry-forward context where relevant. Dated details follow in descending order; the latest period may be updated during consolidation. Archive the finished period; the next period receives a new head and links to the earlier archive.
+The period summary comes first, followed by detailed dated references in descending order. Archive the finished period; the next period links to it and carries forward the relevant compressed context.
 
-**Bookshelf — latest fact or knowledge conclusion, with dated factual revisions:**
+**Bookshelf — a fact and its sources**
 
 ~~~text
-[2026-11-01 13:02:00][agent-identity:docs] The agreed memory record notation has one timestamp bracket and one project/session bracket; source: <document link>.
-- [2026-10-30 10:15:00] An earlier guide used separate date/time brackets; source: <earlier document revision>.
+[2026-11-01 11:35:00][demo-app:references] An HTML anchor with an href provides native link navigation behavior, including opening in a new tab; source: <documentation reference>.
+- [2026-10-31 09:10:00] Collected documentation on anchor semantics and navigation behavior; source: <reference>.
 ~~~
 
-The Bookshelf still owns the concrete facts and source material. Source documents themselves are not required to be reformatted. Other layers only link to the relevant Bookshelf item.
+Bookshelf owns concrete facts and supporting material. The source documents keep their existing form; other memory items link to them.
 
-**mPFC — reviewed interpretation with dated changes and cited evidence:**
+**mPFC — reviewed identity interpretation**
 
 ~~~text
-[2026-11-01 13:02:00][agent-identity:reflection] Review found insufficient evidence to change the current identity; the correction is documented for future assessment. Evidence: <Experience link>.
-- [2026-10-30 10:15:00] Reconsidered whether the earlier interaction reflected a durable collaboration principle; see <review record>.
+[2026-11-01 11:40:00][demo-app:reflection] Review outcome: no identity change; one interaction is insufficient to establish a durable working principle. Evidence: <Experience reference>.
+- [2026-11-01 11:10:00] Assessed whether the correction indicated a lasting collaboration pattern; source: <review reference>.
 ~~~
 
-The entry should describe the assessment and link its evidence. An explicit decision of **no identity change** is still a valid head. mPFC retains the substantive rationale; SOUL does not duplicate it.
+An unchanged outcome is still a result. mPFC retains the explanation, alternatives, and evidence references.
 
-**SOUL / PRINCIPLES — short effective conclusions using the same head syntax:**
+**SOUL / PRINCIPLES — compact approved conclusions**
 
 ~~~text
-[2026-11-01 13:02:00][agent-identity:identity] Prefer reusing proven Harness capabilities before introducing parallel memory systems.
-- [2026-10-30 10:15:00] Earlier reviewed default: favor smaller, testable structures; rationale: <mPFC reference>.
+[2026-11-01 11:45:00][example-identity] Verify interaction requirements before selecting an implementation.
+- [2026-10-30 16:00:00] Approved a narrower working default; rationale: <mPFC reference>.
 ~~~
 
-These are illustrative conclusions, **not automatically approved SOUL or PRINCIPLES changes**. Real identity changes still require review; any historical bullets in routinely loaded identity files must stay short. Full interpretation, counterevidence, and review results belong in mPFC. An initial human-authored conclusion can have no prior history.
+Identity entries use the same notation but require the normal review before adoption. The example above is not an approved identity record. Keep routinely loaded conclusions short; detailed rationale belongs in mPFC.
 
-The same syntax applies wherever a retained item describes a changing understanding. Each layer still owns different content. The original Session, attached documents, and the Harness's own execution records remain authoritative sources and need not be rewritten.
+The format applies to memory entries. Harness Sessions, raw source documents, and execution logs retain their existing formats and authority.
 
 ## 6. Invariants and failure modes
 
