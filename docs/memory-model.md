@@ -51,33 +51,32 @@ Experience enters **identity Reflection** for assessment, but does not enter mPF
 
 When asked *“Why do I think or act this way?”*, or when a conclusion needs re-examination, follow **SOUL → mPFC → cited Episode / Bookshelf evidence**. Do not fabricate a history to explain an existing SOUL entry. Change a conclusion when the evidence supports revision; retain the relevant history separately.
 
-```text
+```
 Live context -> Short -> consolidation Reflection -> Episode
-                                                /        \
-                                        Experience      Event
-                                        (agent/user)    (other)
-                                              |             |
-                                              +----+--------+---> Diary (same consolidation)
-                                                   |
-                            Experience -> identity Reflection
-                                                   |
-                                          change confirmed?
-                                           /          \
-                                         no            yes
-                                         |              |
-                              retain in Experience     v
-                                       history        mPFC
-                                                     |
-                                                     v
-                                              SOUL compression
-                                                     |
-                                                proposed SOUL
-                                                     |
-                                                   review
-                                                     |
-                                                approved SOUL
+                                                 | 
+                              +------------------+------------------+
+                              |                                     |
+                      Experience (agent/user)                   Event (other)
+                              |
+                              v
+                      identity Reflection
+                              |
+                      change to cognition or behavior?
+                        /                    \
+                     no change              change
+                        |                    |
+                  keep in Experience        mPFC
+                                             |
+                                       SOUL compression
+                                             |
+                                     proposed SOUL change
+                                             |
+                                       human review
+                                             |
+                                       effective SOUL
 
-Bookshelf: facts and sources, linked by Episodes / reflections
+Episode -> Diary (same consolidation, for Experience and Event)
+Episode / reflection -> Bookshelf references (facts and sources)
 ```
 
 The initial SOUL can be written by a human. Subsequent Experience-based changes follow the gated mPFC → SOUL compression path. A no-change Reflection does not update mPFC or trigger SOUL compression.
