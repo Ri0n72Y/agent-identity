@@ -3,6 +3,7 @@
 > Status: research plan, not manuscript prose
 > Purpose: keep the research question, argument, evidence, experiment, and writing boundaries stable before drafting.
 > Working title: **Slow Reading for Large Language Models: What Changes When the Model Cannot See the Future?**
+> Execution contract: [protocol.md](protocol.md) defines the normative experimental conditions and trace boundaries; this plan explains hypotheses, background, and drafting scope.
 
 ## 1. Research question
 
