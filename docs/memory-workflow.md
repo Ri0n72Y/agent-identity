@@ -26,7 +26,7 @@ Harness live session / current context
       Episode (dated, historical)
         /                \
  Experience             Event
- (Self/User-related)    (other event)
+ (identity-relevant)   (other event)
         |                    |
         +----------+---------+
                    |
@@ -75,15 +75,13 @@ The path is not a claim that every message must enter every layer. Routine task 
 | **Short** | What recent state must survive a context boundary? | Recent events, evolving conclusions, current relevant facts, unresolved questions; concise enough to keep active. | Full transcript, permanent fact collection. |
 | **Consolidation Reflection** | What actually happened, what changed, and what belongs in long-term experience? | Compare the evolving Short with earlier state and evidence; select and classify material. | A second runtime or automatic SOUL rewrite. |
 | **Episode** | When, why, what happened, and what was concluded? | Durable, dated sequence with contemporaneous conclusions and later linked corrections. | A duplicate Bookshelf, a rewritten source Session. |
-| **Experience** | How does this Episode concern Self, User, or their relationship? | One of the two official Episode classifications, eligible as input to identity Reflection. | A separate persona file or a guaranteed identity change. |
-| **Event** | What happened without identified Self/User relevance? | The other official Episode classification, still historically useful. | A permanent assertion that the event can never become relevant. |
+| **Experience** | What enduring insight does this interaction offer about the agent's conduct, self-understanding, or collaboration? | Episode classification that can supply evidence to identity Reflection. | Automatic identity change. |
+| **Event** | What happened without an identified lasting impact on the agent's conduct or collaboration? | The other Episode classification, retaining the historical occurrence and its conclusion. | A claim that its significance can never change. |
 | **Diary** | Where in our evolving history was this discussed? | Natural-language summaries and dated pointers to Episodes, in weekly/monthly periods. | New authority over what an Episode said; facts copied into a second store. |
 | **Bookshelf** | What concrete fact, source, or knowledge material supports this? | Long-lived facts, documents, references, their supporting material and corrections. | Episode chronology or a separate Resource/Facts layer. |
 | **mPFC** | How and why did an Experience shape, challenge, or revise self-understanding? | Identity interpretations, evidence links, competing explanations and revisions; reviewed Reflection records. | Rewriting Episode events or embedding all source material. |
 | **SOUL** | What are the current durable identity conclusions? | Small, normally available conclusions; may start with a human-authored definition. | Detailed explanations, tasks, permissions, project constraints. |
 | **PRINCIPLES** | What durable cross-project working defaults have been distilled? | Reviewed, reusable tendencies supported by repeated evidence. | Hard rules for a particular project. |
-
-**Self and User are related lenses**, not additional Episode categories or mandatory documents. The two Episode types are **Experience** and **Event**. “Others” fits Event unless an interaction also reveals relevance to Self, User, or their relationship.
 
 A historical Episode conclusion can be wrong without being erased. An mPFC interpretation can be challenged without pretending the prior interpretation never existed. The current SOUL is a compressed *result*, not a narrative of everything that caused it.
 
@@ -103,14 +101,14 @@ At consolidation, examine the relevant Short history and available evidence.
 
 1. Identify the time, trigger, topic/action, conclusion at that moment, and relevant source links.
 2. Keep changes in sequence: initial view, observed outcome, correction and revised conclusion when relevant.
-3. Classify the resulting Episode as **Experience** if it involves Self, User, or their relationship; otherwise **Event**.
+3. Classify the Episode as **Experience** when it offers lasting insight into the agent's conduct, self-understanding, or collaboration; otherwise **Event**.
 4. Put concrete facts and reference material in Bookshelf or link to material already there. Do not embed an entire factual knowledge base in Episode.
 5. Store the Episode in a bounded dated block. If a topic is long-running, add further blocks instead of growing one unbounded file.
 6. **Within the same consolidation operation**, update the relevant Diary period and its Episode references.
 
 “Same operation” expresses the required consistency of Episode and Diary updates. It **does not prescribe** a new database, scheduler, transaction manager, or background agent. Use the existing Harness/storage mechanisms. If an implementation has an interrupted write, restore consistency before treating the Diary pointer as complete; the concrete recovery mechanism is an implementation decision.
 
-A later insight may identify Self/User relevance in an earlier Event. Add a dated linked classification/update, preserve the earlier record, and use the relevant Experience in later reflection. Do not silently rewrite the historical event.
+Later evidence may establish the significance of an earlier Event to the agent's behavior or collaboration. Record the new classification through a dated linked update, preserve the original entry, and use the resulting Experience in later reflection. Do not silently rewrite history.
 
 ### 3.3 Episode → Diary and period rollover
 
@@ -298,7 +296,7 @@ These examples show the agreed readable form and ownership boundaries. They are 
 
 1. **History is not overwritten.** Corrections create new, linked states. Old Sessions and historical conclusions remain distinguishable.
 2. **Short is cross-context.** It is not merely a name for the current prompt window, nor a replacement transcript archive.
-3. **Episode has exactly two formal types.** Experience is Self/User-related; Event is otherwise. Self/User are relevance lenses, not required files.
+3. **Episode has exactly two formal types.** Experience records enduring significance for the agent's conduct or collaboration; Event records other historical occurrences.
 4. **Diary and Episode are updated together at consolidation.** Diary is a dated natural-language index and carry-forward summary, not an independent store of facts.
 5. **Bookshelf owns facts and supporting materials.** Other records may link to Bookshelf; discovery uses the consuming Harness's existing retrieval capability. Do not create a duplicate Facts or Resource layer.
 6. **mPFC explains identity evolution; Episode records what happened.** A retrieved Experience does not automatically become an identity trait.

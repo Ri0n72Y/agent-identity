@@ -15,7 +15,7 @@ Prefer stable identity over task-specific instructions.
 
 - TBD
 
-## User-aligned preferences
+## Collaboration preferences
 
 <!--
 Record current durable conclusions that materially shape how the Root Agent understands and works with the user.
