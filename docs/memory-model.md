@@ -80,4 +80,4 @@ The Bookshelf owns concrete facts, source material, and supporting knowledge. Ep
 - Proposed SOUL or Principle changes require review under [Reflection](reflection.md). No automatic identity rewrite is implied by this model.
 - This description does not claim machine consciousness, human-like cognition, or that the proposed memory process has been empirically validated.
 
-For a complete walkthrough of the write/read lifecycle, Episode and Diary boundaries, and a non-binding example file layout, see [Memory workflow](memory-workflow.md). See [Reflection](reflection.md), [runtime integration](runtime.md), [mPFC](../mpfc/README.md), and [SOUL](../soul/SOUL.md) for the current identity-specific rules.
+For the write/read lifecycle, the agreed human-readable Short/Episode entry notation, Diary period organization, and a non-binding example file layout, see the memory workflow guide: [English](memory-workflow.md) / [简体中文](memory-workflow_ZH.md). See [Reflection](reflection.md), [runtime integration](runtime.md), [mPFC](../mpfc/README.md), and [SOUL](../soul/SOUL.md) for the current identity-specific rules.

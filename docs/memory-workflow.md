@@ -1,5 +1,7 @@
 # Memory architecture: lifecycle, elements, and file organization
 
+[English](memory-workflow.md) | [简体中文](memory-workflow_ZH.md)
+
 > **Status:** conceptual design and reference layout, not a deployed memory plugin, mandatory file schema, or claim of cognitive equivalence with people.
 >
 > **Authority:** [Memory model](memory-model.md) defines the semantic boundaries. [Reflection](reflection.md), [mPFC](../mpfc/README.md), [SOUL](../soul/SOUL.md), and [Runtime](runtime.md) define the corresponding identity and execution constraints. This document explains how they fit together.
@@ -173,7 +175,8 @@ agent-identity/
 ├── README.md
 ├── docs/
 │   ├── memory-model.md       # Canonical semantic boundaries
-│   ├── memory-workflow.md    # This lifecycle and layout guide
+│   ├── memory-workflow.md    # English lifecycle and layout guide
+│   ├── memory-workflow_ZH.md # Chinese version of the same guide
 │   ├── reflection.md         # Reviewed identity Reflection
 │   └── runtime.md            # Harness/Root/worker boundaries
 ├── mpfc/
@@ -221,60 +224,75 @@ Nothing here requires Experience and Event to occupy distinct folders. Both may 
 
 For a DSH plugin, first map these conceptual paths to existing Sessions, search, project files, and plugin storage. Only introduce a new artifact when those existing facilities cannot represent the required semantics. Do **not** add separate stores for failures, facts, resources, rules, tasks, or workflows merely because another agent system uses those names.
 
-### 5.3 Illustrative record bodies (not schemas)
+### 5.3 Agreed human-readable entry notation (not a parser schema)
 
-**Short** can be compact and current:
+We previously agreed to use **short bracketed headers and natural-language bodies**, not a large JSON/YAML record for Short and Episode. The notation below specifies how to *write* readable entries; the project has **not implemented or approved a machine-enforced parser**, a unique-ID algorithm, or an exact on-disk layout.
 
-~~~md
-# Current Short
-- Continuing topic: memory consolidation
-- Current decision: divide Episodes into Experience and Event
-- Open question: how to handle the next Diary period
-- Recent change: weekly Diary selected; earlier alternative remains in history
-- Source: <Session reference>
+**Short** uses a compact header. The session portion is optional; \`pending\` and \`done\` are reflection-processing markers, not claims that the record is true or approved.
+
+~~~text
+[date][project[:session]][time][reflection:pending|done] natural-language body
 ~~~
 
-**Episode** carries an event and the conclusion **as known at that point**:
+~~~text
+[2026-10-29][agent-identity:memory][15:29][reflection:pending] Discussed how Episodes are divided into Experience and Event. Decided to update the Diary in the same consolidation operation and keep dated Episode blocks.
 
-~~~md
-## Episode example-001 — 2026-10-29
-Type: Event
-Why: review how to navigate dated Episode blocks
-Discussed: weekly versus monthly Diary periods
-Conclusion at the time: use weekly periods for this example
-Sources: <Session reference>, <Bookshelf reference if relevant>
-
-## Episode example-002 — 2026-10-30
-Type: Event
-Why: revisit the period boundary with new information
-Discussed: different activity levels and document length
-Conclusion at the time: allow weekly or monthly periods
-Relation: revises example-001 without deleting it
+[2026-10-30][agent-identity:memory][10:15][reflection:done] Finished consolidating the related discussion. The current decision remains available in Short; the historical sequence is retained in Episode and source Sessions.
 ~~~
 
-**Diary** aggregates and points back to dated Episodes:
+Short usually needs only one or two natural-language lines per entry. The current Short state may be updated as work evolves; a new development that needs reflection can return its processing marker to \`pending\`. Updating Short does **not** overwrite the source Session or previously consolidated Episodes.
+
+**Episode** retains the same basic location/time prefix, with more room for the historical narrative. Experience and Event are its two formal classifications; a classification heading is one readable presentation choice, **not** a mandatory extra file or field.
+
+~~~text
+[date][project[:session]][time] natural-language historical record
+~~~
+
+~~~md
+## Experience
+
+[2026-10-29][agent-identity:memory][15:29]
+We originally considered adding more memory subsystems. The user pointed out
+that the Harness already handles session persistence and related runtime work.
+We revisited the proposal and decided to keep the existing cognitive cycle.
+This interaction is relevant to how the agent works with the user.
+
+Sources: <source Session reference>, <Bookshelf source if relevant>
+
+## Event
+
+[2026-10-30][agent-identity:memory][10:15]
+The memory-model documentation was updated to classify Episodes as Experience
+or Event and to synchronize Diary updates with Short-to-Episode consolidation.
+
+Sources: <source Session reference>
+~~~
+
+A later Episode can correct an earlier interpretation by linking to it. Do not edit the old Session, retroactively replace the old conclusion, or duplicate an entire Bookshelf source. Stable IDs and link syntax remain implementation choices.
+
+**Diary** is an aggregated, period-based natural-language index. It begins with a compressed carry-forward of preceding activity, then gives more detailed dated entries and links to current-period Episodes. The file may be sealed when its week/month ends.
 
 ~~~md
 # Diary — 2026-W44
 
 ## Carry-forward from earlier periods
-We previously established Short-to-Episode consolidation and the
-need for an index that does not replace source events.
-References: <previous Diary periods>, <Episode IDs>
+We established Short-to-Episode consolidation and separated the Episode
+history from Bookshelf facts. See <earlier Diary period> and <Episode IDs>.
 
 ## This period
+
 ### 2026-10-29
-Compared weekly and monthly grouping; chose weekly for an example.
-Episode: example-001
+Reviewed the Experience/Event distinction and the Diary lifecycle.
+Episodes: <Episode ID or path>
 
 ### 2026-10-30
-Revised the grouping decision to allow activity-dependent periods.
-Episode: example-002
+Recorded a correction to the earlier design without erasing its history.
+Episodes: <new Episode ID or path>, <earlier Episode reference>
 ~~~
 
-**Bookshelf:** Bookshelf holds the referenced facts and documents; Episode and Diary do not copy that body of knowledge. **mPFC:** when an Experience leads to reviewed self-understanding, the reflection record preserves its reasoning and evidence links; the SOUL file holds only the effective conclusion.
+Bookshelf continues to own concrete facts and reference documents; the consuming Harness searches and opens those materials. Diary and Episode may link to Bookshelf but do not copy its factual body. mPFC uses the existing Reflection record to preserve interpretations, evidence links, and reviewed identity revisions; SOUL retains only current conclusions.
 
-These examples illustrate content ownership. The field labels are **not** a proposed mandatory parser contract; `example-001` and the placeholder references are not real Session IDs.
+These examples show the agreed readable form and ownership boundaries. They are **not** a deployed file schema; the sample dates, IDs, and source references are placeholders.
 
 ## 6. Invariants and failure modes
 
