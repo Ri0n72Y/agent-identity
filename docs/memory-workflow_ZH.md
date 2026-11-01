@@ -12,35 +12,33 @@
 
 该设计包括一条**认知固化路径**、两条**导航与知识路径**，以及一条**经过审核的身份演化路径**。它们承担不同职责，可以相互引用。
 
-~~~text
+~~~
 Harness Session / Working → Short → 固化 Reflection → Episode
-                                                        /        \
-                                               Experience       Event
-                                              （涉及 Agent/用户）（其他）
-                                                        \       /
-                                                         ↘     ↙
-                                                           Diary
-                                                （与 Episode 同步建索引）
+                                                       |
+                                           +-----------+-----------+
+                                           |                       |
+                                       Experience                Event
+                                    （涉及 Agent/用户）           （其他）
+                                           |
+                                           v
+                                      身份 Reflection
+                                           |
+                                 是否改变自我认知或行为？
+                                     /          \
+                                    否           是
+                                    |            |
+                              保留在 Experience   mPFC
+                                                 |
+                                             SOUL 压缩
+                                                 |
+                                             SOUL 候选
+                                                 |
+                                              人工审核
+                                                 |
+                                            生效的 SOUL
 
-Experience + 证据 → 身份 Reflection
-                         |
-                  是否明确改变 Agent 的
-                    自我认知或行为？
-                    /           \
-                   否            是
-                   |             |
-            结论留在 Experience   v
-                                mPFC
-                                 |
-                              SOUL 压缩
-                                 |
-                           精简的 SOUL 候选
-                                 |
-                              人工审核
-                                 |
-                            生效的 SOUL
-
-Bookshelf：存放事实和来源，供 Episode / Reflection 引用
+Episode → Diary（Experience/Event 固化时同步更新）
+Episode / Reflection → Bookshelf（事实与来源引用）
 ~~~
 
 这里的 **Reflection 有两种用途**：
