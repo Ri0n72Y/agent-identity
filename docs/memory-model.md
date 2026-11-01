@@ -10,7 +10,7 @@
 | **Working** | The live conversation and task context. | It is not itself a durable record. |
 | **Short** | Short-lived **factual memory across context boundaries**: recent events, current state, decisions, and unresolved matters needed to continue. | It is not a full transcript or a permanent knowledge store. |
 | **Episode** | A consolidated, durable record from relevant Short state. Classify it as **Experience** when it provides a meaningful insight into the agent's conduct, self-understanding, or ongoing collaboration; otherwise classify it as an **Event**. Capture **when**, **why the interaction happened**, **what was discussed or done**, and **what conclusion was reached**. | Preserve temporal context and historical conclusions. Split long histories into dated blocks when useful; later corrections must not rewrite earlier records or source Sessions. |
-| **Diary** | A period-partitioned natural-language index that aggregates Episode blocks. Update it in the same consolidation operation that turns Short into Episode. | Each period opens with a compressed carry-forward of earlier activity, then detailed records for the current period. Archive completed periods and link to Episodes rather than replacing them. |
+| **Diary** | A period-partitioned natural-language index that aggregates Episode blocks. Update it in the same consolidation operation that turns Short into Episode. | The latest dated synthesis comes first and carries compressed prior context; historical entries for the current period follow newest-first. Archive completed periods and link to Episodes. |
 | **Bookshelf** | Stores concrete facts, source material, and supporting knowledge, including facts extracted from episodes. | Facts and references live here rather than inside Episode as a separate `Facts` category. |
 
 The conceptual progression is **Working → Short → Reflection → Episode** for records worth consolidating, with the corresponding **Diary** period created or updated in the same consolidation operation. Here, Reflection means examining and classifying Short history before consolidation; it does not require a separate runtime or a reviewed identity update for every event. An Experience can later inform the reviewed identity Reflection that produces mPFC evidence. Concrete facts and their sources are stored in the **Bookshelf**, and may be located using the consuming Harness's existing retrieval capabilities. This is a conceptual flow, not a requirement that every chat, fact, or external source pass through each layer.
@@ -19,13 +19,27 @@ An Episode answers: *When and why did we discuss this? What did we discuss? What
 
 Keep the earlier event and its historical conclusion distinguishable from a later correction. Current understanding can change without making the earlier record pretend that the later evidence was already known.
 
+## Common memory entry format
+
+All retained memory entries use one **latest-first** natural-language format: Short, Episode (Experience or Event), Diary, Bookshelf, mPFC, SOUL, and PRINCIPLES.
+
+~~~text
+[YYYY-MM-DD HH:MM:SS][项目[:会话]] 最终结论
+- [YYYY-MM-DD HH:MM:SS] 当时的历史结论，对上一条的修改
+- [YYYY-MM-DD HH:MM:SS] 最开始的结论、动作、讨论内容、想法等
+~~~
+
+The first line contains the **latest effective conclusion**, its timestamp, and its project (with optional session). Bullets below are ordered **newest to oldest** and preserve the conclusions, actions, discussion, or interpretation actually held at each time. A new record may have no history yet. A later update moves the previous conclusion into the history and writes the new conclusion at the top. Original Sessions and archived blocks are never rewritten. If an earlier block is sealed, the newer block contains the new head and references that earlier block.
+
+This common syntax describes **record presentation**, not a new runtime, database, or mandatory machine parser. It adds no extra status field, separate date/time bracket, or YAML frontmatter. Source links may occur inline; the consuming Harness owns storage, processing state, permissions, and retrieval. The record's *scope* remains unchanged: Short is concise, Episode preserves relevant history, Diary is a period-indexed synthesis, Bookshelf owns facts and sources, mPFC owns reviewed reasoning, and SOUL/PRINCIPLES keep only compact current conclusions and short dated history pointers, leaving detailed justification in mPFC.
+
 ## Episode types, temporal blocks, and Diary
 
 **Experience** records an interaction or outcome with lasting relevance to the agent's conduct, self-understanding, or collaboration. It can inform identity Reflection and mPFC. **Event** records other historically relevant occurrences. These are the two Episode classifications. If later evidence establishes the relevance of an Event to identity or collaboration, add a dated linked update without rewriting the earlier record.
 
 Episode history may be divided into dated blocks so that a long-running topic does not become one unbounded record. Preserve the sequence and the state known at each point. New evidence can correct or supersede an earlier conclusion, but must not alter what the earlier record said at the time.
 
-**Diary** is the natural-language aggregation and index of these Episode blocks. It is partitioned into periods, such as weeks or months. Each period begins with a compressed carry-forward summary of what happened in earlier periods, followed by detailed records for the current period. When a period closes, archive it and carry its compressed summary forward into the next period. Create or update the relevant Diary period synchronously when Short is consolidated into Episode; Diary must not lag behind the Episode record.
+**Diary** is the natural-language aggregation and index of these Episode blocks. It is partitioned into periods, such as weeks or months. Each period begins with its latest timestamped synthesis, including a compressed carry-forward from earlier periods, followed by dated entries for the current period in descending time order. When a period closes, archive it and carry its compressed summary forward into the next period. Create or update the relevant Diary period synchronously when Short is consolidated into Episode; Diary must not lag behind the Episode record.
 
 Diary helps navigate and maintain continuity across periods. Its summaries and links do not replace Episode records or create a second store of concrete facts. Use the consuming Harness's existing storage and search mechanisms to support this structure rather than building a separate retrieval service.
 
@@ -65,7 +79,7 @@ The Bookshelf can also contain independently sourced reference material. The arr
 
 This model defines memory semantics and relationships; it does not define a parallel runtime. Reuse the consuming Harness and project workspace for capabilities they already provide, including session persistence, context compaction, task and plan state, underlying search and retrieval, Skill/Workflow execution, permissions, scheduling, and execution audit. Do not reproduce these facilities as new identity-memory layers. If a concrete gap remains, identify it against the actual runtime and prefer extending or integrating the existing mechanism over creating a competing subsystem.
 
-Failures and corrections belong to the existing time-ordered history. Short can be updated as an ongoing situation develops. Preserve prior states and conclusions; a later Short update or Episode can correct or supersede an earlier understanding without rewriting the original Session or making later evidence appear to have been known earlier. Reflection can use these records to retain what failed, what changed, and why; no separate failure-memory layer is required.
+Failures and corrections belong to the existing time-ordered history. Short can be updated as an ongoing situation develops: put the newest conclusion first and preserve prior states and conclusions below in descending time order. A later Short update or Episode can correct or supersede an earlier understanding without rewriting the original Session or making later evidence appear to have been known earlier. Reflection can use these records to retain what failed, what changed, and why; no separate failure-memory layer is required.
 
 The Bookshelf owns concrete facts, source material, and supporting knowledge. Episodes, Diary, mPFC records, and other memory views may link to or index Bookshelf entries. Do not add separate Facts or Resource layers merely to duplicate these responsibilities.
 
@@ -78,4 +92,4 @@ The Bookshelf owns concrete facts, source material, and supporting knowledge. Ep
 - Proposed SOUL or Principle changes require review under [Reflection](reflection.md). No automatic identity rewrite is implied by this model.
 - This description does not claim machine consciousness, human-like cognition, or that the proposed memory process has been empirically validated.
 
-For the write/read lifecycle, the agreed human-readable Short/Episode entry notation, Diary period organization, and a non-binding example file layout, see the memory workflow guide: [English](memory-workflow.md) / [简体中文](memory-workflow_ZH.md). See [Reflection](reflection.md), [runtime integration](runtime.md), [mPFC](../mpfc/README.md), and [SOUL](../soul/SOUL.md) for the current identity-specific rules.
+For the write/read lifecycle, the common latest-first memory entry notation, Diary period organization, and a non-binding example file layout, see the memory workflow guide: [English](memory-workflow.md) / [简体中文](memory-workflow_ZH.md). See [Reflection](reflection.md), [runtime integration](runtime.md), [mPFC](../mpfc/README.md), and [SOUL](../soul/SOUL.md) for the current identity-specific rules.

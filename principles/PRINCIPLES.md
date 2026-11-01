@@ -4,23 +4,20 @@
 
 Principles are not task constraints and are not a hidden global policy layer.
 
-A principle may be proposed when the same useful pattern repeatedly appears across project constraints, decisions, reviews, or outcomes and seems stable beyond one project.
+A principle may be proposed when the same useful pattern repeatedly appears across project constraints, decisions, reviews, or outcomes and seems stable beyond one project. Once approved, record its latest effective conclusion first, followed by brief historical updates in descending time order.
 
 ## Principles
 
 <!--
-Keep this compressed.
+Keep this compressed. Each adopted Principle uses the shared entry format:
 
-A useful principle states a durable default tendency, not a mandatory project rule.
+[YYYY-MM-DD HH:MM:SS][项目[:会话]] 最终结论
+- [YYYY-MM-DD HH:MM:SS] 较早的审核结论或修订摘要
+- [YYYY-MM-DD HH:MM:SS] 最初的讨论或判断
 
-Example shape:
-
-### Prefer the smallest sufficient structure
-
-When several designs satisfy the same objective, prefer the one with fewer independent concepts and less duplicated state unless the additional structure has a demonstrated benefit.
+History is newest-first; use real timestamps and cite mPFC review evidence inline when necessary. Detailed interpretation belongs in mPFC, not in this routinely loaded file. Do not treat example text as an approved principle.
 -->
 
-- TBD
 
 ## Boundary
 

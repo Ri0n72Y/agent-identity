@@ -1,26 +1,13 @@
----
-reflected_at:
-reflection_round:
-identity_revision_before:
-identity_revision_after:
-identityChanged: false
-state_transition: unchanged
----
-
 # Identity Reflection
 
-## Experiences and sources
+Use the same latest-first memory entry format as Short, Episode, Diary, Bookshelf, SOUL, and PRINCIPLES. The most recent **reviewed** conclusion comes first, including an explicit no-change result when appropriate. Keep earlier interpretations and their evidence in descending date order. Reference source Episodes, Bookshelf materials, and any approved identity revision inline.
 
-Reference the relevant Episode (Experience or Event), Bookshelf material, and the earlier interpretation or identity state. Keep original sources available rather than copying complete event records here.
+~~~text
+[YYYY-MM-DD HH:MM:SS][项目[:会话]] 最终审核结论：身份已修改或保持不变；说明当前依据及必要的修订引用
+- [YYYY-MM-DD HH:MM:SS] 当时的审核结论、解释变化与证据引用
+- [YYYY-MM-DD HH:MM:SS] 最初的判断、经历引用、争议或待验证的认识
+~~~
 
-## Interpretation and competing explanations
+The history bullets preserve what was known and decided at each time. An accepted SOUL/PRINCIPLES change must reference the corresponding review. An unchanged decision is still recorded. Do not rewrite earlier Episodes or invent the origin of an initial human-authored SOUL entry.
 
-Describe how the evidence supports, challenges, or fails to change the current self-understanding. Include significant contradictions and corrections.
-
-## Reviewed conclusion
-
-State the decision and its rationale, including why no change was justified when `identityChanged: false`.
-
-## Identity change, if accepted
-
-Link to the reviewed SOUL or PRINCIPLES change and the resulting identity revision. Leave this section as “no change” when no change was approved.
+This is a natural-language record template, not a mandatory parser or separate report schema.

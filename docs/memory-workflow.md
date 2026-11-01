@@ -77,7 +77,7 @@ The path is not a claim that every message must enter every layer. Routine task 
 | **Episode** | When, why, what happened, and what was concluded? | Durable, dated sequence with contemporaneous conclusions and later linked corrections. | A duplicate Bookshelf, a rewritten source Session. |
 | **Experience** | What enduring insight does this interaction offer about the agent's conduct, self-understanding, or collaboration? | Episode classification that can supply evidence to identity Reflection. | Automatic identity change. |
 | **Event** | What happened without an identified lasting impact on the agent's conduct or collaboration? | The other Episode classification, retaining the historical occurrence and its conclusion. | A claim that its significance can never change. |
-| **Diary** | Where in our evolving history was this discussed? | Natural-language summaries and dated pointers to Episodes, in weekly/monthly periods. | New authority over what an Episode said; facts copied into a second store. |
+| **Diary** | Where in our evolving history was this discussed? | Latest period synthesis followed by dated Episode pointers, newest first; weekly/monthly archives. | New authority over what an Episode said; facts copied into a second store. |
 | **Bookshelf** | What concrete fact, source, or knowledge material supports this? | Long-lived facts, documents, references, their supporting material and corrections. | Episode chronology or a separate Resource/Facts layer. |
 | **mPFC** | How and why did an Experience shape, challenge, or revise self-understanding? | Identity interpretations, evidence links, competing explanations and revisions; reviewed Reflection records. | Rewriting Episode events or embedding all source material. |
 | **SOUL** | What are the current durable identity conclusions? | Small, normally available conclusions; may start with a human-authored definition. | Detailed explanations, tasks, permissions, project constraints. |
@@ -91,7 +91,7 @@ A historical Episode conclusion can be wrong without being erased. An mPFC inter
 
 The Harness already owns the live Session, tool traces, context compaction, task state and other runtime facilities. These should be referenced rather than recreated.
 
-Short persists across context boundaries and captures what matters for continuing the conversation. It can evolve as new evidence arrives. For example, a provisional decision, a failed attempt, a correction, and the present decision may all matter to continuity.
+Short persists across context boundaries and captures what matters for continuing the conversation. Its latest conclusion is at the top, with older revisions below in descending time order. It can evolve as new evidence arrives. For example, a provisional decision, a failed attempt, a correction, and the present decision may all matter to continuity.
 
 An update to Short **must not edit an old source Session**. Short is a useful current working representation; the underlying history remains independently recoverable wherever the Harness stores it.
 
@@ -100,7 +100,7 @@ An update to Short **must not edit an old source Session**. Short is a useful cu
 At consolidation, examine the relevant Short history and available evidence.
 
 1. Identify the time, trigger, topic/action, conclusion at that moment, and relevant source links.
-2. Keep changes in sequence: initial view, observed outcome, correction and revised conclusion when relevant.
+2. Preserve earlier views, results, and corrections as dated history below the latest conclusion, newest first.
 3. Classify the Episode as **Experience** when it offers lasting insight into the agent's conduct, self-understanding, or collaboration; otherwise **Event**.
 4. Put concrete facts and reference material in Bookshelf or link to material already there. Do not embed an entire factual knowledge base in Episode.
 5. Store the Episode in a bounded dated block. If a topic is long-running, add further blocks instead of growing one unbounded file.
@@ -114,8 +114,8 @@ Later evidence may establish the significance of an earlier Event to the agent's
 
 The Diary is a **natural-language aggregate index** of Episode blocks, not a second chronological truth source.
 
-- **Current period:** opens with a compressed carry-forward (“What we did before”), then gives more detailed dated entries and Episode links for the present week or month.
-- **Rollover:** seal/archive the completed period. Make the following period's carry-forward summary from the appropriate previous history, retaining links when they support recall.
+- **Current period:** opens with a latest timestamped synthesis, including compressed carry-forward context, followed by dated Episode links and details in descending time order.
+- **Rollover:** seal/archive the completed period. Create a new latest-first entry for the next period, with compressed prior context and links to older periods.
 - **Older periods:** remain available on demand. A compressed opening helps navigation but does not replace the detailed Episode or the original Session.
 - **Granularity:** week and month are reasonable examples; choose according to activity and length, not a universal fixed schedule.
 - **Corrections:** later Diary entries link to the correction Episode and can note what changed. They do not silently rewrite an already-sealed historical conclusion.
@@ -222,75 +222,85 @@ Nothing here requires Experience and Event to occupy distinct folders. Both may 
 
 For a DSH plugin, first map these conceptual paths to existing Sessions, search, project files, and plugin storage. Only introduce a new artifact when those existing facilities cannot represent the required semantics. Do **not** add separate stores for failures, facts, resources, rules, tasks, or workflows merely because another agent system uses those names.
 
-### 5.3 Agreed human-readable entry notation (not a parser schema)
+### 5.3 One shared latest-first memory entry format
 
-We previously agreed to use **short bracketed headers and natural-language bodies**, not a large JSON/YAML record for Short and Episode. The notation below specifies how to *write* readable entries; the project has **not implemented or approved a machine-enforced parser**, a unique-ID algorithm, or an exact on-disk layout.
-
-**Short** uses a compact header. The session portion is optional; \`pending\` and \`done\` are reflection-processing markers, not claims that the record is true or approved.
+All memory items use the same human-readable structure. This **replaces** the separate date, project, time, and reflection-status brackets formerly used in illustrative entries.
 
 ~~~text
-[date][project[:session]][time][reflection:pending|done] natural-language body
+[YYYY-MM-DD HH:MM:SS][项目[:会话]] 最终结论
+- [YYYY-MM-DD HH:MM:SS] 当时的历史结论，对上一条的修改
+- [YYYY-MM-DD HH:MM:SS] 最开始的结论、动作、讨论内容、想法等
 ~~~
+
+The head is the most recent effective conclusion, not the earliest event. The entries underneath are historical states **newest first**, ending with the earliest meaningful conclusion, action, discussion, or idea. Use the time when each state actually existed; do not invent timestamps, backdate knowledge, or silently replace old records. The project is required at the head; the session is optional. A new item can contain only the head. Sources and cross-record references may be written inline rather than as additional mandatory fields. The notation does not establish a parser, a new storage service, or an extra processing-status bracket.
+
+**Short — current state with enough revision history to resume:**
 
 ~~~text
-[2026-10-29][agent-identity:memory][15:29][reflection:pending] Discussed how Episodes are divided into Experience and Event. Decided to update the Diary in the same consolidation operation and keep dated Episode blocks.
-
-[2026-10-30][agent-identity:memory][10:15][reflection:done] Finished consolidating the related discussion. The current decision remains available in Short; the historical sequence is retained in Episode and source Sessions.
+[2026-11-01 12:52:00][agent-identity:memory] All memory entries use a latest-first head, with earlier conclusions kept as dated bullets.
+- [2026-10-30 10:15:00] The earlier design used separate date and time brackets; it needed alignment with the consolidated record model.
+- [2026-10-29 15:29:00] First discussed retaining historical decisions while continuously updating the current memory.
 ~~~
 
-Short usually needs only one or two natural-language lines per entry. The current Short state may be updated as work evolves; a new development that needs reflection can return its processing marker to \`pending\`. Updating Short does **not** overwrite the source Session or previously consolidated Episodes.
+Short remains concise. As the state changes, move the previous conclusion into the descending history, retaining source Session references where useful. Do not turn Short into an unbounded transcript.
 
-**Episode** retains the same basic location/time prefix, with more room for the historical narrative. Experience and Event are its two formal classifications; a classification heading is one readable presentation choice, **not** a mandatory extra file or field.
-
-~~~text
-[date][project[:session]][time] natural-language historical record
-~~~
+**Episode — one format, two classifications:**
 
 ~~~md
 ## Experience
 
-[2026-10-29][agent-identity:memory][15:29]
-We originally considered adding more memory subsystems. The user pointed out
-that the Harness already handles session persistence and related runtime work.
-We revisited the proposal and decided to keep the existing cognitive cycle.
-This interaction is relevant to how the agent works with the user.
-
-Sources: <source Session reference>, <Bookshelf source if relevant>
+[2026-11-01 12:52:00][agent-identity:memory] Keep the agent's memory design aligned with the user's corrections and existing Harness responsibilities.
+- [2026-10-30 10:15:00] Reconsidered the earlier proposal and removed a duplicated memory responsibility; evidence: <Session reference>.
+- [2026-10-29 15:29:00] Initially considered adding an independent memory service; evidence: <Session reference>.
 
 ## Event
 
-[2026-10-30][agent-identity:memory][10:15]
-The memory-model documentation was updated to classify Episodes as Experience
-or Event and to synchronize Diary updates with Short-to-Episode consolidation.
-
-Sources: <source Session reference>
+[2026-11-01 13:02:00][agent-identity:docs] The memory architecture documents now use one record notation.
+- [2026-10-31 21:10:00] Published the initial architecture guide; see <Episode or Session reference>.
 ~~~
 
-A later Episode can correct an earlier interpretation by linking to it. Do not edit the old Session, retroactively replace the old conclusion, or duplicate an entire Bookshelf source. Stable IDs and link syntax remain implementation choices.
+The Experience/Event heading is a presentation of the classification, not an extra field in the item. Episode preserves **what the understanding was at each recorded time**. Earlier sealed date blocks stay unchanged. If a correction crosses the block boundary, publish the newer head in the current block and link the earlier Episode instead of rewriting it.
 
-**Diary** is an aggregated, period-based natural-language index. It begins with a compressed carry-forward of preceding activity, then gives more detailed dated entries and links to current-period Episodes. The file may be sealed when its week/month ends.
+**Diary — weekly/monthly aggregation with the same latest-first entry order:**
 
 ~~~md
 # Diary — 2026-W44
 
-## Carry-forward from earlier periods
-We established Short-to-Episode consolidation and separated the Episode
-history from Bookshelf facts. See <earlier Diary period> and <Episode IDs>.
-
-## This period
-
-### 2026-10-29
-Reviewed the Experience/Event distinction and the Diary lifecycle.
-Episodes: <Episode ID or path>
-
-### 2026-10-30
-Recorded a correction to the earlier design without erasing its history.
-Episodes: <new Episode ID or path>, <earlier Episode reference>
+[2026-11-01 13:02:00][agent-identity:memory] This period finalized the memory entry format, following earlier work on Episode types and Diary continuity. See <previous Diary period> for older history.
+- [2026-10-31 21:10:00] Consolidated memory architecture documentation; Episode: <Episode reference>.
+- [2026-10-29 15:29:00] Defined Experience/Event and period-based Diary indexing; Episodes: <Episode references>.
 ~~~
 
-Bookshelf continues to own concrete facts and reference documents; the consuming Harness searches and opens those materials. Diary and Episode may link to Bookshelf but do not copy its factual body. mPFC uses the existing Reflection record to preserve interpretations, evidence links, and reviewed identity revisions; SOUL retains only current conclusions.
+The first line is the current period's compressed synthesis, including carry-forward context where relevant. Dated details follow in descending order; the latest period may be updated during consolidation. Archive the finished period; the next period receives a new head and links to the earlier archive.
 
-These examples show the agreed readable form and ownership boundaries. They are **not** a deployed file schema; the sample dates, IDs, and source references are placeholders.
+**Bookshelf — latest fact or knowledge conclusion, with dated factual revisions:**
+
+~~~text
+[2026-11-01 13:02:00][agent-identity:docs] The agreed memory record notation has one timestamp bracket and one project/session bracket; source: <document link>.
+- [2026-10-30 10:15:00] An earlier guide used separate date/time brackets; source: <earlier document revision>.
+~~~
+
+The Bookshelf still owns the concrete facts and source material. Source documents themselves are not required to be reformatted. Other layers only link to the relevant Bookshelf item.
+
+**mPFC — reviewed interpretation with dated changes and cited evidence:**
+
+~~~text
+[2026-11-01 13:02:00][agent-identity:reflection] Review found insufficient evidence to change the current identity; the correction is documented for future assessment. Evidence: <Experience link>.
+- [2026-10-30 10:15:00] Reconsidered whether the earlier interaction reflected a durable collaboration principle; see <review record>.
+~~~
+
+The entry should describe the assessment and link its evidence. An explicit decision of **no identity change** is still a valid head. mPFC retains the substantive rationale; SOUL does not duplicate it.
+
+**SOUL / PRINCIPLES — short effective conclusions using the same head syntax:**
+
+~~~text
+[2026-11-01 13:02:00][agent-identity:identity] Prefer reusing proven Harness capabilities before introducing parallel memory systems.
+- [2026-10-30 10:15:00] Earlier reviewed default: favor smaller, testable structures; rationale: <mPFC reference>.
+~~~
+
+These are illustrative conclusions, **not automatically approved SOUL or PRINCIPLES changes**. Real identity changes still require review; any historical bullets in routinely loaded identity files must stay short. Full interpretation, counterevidence, and review results belong in mPFC. An initial human-authored conclusion can have no prior history.
+
+The same syntax applies wherever a retained item describes a changing understanding. Each layer still owns different content. The original Session, attached documents, and the Harness's own execution records remain authoritative sources and need not be rewritten.
 
 ## 6. Invariants and failure modes
 

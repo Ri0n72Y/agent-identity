@@ -51,6 +51,8 @@ The [memory model](memory-model.md) distinguishes live context, cross-context Sh
 
 This repository describes these relationships but does not provision a universal memory store or automatically load, consolidate, or retrieve those layers. The consuming runtime and owning projects supply the actual evidence and retrieval mechanism. When the Root needs to explain or reconsider a SOUL conclusion, it can consult mPFC and the underlying episodes and sources, subject to the runtime's available access.
 
+Every retained memory item uses the shared latest-first record shape, with a full timestamp and project/session header and earlier states as descending timestamped bullets. This is a presentation and continuity rule, not a replacement for immutable Sessions, source documents, or experimental commit logs. See [memory model](memory-model.md) and the [Chinese workflow guide](memory-workflow_ZH.md).
+
 The identity repository must not duplicate runtime services that the consuming Harness or project already provides. Reuse native session persistence, context compaction, task/plan state, underlying search and retrieval, Skill/Workflow execution, permissions, scheduling, and audit mechanisms where available. The memory model defines semantic ownership and links between records, not a competing execution or storage framework. The Diary is a period-partitioned natural-language index over dated Episode blocks; create or update its period summary and Episode links synchronously with Short-to-Episode consolidation. Implement it using the Harness's existing storage and retrieval capabilities rather than a parallel runtime. See [memory model](memory-model.md) for the boundary and constraints.
 
 ## Constraints are project-owned
