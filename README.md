@@ -9,8 +9,8 @@ This repository preserves the universal Core, identity state, and reusable skill
 - `principles/` — durable cross-project working principles distilled from repeated evidence.
 - `mpfc/` — reflection records that preserve evidence and identity state transitions.
 - `.agents/skills/` — reusable task-scoped runtime skills.
-- `docs/` — memory and self-continuity design, runtime integration, Reflection semantics, and reusable references.
-- `research/slow-reading/` — slow-reading study plans, manuscript background, and the shared experimental protocol; study records remain project-owned, not identity memory.
+- `docs/` — memory and slow-reading workflows, self-continuity design, runtime integration, Reflection semantics, and reusable references.
+- `research/slow-reading/` — the optional slow-reading research paper and its background; this is not the operational workflow.
 - `library/` — reusable, on-demand technical development guides (not runtime Skills).
 
 ## Repository layout
@@ -44,6 +44,7 @@ agent-identity/
 │   ├── memory-model.md
 │   ├── memory-workflow.md
 │   ├── memory-workflow_ZH.md
+│   ├── slow-reading-workflow.md
 │   ├── reflection.md
 │   └── runtime.md
 ├── library/
@@ -52,8 +53,7 @@ agent-identity/
 └── research/
     └── slow-reading/
         ├── background.md
-        ├── paper-plan.md
-        └── protocol.md
+        └── paper-plan.md
 ```
 
 Each Skill directory contains a `SKILL.md`; some also contain on-demand `references/` or other supporting files. The layout above lists primary entries rather than every reference file.
@@ -97,4 +97,4 @@ The [React + Cordis Web guide](library/react-cordis.md) distills the plugin/runt
 
 The [Function-first Cordis Plugin Programming guide](library/function-first-cordis-plugin-programming.md) records practical patterns for explicit state, pure computation, and lifecycle-owned effects without banning Cordis `Service` classes.
 
-The [slow-reading experimental protocol](research/slow-reading/protocol.md) defines future-blind reveal/commit boundaries, trace and audit requirements, and the four study conditions. It is the execution specification shared by the paper, experiment Skill, and any DSH plugin; [paper-plan.md](research/slow-reading/paper-plan.md) remains the research and writing plan.
+The [slow-reading workflow](docs/slow-reading-workflow.md) describes staged reading, provisional interpretation, meaningful checkpoints, revision, continuation, and memory boundaries. It is a general working method alongside the memory architecture, not an experiment or a deployed plugin. The separate [paper plan](research/slow-reading/paper-plan.md) and [background](research/slow-reading/background.md) remain research materials and do not define runtime behavior.
