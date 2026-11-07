@@ -3,7 +3,7 @@ name: evidence-led-ui-design
 description: Use when planning, designing, redesigning, or reviewing a UI/UX, application interface, or interactive workflow. Includes early product design from vague requirements, design discovery dialogue, user experience planning, interaction and visual exploration, prototyping, and usability review. Not for unrelated frontend logic changes.
 ---
 
-# Evidence-led UI design（v0.2）
+# Evidence-led UI design（v0.3）
 
 目标是设计**连贯、可理解且符合产品体验目标**的界面，而不只是生成合格的页面。Understand → Explore → Materialize → Evaluate 是可回返的思考循环，不是必须完成的四张表。遵循项目约束；只做研究或评审时不修改 UI 代码。
 
@@ -34,6 +34,8 @@ description: Use when planning, designing, redesigning, or reviewing a UI/UX, ap
 探索**不同的交互模型或信息关系**，让视觉层级、排版、色彩、空间、文案和动效与操作反馈**同时演进**。对重要候选方向，指出一个具体的视觉/交互特征：它让用户更容易理解或感受到什么、可能造成什么误解。比较任务路径、对象可理解性、跨状态连续性、视觉/情绪体验、学习成本和实现代价；不要以换色冒充不同方案。
 
 可以选成熟模式，也可以有依据地创新。若现有设计已明确、只是小修复，直接沿用，不强制做多套候选、不为反模板化而牺牲熟悉性。
+
+**避免虚假二选一与诱导性对照**：不要为凑出 A/B 而把明显不满足目标、约束或使用情境的方案当作陪跑选项，也不要先定结论，再用失衡的优缺点描述引导用户选择。并列方案必须分别成立：各自具有合理使用场景、满足关键约束，且有实质不同的收益和代价；否则直接提出一个有依据的推荐方向，说明理由、局限和待验证点，不伪装成选择题。设计者应承担可自主解决的专业判断；只有真实影响产品目标、核心体验或重大取舍的分歧才需要用户决策。用户可以拒绝所有候选，不能将设计者的偏好或预选结论冒称用户选择。
 
 **从 Explore 进入高保真前**：对新系统或重要改版，至少把核心交互路径（导航、主操作及关键反馈）和视觉方向（整体气质、信息密度、视觉层级、代表性布局或参考）具体呈现给用户讨论；优先用低保真草图、示意或方向对照帮助选择。记录用户确认的方向，或用户**明确授权 AI 自主选型**后由 AI 提出选择及理由；仍未定的细节可保留假设。只有“AI 能想出方案”、Discovery 已结束或用户认可产品目标，都不是直接进入高保真的依据。明确要求直接制作原型的用户可选择跳过方向讨论。小修改沿用已有方向，不设置额外门槛。
 
