@@ -64,33 +64,34 @@ permissions, or security isolation.
 
 ## Coordinate through real artifacts
 
-Once the team has more than one role, maintain a **team index** listing
-members and links to their individual GitHub Issues. Lead creates each
-member Issue at initialization, writes its continuing responsibility in
-the body, and posts the first request. Give the receiving conversation
-its member Issue link in the initialization prompt. Reuse that Issue for
-future work; Lead maintains the index roster.
+Once the team has more than one role, keep a **team index** linking to
+individual member Issues. Lead creates each Issue with the member's
+continuing responsibility in its body and an initial request comment.
+Include the Issue link in the member's initialization prompt; Lead
+maintains the index roster.
 
-Send work by appending a YAML-fenced comment to the recipient's Issue:
-`from` identifies the sender's member Issue (or `user`), and `request`
-contains a brief task or a list of tasks with links to the source work.
-One comment is one request batch, identified by its GitHub comment URL.
-Requests are append-only; do not edit another member's status.
+To assign work, append a YAML-fenced comment to the recipient's Issue.
+Use only `from` (sender's member Issue URL, or `user`) and `request`
+(a short task or list of tasks). Its comment URL identifies the request
+batch. Multiple senders may append requests without editing each other's
+records.
 
-Each member, including Lead, maintains one YAML-fenced **status** comment
-in its own Issue: `member`, `status`, `from`, `task`, `result`,
-`handoff`, `start`, `end`. On starting a request, set `status: doing`,
-`from` to that request comment URL, `task` to its work link, and
-`start` to an ISO 8601 timestamp; clear `result` and `handoff`, and
-set `end: "-"`. Work on one request batch at a time.
+Each member maintains `status` and `latestwork` in **its own Issue
+body**, alongside its responsibility. Use `busy` while working and
+`idle` after finishing. `latestwork` is one short sentence with the
+current request comment URL when busy, or the latest result comment URL
+when idle. The member edits its own body when starting and finishing;
+other members only append requests.
 
-On completion, append a brief YAML result comment with `request` (the
-request comment URL) and `result` (outcome and evidence link). Then edit
-the member's status to `done`, fill `result`, `handoff` (next role and
-action, or `"-"`) and `end` without changing `from`, `task`, or
-`start`. New requests overwrite that same status comment. Pending
-requests are those with no corresponding result comment; task details
-remain in linked Issues, PRs, or project artifacts.
+On completion, append a YAML-fenced **result** comment with `task`
+(the request comment URL), `result`, `start`, and `end`; include
+`handoff` only if a next request has been posted, pointing to that
+request comment URL. `result` may be a list; its first entry must be
+a short natural-language outcome, followed by evidence links if useful.
+Record start and end as ISO 8601 timestamps with time zone. Post the
+result before changing the Issue body to `idle`. A request without a
+corresponding result is pending. Detailed work stays in the linked
+Issue, PR, or project artifact.
 
 Use the project's authoritative sources for current facts. For GitHub work,
 read the relevant repository files, issues, branches, commits, pull requests,
