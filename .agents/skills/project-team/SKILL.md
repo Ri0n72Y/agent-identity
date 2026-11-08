@@ -66,9 +66,9 @@ permissions, or security isolation.
 
 Once the team has more than one role, keep a **team index** linking to
 individual member Issues. Lead creates each Issue with the member's
-continuing responsibility in its body and an initial request comment.
-Include the Issue link in the member's initialization prompt; Lead
-maintains the index roster.
+continuing responsibility and initial `status: idle` / `latestwork: "-"`
+in its body, then posts the initial request. Include the Issue link in
+the member's initialization prompt; Lead maintains the index roster.
 
 To assign work, append a YAML-fenced comment to the recipient's Issue.
 Use only `from` (sender's member Issue URL, or `user`) and `request`
