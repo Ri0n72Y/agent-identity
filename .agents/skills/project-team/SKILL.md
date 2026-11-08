@@ -64,22 +64,33 @@ permissions, or security isolation.
 
 ## Coordinate through real artifacts
 
-Once the team has more than one role, use a long-lived GitHub Issue as
-the **team index**. Lead maintains the member roster and continuing
-responsibilities in the Issue body. Members maintain work status in comments.
+Once the team has more than one role, maintain a **team index** listing
+members and links to their individual GitHub Issues. Lead creates each
+member Issue at initialization, writes its continuing responsibility in
+the body, and posts the first request. Give the receiving conversation
+its member Issue link in the initialization prompt. Reuse that Issue for
+future work; Lead maintains the index roster.
 
-Each teammate, including Lead, creates one YAML-fenced comment when
-initialized and edits that comment for subsequent tasks. Use these fields:
-`member`, `status`, `from`, `task`, `result`, `handoff`, `start`, `end`.
+Send work by appending a YAML-fenced comment to the recipient's Issue:
+`from` identifies the sender's member Issue (or `user`), and `request`
+contains a brief task or a list of tasks with links to the source work.
+One comment is one request batch, identified by its GitHub comment URL.
+Requests are append-only; do not edit another member's status.
 
-On starting a task, set `status: doing`, `from` to the assigning role (or
-`user`), `task` to the work link, `start` to the current ISO 8601 timestamp,
-and `end: "-"`. Clear `result` and `handoff`. On completion, set
-`status: done`, fill `result` with a short outcome and evidence link,
-`handoff` with the next role and action (or `"-"`), and `end` with the
-completion time. Keep `start`, `from`, and `task` unchanged. Only the
-member edits its comment; new tasks overwrite the previous status. Work
-details remain in the linked Issue, PR, or project artifact.
+Each member, including Lead, maintains one YAML-fenced **status** comment
+in its own Issue: `member`, `status`, `from`, `task`, `result`,
+`handoff`, `start`, `end`. On starting a request, set `status: doing`,
+`from` to that request comment URL, `task` to its work link, and
+`start` to an ISO 8601 timestamp; clear `result` and `handoff`, and
+set `end: "-"`. Work on one request batch at a time.
+
+On completion, append a brief YAML result comment with `request` (the
+request comment URL) and `result` (outcome and evidence link). Then edit
+the member's status to `done`, fill `result`, `handoff` (next role and
+action, or `"-"`) and `end` without changing `from`, `task`, or
+`start`. New requests overwrite that same status comment. Pending
+requests are those with no corresponding result comment; task details
+remain in linked Issues, PRs, or project artifacts.
 
 Use the project's authoritative sources for current facts. For GitHub work,
 read the relevant repository files, issues, branches, commits, pull requests,
