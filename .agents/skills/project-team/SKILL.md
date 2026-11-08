@@ -86,8 +86,8 @@ other members only append requests.
 On completion, append a YAML-fenced **result** comment with `task`
 (the request comment URL), `result`, `start`, and `end`; include
 `handoff` only if a next request has been posted, pointing to that
-request comment URL. `result` may be a list; its first entry must be
-a short natural-language outcome, followed by evidence links if useful.
+request comment URL. `result` begins with a short natural-language
+outcome; when a list, put that sentence first and evidence links after it.
 Record start and end as ISO 8601 timestamps with time zone. Post the
 result before changing the Issue body to `idle`. A request without a
 corresponding result is pending. Detailed work stays in the linked
