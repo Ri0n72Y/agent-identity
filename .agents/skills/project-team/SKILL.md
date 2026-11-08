@@ -64,23 +64,29 @@ permissions, or security isolation.
 
 ## Coordinate through real artifacts
 
-Once the team has more than one role, maintain a single, discoverable,
-project-owned **team index**. A long-lived GitHub Issue is sufficient. It
-identifies current named teammates, their continuing responsibilities, and
-how to locate their conversations or work artifacts. Include its location
-when initializing a teammate; consult it when assigning work or resuming
-cross-role collaboration. The Lead keeps the roster current as roles evolve.
+Once the team has more than one role, maintain a discoverable, project-owned
+**team index** (a long-lived GitHub Issue suffices). Lead owns its body:
+list teammates, continuing responsibilities, and links to their status
+comments. Include the index location when initializing a teammate; consult
+it when routing cross-role work. Do not edit the Issue body for task status.
 
-The index also acts as a lightweight **per-member team board** with
-`Status`, `Detail`, and `Handoff` for each teammate. On starting work, set
-`Status` to `doing` and `Detail` to the current task or Issue/PR link. On
-finishing, set `Status` to `done` and **replace** `Detail` with a short
-completed-result summary and its link. `Handoff` names the next teammate
-role and brief action when one is needed; otherwise leave it empty.
-Teammates update their rows at these transitions when they can, or notify
-Lead to reconcile them. This is a declared work snapshot, not live presence:
-keep task details and fine-grained progress in the linked artifacts. A GitHub
-update does not automatically message or wake another ChatGPT conversation.
+On initialization, each teammate, including Lead, posts **one** YAML-fenced
+status comment under the index and edits that same comment across tasks.
+Fields: `member`, `status`, `from`, `task`, `result`, `handoff`, `start`,
+`end`. `from` names the assigning teammate role (or `user`). On starting
+work, set `status: doing`, point `task` to the current Issue/PR or other
+authoritative work location, clear the previous `result` and `handoff`,
+record the start time, and set `end: "-"`. On finishing, set `status: done`,
+write a short completion `result` with its evidence link, name the next
+needed role and brief action in `handoff` (or `"-"`), and record `end`
+without changing `start`. Use ISO 8601 timestamps with time zone. A new
+assignment starts a new interval in that same comment; do not append a
+second status comment. Each teammate maintains only its own comment; if
+editing is unavailable, report the failure rather than claiming an update.
+
+The comments are declared work snapshots, not live conversation presence.
+Keep task details in linked artifacts. A GitHub update does not automatically
+message or wake another ChatGPT conversation.
 
 Use the project's authoritative sources for current facts. For GitHub work,
 read the relevant repository files, issues, branches, commits, pull requests,
