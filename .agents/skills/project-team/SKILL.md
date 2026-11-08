@@ -64,17 +64,39 @@ permissions, or security isolation.
 
 ## Coordinate through real artifacts
 
-Once the team has more than one role, maintain a single, discoverable,
-project-owned **team index**. A long-lived GitHub Issue is sufficient. It
-identifies current named teammates, their continuing responsibilities, and
-how to locate their conversations or work artifacts. Include its location
-when initializing a teammate; consult it when assigning work or resuming
-cross-role collaboration. The Lead keeps the roster current as roles evolve.
+Once the team has more than one role, keep a **team index** linking to
+individual member Issues. Lead creates each Issue with the member's
+continuing responsibility and initial `status: idle` / `latestwork: "-"`
+in its body, then posts the initial request. Include the Issue link in
+the member's initialization prompt. Lead maintains the index roster and
+its own member Issue; other members can assign work to Lead's Issue, and
+Lead handles those requests through the same protocol.
 
-The index provides discovery, not live presence or a second task board.
-Link to authoritative Issues/PRs rather than copying their changing status.
-Teammates may propose index corrections; do not assume that a GitHub update
-automatically messages or wakes another ChatGPT conversation.
+To assign work, append a YAML-fenced comment to the recipient's Issue.
+Use only `from` (sender's member Issue URL, or `user`) and `request`
+(a short task or list of tasks). Its comment URL identifies the request
+batch. Multiple senders may append requests without editing each other's
+records.
+
+Each member maintains `status` and `latestwork` in **its own Issue
+body**, alongside its responsibility. Use `busy` while working and
+`idle` after finishing. `latestwork` is one short sentence with the
+current request comment URL when busy, or the latest result comment URL
+when idle. The member edits its own body when starting and finishing;
+other members only append requests.
+
+On completion, append a YAML-fenced **result** comment with `task`
+(the request comment URL), `result`, `start`, and `end`; include
+`handoff` only when the completing member has posted a next request
+to **another member's Issue**. Its value is a short description of that
+next assignment followed by its Request comment URL. Do not use `handoff`
+for incoming tasks, suggested actions, or PR links. `result` begins
+with a short natural-language outcome; when a list,
+put that sentence first and evidence links after it.
+Record start and end as ISO 8601 timestamps with time zone. Post the
+result before changing the Issue body to `idle`. A request without a
+corresponding result is pending. Detailed work stays in the linked
+Issue, PR, or project artifact.
 
 Use the project's authoritative sources for current facts. For GitHub work,
 read the relevant repository files, issues, branches, commits, pull requests,
