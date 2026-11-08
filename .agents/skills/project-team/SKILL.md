@@ -69,7 +69,8 @@ individual member Issues. Lead creates each Issue with the member's
 continuing responsibility and initial `status: idle` / `latestwork: "-"`
 in its body, then posts the initial request. Include the Issue link in
 the member's initialization prompt. Lead maintains the index roster and
-its own member Issue, handling assigned work through the same protocol.
+its own member Issue; other members can assign work to Lead's Issue, and
+Lead handles those requests through the same protocol.
 
 To assign work, append a YAML-fenced comment to the recipient's Issue.
 Use only `from` (sender's member Issue URL, or `user`) and `request`
@@ -87,9 +88,10 @@ other members only append requests.
 On completion, append a YAML-fenced **result** comment with `task`
 (the request comment URL), `result`, `start`, and `end`; include
 `handoff` only when the completing member has posted a next request
-to **another member's Issue**; its value is that outgoing request comment
-URL. Do not use `handoff` for incoming tasks, suggested actions, or PR
-links. `result` begins with a short natural-language outcome; when a list,
+to **another member's Issue**. Its value is a short description of that
+next assignment followed by its Request comment URL. Do not use `handoff`
+for incoming tasks, suggested actions, or PR links. `result` begins
+with a short natural-language outcome; when a list,
 put that sentence first and evidence links after it.
 Record start and end as ISO 8601 timestamps with time zone. Post the
 result before changing the Issue body to `idle`. A request without a
