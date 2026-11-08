@@ -77,11 +77,11 @@ batch. Multiple senders may append requests without editing each other's
 records.
 
 On activation or resumption, read the member Issue. If `status: busy`,
-inspect the Request linked in `latestwork` and any matching Result before
-starting different work. Match Request comments against Result `task`
-links to find pending work. Otherwise take the oldest pending Request,
-unless the user or Lead sets another priority. `idle` does not mean
-all requests are complete.
+inspect the Request in `latestwork` and its matching Result first. Continue
+unfinished work before accepting another request; if a Result exists, reconcile
+the Issue status. Match the remaining Request comments against Result `task`
+links to find pending work. Take the oldest pending Request unless the user or
+Lead sets another priority. `idle` does not imply an empty queue.
 
 Each member maintains `status` and `latestwork` in **its own Issue
 body**, alongside its responsibility. Use `busy` while working and
