@@ -1,11 +1,10 @@
 ---
 name: project-team
 description: >
-  Coordinate an evolving team of persistent role conversations in a ChatGPT
-  Project, especially for development through the GitHub connector. Use when
-  starting a project with a Lead, forming or revising a teammate's responsibility,
-  deciding whether to reuse or create a conversation, handing work between roles,
-  or integrating evidence from parallel project work.
+  Coordinate persistent teammate conversations in a ChatGPT Project using
+  GitHub Issues for member discovery, task requests, work status, and results.
+  Use when forming roles, assigning or resuming work, coordinating reviews,
+  or integrating cross-conversation results.
 ---
 
 # Project team
@@ -78,6 +77,11 @@ Use only `from` (sender's member Issue URL, or `user`) and `request`
 batch. Multiple senders may append requests without editing each other's
 records.
 
+On activation or resumption, match Request comment URLs against Result
+`task` links in the member Issue to find pending work. Process the oldest
+pending request first unless the user or Lead specifies another priority.
+`idle` does not mean that the request queue is empty.
+
 Each member maintains `status` and `latestwork` in **its own Issue
 body**, alongside its responsibility. Use `busy` while working and
 `idle` after finishing. `latestwork` is one short sentence with the
@@ -94,9 +98,8 @@ for incoming tasks, suggested actions, or PR links. `result` begins
 with a short natural-language outcome; when a list,
 put that sentence first and evidence links after it.
 Record start and end as ISO 8601 timestamps with time zone. Post the
-result before changing the Issue body to `idle`. A request without a
-corresponding result is pending. Detailed work stays in the linked
-Issue, PR, or project artifact.
+result before changing the Issue body to `idle`. Detailed work stays
+in the linked Issue, PR, or project artifact.
 
 Use the project's authoritative sources for current facts. For GitHub work,
 read the relevant repository files, issues, branches, commits, pull requests,
@@ -135,20 +138,23 @@ and any required independent checks before reporting a milestone complete.
 When another teammate conversation needs to act after an assignment, give
 the user a brief, **copy-ready next-hop prompt** addressed to that teammate.
 Say what it should do and where to read existing authoritative evidence, if
-available. Do not repeat the detailed result or create an artifact just for
-the handoff. Omit the prompt if no cross-role action remains. If a stricter
-output contract forbids extra text, preserve it and
-let Lead provide the prompt when needed.
+available. When `Result.handoff` assigns that work, reference the same
+posted Request comment URL in the copy-ready prompt. Do not repeat the
+detailed result or create an artifact just for the handoff. Omit the prompt
+if no cross-role action remains. If a stricter output contract forbids
+extra text, preserve it and let Lead provide the prompt when needed.
 
 Next-hop prompts carry tasks, not identity: do not assign, reaffirm, or redefine
 the receiving teammate's role. Role changes require an explicit role-contract
 update. If a received task conflicts with the conversation's established role,
 surface the mismatch instead of adopting an implied new role.
 
-For bounded engineering work, use the available tools and project artifacts to carry task context and results. This skill coordinates continuing responsibilities across conversations. Do not create another task-report protocol, session registry, queue, orchestration engine, or shadow GitHub task board.
+Use the member Issue Request/Result protocol for team coordination. Do not
+add a second task board, status store, queue, or reporting format.
 
 ## Reference
 
-Read [../skill-authoring/references/design-rationale.md](../skill-authoring/references/design-rationale.md) when
-revising this skill's scope or deciding whether an additional rule belongs in
-the runtime core.
+Read [../skill-authoring/references/design-rationale.md](../skill-authoring/references/design-rationale.md)
+when reconsidering this skill's scope. Review
+[references/research-history.md](references/research-history.md) when revisiting
+the member-Issue protocol or its design evidence; do not load it for routine work.
