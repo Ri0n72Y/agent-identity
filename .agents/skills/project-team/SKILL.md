@@ -71,10 +71,14 @@ how to locate their conversations or work artifacts. Include its location
 when initializing a teammate; consult it when assigning work or resuming
 cross-role collaboration. The Lead keeps the roster current as roles evolve.
 
-The index provides discovery, not live presence or a second task board.
-Link to authoritative Issues/PRs rather than copying their changing status.
-Teammates may propose index corrections; do not assume that a GitHub update
-automatically messages or wakes another ChatGPT conversation.
+The index also acts as a lightweight **per-member team board**: show each
+teammate's current assignment (or none), coordination phase, and link to the
+owning Issue/PR or other project artifact. Update the relevant row when work
+is assigned, handed off, paused, or finished. Teammates keep their entries
+current when they can; otherwise they notify Lead, who reconciles the board.
+This is a declared work snapshot, not live presence. Keep task details and
+fine-grained progress in the linked artifacts, not the board. A GitHub update
+does not automatically message or wake another ChatGPT conversation.
 
 Use the project's authoritative sources for current facts. For GitHub work,
 read the relevant repository files, issues, branches, commits, pull requests,
