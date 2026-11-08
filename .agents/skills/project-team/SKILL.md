@@ -63,13 +63,12 @@ permissions, or security isolation.
 
 ## Coordinate through real artifacts
 
-Once the team has more than one role, keep a **team index** linking to
-individual member Issues. Lead creates each Issue with the member's
-continuing responsibility and initial `status: idle` / `latestwork: "-"`
-in its body, then posts the initial request. Include the Issue link in
-the member's initialization prompt. Lead maintains the index roster and
-its own member Issue; other members can assign work to Lead's Issue, and
-Lead handles those requests through the same protocol.
+When starting the Lead conversation, create its Member Issue with its
+continuing responsibility, `status: idle` and `latestwork: "-"` in the
+body, then post the first Request. Lead does the same for each new
+teammate and includes that Member Issue link in its initialization prompt.
+Once another member joins, Lead maintains a **team index** linking their
+Member Issues. Lead also receives and handles work through its own Issue.
 
 To assign work, append a YAML-fenced comment to the recipient's Issue.
 Use only `from` (sender's member Issue URL, or `user`) and `request`
@@ -77,10 +76,12 @@ Use only `from` (sender's member Issue URL, or `user`) and `request`
 batch. Multiple senders may append requests without editing each other's
 records.
 
-On activation or resumption, match Request comment URLs against Result
-`task` links in the member Issue to find pending work. Process the oldest
-pending request first unless the user or Lead specifies another priority.
-`idle` does not mean that the request queue is empty.
+On activation or resumption, read the member Issue. If `status: busy`,
+inspect the Request linked in `latestwork` and any matching Result before
+starting different work. Match Request comments against Result `task`
+links to find pending work. Otherwise take the oldest pending Request,
+unless the user or Lead sets another priority. `idle` does not mean
+all requests are complete.
 
 Each member maintains `status` and `latestwork` in **its own Issue
 body**, alongside its responsibility. Use `busy` while working and
@@ -101,25 +102,14 @@ Record start and end as ISO 8601 timestamps with time zone. Post the
 result before changing the Issue body to `idle`. Detailed work stays
 in the linked Issue, PR, or project artifact.
 
-Use the project's authoritative sources for current facts. For GitHub work,
-read the relevant repository files, issues, branches, commits, pull requests,
-reviews, and CI results through available tools. For other work, use the actual
-project documents and evidence. Conversation history supplies role-specific
-understanding, not authority over the current state of external artifacts.
+Consult current project artifacts for work facts; check relevant files,
+Issues/PRs, reviews, and CI rather than relying on copied conversation status.
+Member conversations cannot automatically message or wake each other.
+The user activates the receiving conversation; GitHub records retain the work.
 
-ChatGPT Web conversations do not have the DSH Team mailbox, shared task board,
-or automatic spawn/wake/wait operations. Do not imply that one conversation can
-message, execute, inspect, or synchronize another merely because both belong
-to the same Project. The user creates or switches conversations and carries
-instructions when necessary; shared GitHub artifacts or Project files carry
-durable results when they add value.
-
-Make handoffs small. Identify the intended role, bounded outcome, authoritative
-artifact or location, hard limits, and any decision that cannot be recovered
-reliably from the workspace. The receiving conversation should inspect current
-evidence rather than trust a copied status report. Do not require a new Issue,
-PR, team-state file, mailbox document, or standardized report merely to hand
-over a discussion.
+Keep handoffs short: intended member, outcome, Request or artifact link,
+and material constraints. The recipient reads the current evidence;
+do not create separate handoff documents.
 
 For concurrent code changes, assign clear implementation ownership and avoid
 two conversations editing the same branch or PR. A review conclusion applies
