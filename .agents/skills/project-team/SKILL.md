@@ -71,7 +71,7 @@ linking role Issues. Lead receives and handles work through its own Issue.
 A Member Issue is the role's persistent task inbox and status record.
 Work Issues and PRs contain specific task details and deliverables; they
 cannot replace a Member Issue. Do not create a separate Lead scheduling
-Issue, task board, queue, or reporting format.
+Issue, task board, queue, status store, or reporting format.
 
 To assign work, append a YAML-fenced comment to the recipient's Issue.
 Use only `from` (sender's member Issue URL, or `user`) and `request`
