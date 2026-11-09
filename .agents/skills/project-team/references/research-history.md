@@ -86,6 +86,8 @@
 
 **本次修订决定：**在 Member Issue 创建规则附近直接写明所有角色（包括 Lead）均需要长期 Member Issue，与当前有无具体任务无关；普通工作 Issue/PR 保存任务详情，不能代替 Member Issue。额外的 Lead 调度 Issue、任务看板或队列仍不创建。保持现有 Request/Result 协议，无需新增字段。
 
+**后续一致性审查修订：**只写“初始化时创建”无法覆盖已经开展工作却缺少 Member Issue 的项目，因此需要明确补建动作。Member Issue 的存在不依赖任务量，首次 Request 则必须对应实际分配的工作，避免生成占位任务。禁止额外调度系统的规则仅针对与 Member Issue 重复的角色任务协调；正常项目工作 Issue、PR 和项目看板不受限制。这三项修订来自审查推导，不作为用户原话。参见 [PR #25 的审查评论](https://github.com/Ri0n72Y/agent-identity/pull/25#issuecomment-6736029044)。
+
 ## 方案取舍及其性质
 
 以下记录当时考虑并取舍的方案：
