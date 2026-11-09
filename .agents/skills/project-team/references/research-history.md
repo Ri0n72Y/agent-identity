@@ -66,6 +66,28 @@
 
 这次修正将角色视为持续职责，Member Issue 归属于角色。多个会话加入同一角色，复用该 Issue、Request/Result 任务记录及其关联资料。角色职责由 Member Issue 当前正文维护，新增会话不生成新角色或新 Issue。
 
+### 9. Lead Member Issue 与额外调度 Issue 被混淆（2026-11-09）
+
+用户提供了另一段使用 Team Skill 的问答。问题原文：
+
+> 根据skill，lead当前是否也应该创建一个独立issue作为任务调度？
+
+用户提供的**助手回答摘录**：
+
+> 根据上传的 team-v4 Skill，Lead 不需要单独创建用于任务调度的 Issue。
+
+> 只有当 Lead 自己承担一项需要独立追踪的具体工作时，才有必要为该工作创建 Issue。
+
+用户反馈原文：
+
+> 这是用最新main上的team skill 对话得出的结果，好像和我们之前商量的不一样
+
+此前 Skill 已规定 Lead 在初始化时创建长期 Member Issue，但上述回答把“避免多建一套调度 Issue”的约束用于否定 Lead Member Issue，忽略了持续角色的任务入口。此处记录的是用户提供的模型输出及其与 Skill 规则的差异，不推断模型实际加载了哪个文件版本。
+
+**本次修订决定：**在 Member Issue 创建规则附近直接写明所有角色（包括 Lead）均需要长期 Member Issue，与当前有无具体任务无关；普通工作 Issue/PR 保存任务详情，不能代替 Member Issue。额外的 Lead 调度 Issue、任务看板或队列仍不创建。保持现有 Request/Result 协议，无需新增字段。
+
+**后续一致性审查修订：**只写“初始化时创建”无法覆盖已经开展工作却缺少 Member Issue 的项目，因此需要明确补建动作。Member Issue 的存在不依赖任务量，首次 Request 则必须对应实际分配的工作，避免生成占位任务。禁止额外调度系统的规则仅针对与 Member Issue 重复的角色任务协调；正常项目工作 Issue、PR 和项目看板不受限制。这三项修订来自审查推导，不作为用户原话。参见 [PR #25 的审查评论](https://github.com/Ri0n72Y/agent-identity/pull/25#issuecomment-6736029044)。
+
 ## 方案取舍及其性质
 
 以下记录当时考虑并取舍的方案：

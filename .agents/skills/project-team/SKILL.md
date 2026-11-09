@@ -59,13 +59,22 @@ permissions, or security isolation.
 
 ## Coordinate through real artifacts
 
-When a role is created, Lead creates its one long-lived Member Issue,
-including for Lead itself. Write the role's responsibility and initial
-`status: idle` / `latestwork: "-"` in the body, then post the first
-Request. All conversations of that role reuse its Issue and shared task
-records; opening another conversation does not create another Member Issue.
-When a second role joins, Lead maintains a **team index** linking role Issues.
-Lead also receives and handles work through its own Issue.
+Every role, **including Lead**, requires one long-lived Member Issue
+regardless of its workload. Lead creates its own at team initialization
+and one for each new role. If an existing role lacks a Member Issue, create
+one even when Work Issues or PRs already exist. Record its current
+responsibility in the body. If no work is active, initialize
+`status: idle` / `latestwork: "-"` without posting a Request. For ongoing
+work, post a Request for the actual assignment, set `status: busy`, and
+point `latestwork` to that Request. All conversations of the role reuse
+its Issue and task records. When a second role joins, Lead maintains
+a **team index** linking role Issues.
+
+Lead's Member Issue is its required role task inbox and status record.
+Work Issues and PRs hold specific task details and deliverables; they
+cannot replace a Member Issue. Do not add a second Lead scheduling Issue
+or parallel role task-status system. Ordinary project work Issues, PRs,
+and project boards remain available.
 
 To assign work, append a YAML-fenced comment to the recipient's Issue.
 Use only `from` (sender's member Issue URL, or `user`) and `request`
@@ -138,9 +147,6 @@ extra text, preserve it and let Lead provide the prompt when needed.
 Next-hop prompts carry tasks, not identity: they do not redefine the
 receiving role. If a Request conflicts with the Member Issue's current
 role contract, surface the mismatch rather than silently changing roles.
-
-Use the member Issue Request/Result protocol for team coordination. Do not
-add a second task board, status store, queue, or reporting format.
 
 ## Reference
 
