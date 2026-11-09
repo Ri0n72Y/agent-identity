@@ -1,20 +1,18 @@
 ---
 name: project-team
 description: >
-  Coordinate an evolving team of persistent role conversations in a ChatGPT
-  Project, especially for development through the GitHub connector. Use when
-  starting a project with a Lead, forming or revising a teammate's responsibility,
-  deciding whether to reuse or create a conversation, handing work between roles,
-  or integrating evidence from parallel project work.
+  Coordinate persistent roles across one or more ChatGPT Project conversations,
+  sharing GitHub Member Issues for role contracts, task requests, work status,
+  and results. Use when creating roles, assigning or resuming work, coordinating
+  reviews, or integrating cross-conversation results.
 ---
 
 # Project team
 
-Treat a ChatGPT Project as a space for sustained collaboration, not an automatic
-multi-agent runtime. Start with one **Lead** conversation. Add named teammate
-conversations only as the project's actual responsibilities develop. A teammate
-is a continuing responsibility with useful history, not a fresh worker for each
-task.
+Treat a ChatGPT Project as a space for sustained collaboration without an
+automatic multi-agent runtime. Start with the **Lead** role. A role is a
+continuing responsibility; multiple conversations may serve the same role
+and share its Member Issue, task pool, and linked project background.
 
 ## Lead and team growth
 
@@ -23,18 +21,14 @@ develops plans, makes proposals, tracks the project's direction, shapes the
 team, and integrates work. Managing teammates is only part of its job. It may
 handle work directly when delegation adds no clear value.
 
-Before proposing another conversation, consider whether the Lead or an existing
-teammate can naturally own the work. Form a new role when a responsibility
-benefits materially from its own persistent context, distinct ownership,
-parallel progress, or independent judgment. Do not initialize a standard roster,
-split by job title, or create a conversation for each task or project phase.
+Before adding a role, consider whether Lead or an existing role can own the
+responsibility. Create a new role when its continuing work needs distinct
+ownership, context, or independent judgment. For additional capacity or a
+conversation reaching its context limit, open another conversation under the
+existing role and reuse its Member Issue. Do not create roles per task or phase.
 
-Let an existing role's remit grow with the project. Split it only when its
-responsibilities genuinely diverge; reuse an idle teammate when the same
-responsibility returns. A role may become inactive without being deleted or
-needing work to justify its existence. If a long conversation becomes unreliable
-or reaches its context limit, continue that *role* in a successor conversation
-with a bounded handoff rather than treating it as a new responsibility.
+A role's remit can grow or become inactive. Split it only when continuing
+responsibilities diverge; a successor conversation retains the same role.
 
 ## Give roles a local contract
 
@@ -45,11 +39,12 @@ When forming a teammate, define only what it needs to operate:
 - what sources and evidence govern its conclusions;
 - what must return to the Lead or be independently checked.
 
-Put this short role brief in the new conversation's opening context; keep
-project-specific facts and constraints in their owning Project or workspace.
-Role names and behavior are not drawn from a mandatory taxonomy. Revise the
-contract as responsibilities evolve instead of inventing a new role for every
-scope adjustment.
+The Member Issue body is the source for the role's current responsibilities
+and boundaries. Initialize every conversation with the role identity and
+Member Issue link; it reads the current remit and linked background there.
+After an explicit role change is agreed, update that Issue's contract;
+a new task or conversation does not change the role. Keep project
+constraints in their owning Project or workspace.
 
 A teammate works within its current remit and the task actually assigned to
 it. It can raise evidence or propose a change in direction, but should not
@@ -64,13 +59,13 @@ permissions, or security isolation.
 
 ## Coordinate through real artifacts
 
-Once the team has more than one role, keep a **team index** linking to
-individual member Issues. Lead creates each Issue with the member's
-continuing responsibility and initial `status: idle` / `latestwork: "-"`
-in its body, then posts the initial request. Include the Issue link in
-the member's initialization prompt. Lead maintains the index roster and
-its own member Issue; other members can assign work to Lead's Issue, and
-Lead handles those requests through the same protocol.
+When a role is created, Lead creates its one long-lived Member Issue,
+including for Lead itself. Write the role's responsibility and initial
+`status: idle` / `latestwork: "-"` in the body, then post the first
+Request. All conversations of that role reuse its Issue and shared task
+records; opening another conversation does not create another Member Issue.
+When a second role joins, Lead maintains a **team index** linking role Issues.
+Lead also receives and handles work through its own Issue.
 
 To assign work, append a YAML-fenced comment to the recipient's Issue.
 Use only `from` (sender's member Issue URL, or `user`) and `request`
@@ -78,12 +73,22 @@ Use only `from` (sender's member Issue URL, or `user`) and `request`
 batch. Multiple senders may append requests without editing each other's
 records.
 
-Each member maintains `status` and `latestwork` in **its own Issue
-body**, alongside its responsibility. Use `busy` while working and
-`idle` after finishing. `latestwork` is one short sentence with the
-current request comment URL when busy, or the latest result comment URL
-when idle. The member edits its own body when starting and finishing;
-other members only append requests.
+On activation or resumption, read the role's Member Issue and linked work.
+Match Request comment URLs with Result `task` links to identify pending work.
+When `status: busy`, inspect `latestwork` but do not assume it lists all
+active work. Resume only this conversation's work or an explicitly handed-off
+Request; assign distinct Requests explicitly before working in parallel.
+When `status: idle`, take the oldest pending Request unless the user or Lead
+sets another priority. An unmatched Request may already be in progress;
+`idle` does not imply an empty task pool.
+
+Conversations serving a role maintain `status` and `latestwork` in
+that role's Issue body. Use `busy` for active work and `idle` when no
+work is known to be active; `latestwork` is a short description and
+Request or Result comment URL. These fields are a shared snapshot, not a
+claim lock or a complete list of active conversations. Read the current
+body before updating it; do not mark the role idle while another known
+conversation is working. Other roles only append Requests.
 
 On completion, append a YAML-fenced **result** comment with `task`
 (the request comment URL), `result`, `start`, and `end`; include
@@ -94,29 +99,18 @@ for incoming tasks, suggested actions, or PR links. `result` begins
 with a short natural-language outcome; when a list,
 put that sentence first and evidence links after it.
 Record start and end as ISO 8601 timestamps with time zone. Post the
-result before changing the Issue body to `idle`. A request without a
-corresponding result is pending. Detailed work stays in the linked
-Issue, PR, or project artifact.
+Result before updating the role status; set `idle` only if no other
+role conversation is known to be working. Detailed work stays in
+linked Issues, PRs, or project artifacts.
 
-Use the project's authoritative sources for current facts. For GitHub work,
-read the relevant repository files, issues, branches, commits, pull requests,
-reviews, and CI results through available tools. For other work, use the actual
-project documents and evidence. Conversation history supplies role-specific
-understanding, not authority over the current state of external artifacts.
+Consult current project artifacts for work facts; check relevant files,
+Issues/PRs, reviews, and CI rather than relying on copied conversation status.
+Member conversations cannot automatically message or wake each other.
+The user activates the receiving conversation; GitHub records retain the work.
 
-ChatGPT Web conversations do not have the DSH Team mailbox, shared task board,
-or automatic spawn/wake/wait operations. Do not imply that one conversation can
-message, execute, inspect, or synchronize another merely because both belong
-to the same Project. The user creates or switches conversations and carries
-instructions when necessary; shared GitHub artifacts or Project files carry
-durable results when they add value.
-
-Make handoffs small. Identify the intended role, bounded outcome, authoritative
-artifact or location, hard limits, and any decision that cannot be recovered
-reliably from the workspace. The receiving conversation should inspect current
-evidence rather than trust a copied status report. Do not require a new Issue,
-PR, team-state file, mailbox document, or standardized report merely to hand
-over a discussion.
+Keep handoffs short: intended member, outcome, Request or artifact link,
+and material constraints. The recipient reads the current evidence;
+do not create separate handoff documents.
 
 For concurrent code changes, assign clear implementation ownership and avoid
 two conversations editing the same branch or PR. A review conclusion applies
@@ -135,20 +129,22 @@ and any required independent checks before reporting a milestone complete.
 When another teammate conversation needs to act after an assignment, give
 the user a brief, **copy-ready next-hop prompt** addressed to that teammate.
 Say what it should do and where to read existing authoritative evidence, if
-available. Do not repeat the detailed result or create an artifact just for
-the handoff. Omit the prompt if no cross-role action remains. If a stricter
-output contract forbids extra text, preserve it and
-let Lead provide the prompt when needed.
+available. When `Result.handoff` assigns that work, reference the same
+posted Request comment URL in the copy-ready prompt. Do not repeat the
+detailed result or create an artifact just for the handoff. Omit the prompt
+if no cross-role action remains. If a stricter output contract forbids
+extra text, preserve it and let Lead provide the prompt when needed.
 
-Next-hop prompts carry tasks, not identity: do not assign, reaffirm, or redefine
-the receiving teammate's role. Role changes require an explicit role-contract
-update. If a received task conflicts with the conversation's established role,
-surface the mismatch instead of adopting an implied new role.
+Next-hop prompts carry tasks, not identity: they do not redefine the
+receiving role. If a Request conflicts with the Member Issue's current
+role contract, surface the mismatch rather than silently changing roles.
 
-For bounded engineering work, use the available tools and project artifacts to carry task context and results. This skill coordinates continuing responsibilities across conversations. Do not create another task-report protocol, session registry, queue, orchestration engine, or shadow GitHub task board.
+Use the member Issue Request/Result protocol for team coordination. Do not
+add a second task board, status store, queue, or reporting format.
 
 ## Reference
 
-Read [../skill-authoring/references/design-rationale.md](../skill-authoring/references/design-rationale.md) when
-revising this skill's scope or deciding whether an additional rule belongs in
-the runtime core.
+Read [../skill-authoring/references/design-rationale.md](../skill-authoring/references/design-rationale.md)
+when reconsidering this skill's scope. Review
+[references/research-history.md](references/research-history.md) when revisiting
+the member-Issue protocol or its design evidence; do not load it for routine work.
