@@ -9,11 +9,10 @@ description: >
 
 # Project team
 
-Treat a ChatGPT Project as a space for sustained collaboration, not an automatic
-multi-agent runtime. Start with one **Lead** conversation. Add named teammate
-conversations only as the project's actual responsibilities develop. A teammate
-is a continuing responsibility with useful history, not a fresh worker for each
-task.
+Treat a ChatGPT Project as a space for sustained collaboration without an
+automatic multi-agent runtime. Start with the **Lead** role. A role is a
+continuing responsibility; multiple conversations may serve the same role
+and share its Member Issue, task pool, and linked project background.
 
 ## Lead and team growth
 
@@ -22,18 +21,14 @@ develops plans, makes proposals, tracks the project's direction, shapes the
 team, and integrates work. Managing teammates is only part of its job. It may
 handle work directly when delegation adds no clear value.
 
-Before proposing another conversation, consider whether the Lead or an existing
-teammate can naturally own the work. Form a new role when a responsibility
-benefits materially from its own persistent context, distinct ownership,
-parallel progress, or independent judgment. Do not initialize a standard roster,
-split by job title, or create a conversation for each task or project phase.
+Before adding a role, consider whether Lead or an existing role can own the
+responsibility. Create a new role when its continuing work needs distinct
+ownership, context, or independent judgment. For additional capacity or a
+conversation reaching its context limit, open another conversation under the
+existing role and reuse its Member Issue. Do not create roles per task or phase.
 
-Let an existing role's remit grow with the project. Split it only when its
-responsibilities genuinely diverge; reuse an idle teammate when the same
-responsibility returns. A role may become inactive without being deleted or
-needing work to justify its existence. If a long conversation becomes unreliable
-or reaches its context limit, continue that *role* in a successor conversation
-with a bounded handoff rather than treating it as a new responsibility.
+A role's remit can grow or become inactive. Split it only when continuing
+responsibilities diverge; a successor conversation retains the same role.
 
 ## Give roles a local contract
 
@@ -44,11 +39,12 @@ When forming a teammate, define only what it needs to operate:
 - what sources and evidence govern its conclusions;
 - what must return to the Lead or be independently checked.
 
-Put this short role brief in the new conversation's opening context; keep
-project-specific facts and constraints in their owning Project or workspace.
-Role names and behavior are not drawn from a mandatory taxonomy. Revise the
-contract as responsibilities evolve instead of inventing a new role for every
-scope adjustment.
+The Member Issue body is the source for the role's current responsibilities
+and boundaries. Initialize every conversation with the role identity and
+Member Issue link; it reads the current remit and linked background there.
+Role changes require an explicit contract update in that Issue, rather than
+a new role for each scope adjustment. Keep project constraints in their
+owning Project or workspace.
 
 A teammate works within its current remit and the task actually assigned to
 it. It can raise evidence or propose a change in direction, but should not
@@ -63,12 +59,13 @@ permissions, or security isolation.
 
 ## Coordinate through real artifacts
 
-When starting the Lead conversation, create its Member Issue with its
-continuing responsibility, `status: idle` and `latestwork: "-"` in the
-body, then post the first Request. Lead does the same for each new
-teammate and includes that Member Issue link in its initialization prompt.
-Once another member joins, Lead maintains a **team index** linking their
-Member Issues. Lead also receives and handles work through its own Issue.
+When a role is created, Lead creates its one long-lived Member Issue,
+including for Lead itself. Write the role's responsibility and initial
+`status: idle` / `latestwork: "-"` in the body, then post the first
+Request. All conversations of that role reuse its Issue and shared task
+records; opening another conversation does not create another Member Issue.
+When a second role joins, Lead maintains a **team index** linking role Issues.
+Lead also receives and handles work through its own Issue.
 
 To assign work, append a YAML-fenced comment to the recipient's Issue.
 Use only `from` (sender's member Issue URL, or `user`) and `request`
@@ -76,19 +73,22 @@ Use only `from` (sender's member Issue URL, or `user`) and `request`
 batch. Multiple senders may append requests without editing each other's
 records.
 
-On activation or resumption, read the member Issue. If `status: busy`,
-inspect the Request in `latestwork` and its matching Result first. Continue
-unfinished work before accepting another request; if a Result exists, reconcile
-the Issue status. Match the remaining Request comments against Result `task`
-links to find pending work. Take the oldest pending Request unless the user or
-Lead sets another priority. `idle` does not imply an empty queue.
+On activation or resumption, read the role's Member Issue and linked work.
+Match Request comment URLs with Result `task` links to identify pending work.
+If `status: busy`, inspect `latestwork` first; another conversation of the
+same role may be working on that Request. Continue it only when resuming its
+own work or after an explicit handoff. Otherwise take the oldest unclaimed
+pending Request unless the user or Lead sets another priority. Coordinate
+distinct Request assignments when several conversations work in parallel.
+`idle` does not imply an empty task pool.
 
-Each member maintains `status` and `latestwork` in **its own Issue
-body**, alongside its responsibility. Use `busy` while working and
-`idle` after finishing. `latestwork` is one short sentence with the
-current request comment URL when busy, or the latest result comment URL
-when idle. The member edits its own body when starting and finishing;
-other members only append requests.
+Conversations serving a role maintain `status` and `latestwork` in
+that role's Issue body. Use `busy` for active work and `idle` when no
+work is known to be active; `latestwork` is a short description and
+Request or Result comment URL. These fields are a shared snapshot, not a
+claim lock or a complete list of active conversations. Read the current
+body before updating it; do not mark the role idle while another known
+conversation is working. Other roles only append Requests.
 
 On completion, append a YAML-fenced **result** comment with `task`
 (the request comment URL), `result`, `start`, and `end`; include
@@ -99,8 +99,9 @@ for incoming tasks, suggested actions, or PR links. `result` begins
 with a short natural-language outcome; when a list,
 put that sentence first and evidence links after it.
 Record start and end as ISO 8601 timestamps with time zone. Post the
-result before changing the Issue body to `idle`. Detailed work stays
-in the linked Issue, PR, or project artifact.
+Result before updating the role status; set `idle` only if no other
+role conversation is known to be working. Detailed work stays in
+linked Issues, PRs, or project artifacts.
 
 Consult current project artifacts for work facts; check relevant files,
 Issues/PRs, reviews, and CI rather than relying on copied conversation status.
@@ -134,10 +135,9 @@ detailed result or create an artifact just for the handoff. Omit the prompt
 if no cross-role action remains. If a stricter output contract forbids
 extra text, preserve it and let Lead provide the prompt when needed.
 
-Next-hop prompts carry tasks, not identity: do not assign, reaffirm, or redefine
-the receiving teammate's role. Role changes require an explicit role-contract
-update. If a received task conflicts with the conversation's established role,
-surface the mismatch instead of adopting an implied new role.
+Next-hop prompts carry tasks, not identity: they do not redefine the
+receiving role. If a Request conflicts with the Member Issue's current
+role contract, surface the mismatch rather than silently changing roles.
 
 Use the member Issue Request/Result protocol for team coordination. Do not
 add a second task board, status store, queue, or reporting format.
