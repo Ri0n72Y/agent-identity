@@ -62,12 +62,13 @@ permissions, or security isolation.
 Every role, **including Lead**, requires one long-lived Member Issue
 regardless of its workload. Lead creates its own at team initialization
 and one for each new role. If an existing role lacks a Member Issue, create
-one even when Work Issues or PRs already exist. Record the role's current
-responsibility and known work status in its body; for an inactive role, use
-`status: idle` / `latestwork: "-"`. Post a Request when actual work is
-assigned, not merely to initialize the Issue. All conversations of that
-role reuse its Issue and task records. When a second role joins, Lead
-maintains a **team index** linking role Issues.
+one even when Work Issues or PRs already exist. Record its current
+responsibility in the body. If no work is active, initialize
+`status: idle` / `latestwork: "-"` without posting a Request. For ongoing
+work, post a Request for the actual assignment, set `status: busy`, and
+point `latestwork` to that Request. All conversations of the role reuse
+its Issue and task records. When a second role joins, Lead maintains
+a **team index** linking role Issues.
 
 Lead's Member Issue is its required role task inbox and status record.
 Work Issues and PRs hold specific task details and deliverables; they
