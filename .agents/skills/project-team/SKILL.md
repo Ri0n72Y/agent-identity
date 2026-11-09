@@ -60,18 +60,20 @@ permissions, or security isolation.
 ## Coordinate through real artifacts
 
 Every role, **including Lead**, requires one long-lived Member Issue
-regardless of its current workload. Lead creates its own Issue at team
-initialization and one for each newly formed role. Write the role's
-responsibility and initial `status: idle` / `latestwork: "-"` in its
-body, then post the first Request. All conversations of that role reuse
-this Issue and its shared task records; a new conversation does not need
-a new Issue. When a second role joins, Lead maintains a **team index**
-linking role Issues. Lead receives and handles work through its own Issue.
+regardless of its workload. Lead creates its own at team initialization
+and one for each new role. If an existing role lacks a Member Issue, create
+one even when Work Issues or PRs already exist. Record the role's current
+responsibility and known work status in its body; for an inactive role, use
+`status: idle` / `latestwork: "-"`. Post a Request when actual work is
+assigned, not merely to initialize the Issue. All conversations of that
+role reuse its Issue and task records. When a second role joins, Lead
+maintains a **team index** linking role Issues.
 
-A Member Issue is the role's persistent task inbox and status record.
-Work Issues and PRs contain specific task details and deliverables; they
-cannot replace a Member Issue. Do not create a separate Lead scheduling
-Issue, task board, queue, status store, or reporting format.
+Lead's Member Issue is its required role task inbox and status record.
+Work Issues and PRs hold specific task details and deliverables; they
+cannot replace a Member Issue. Do not add a second Lead scheduling Issue
+or parallel role task-status system. Ordinary project work Issues, PRs,
+and project boards remain available.
 
 To assign work, append a YAML-fenced comment to the recipient's Issue.
 Use only `from` (sender's member Issue URL, or `user`) and `request`
