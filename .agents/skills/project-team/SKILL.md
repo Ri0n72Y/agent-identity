@@ -59,13 +59,19 @@ permissions, or security isolation.
 
 ## Coordinate through real artifacts
 
-When a role is created, Lead creates its one long-lived Member Issue,
-including for Lead itself. Write the role's responsibility and initial
-`status: idle` / `latestwork: "-"` in the body, then post the first
-Request. All conversations of that role reuse its Issue and shared task
-records; opening another conversation does not create another Member Issue.
-When a second role joins, Lead maintains a **team index** linking role Issues.
-Lead also receives and handles work through its own Issue.
+Every role, **including Lead**, requires one long-lived Member Issue
+regardless of its current workload. Lead creates its own Issue at team
+initialization and one for each newly formed role. Write the role's
+responsibility and initial `status: idle` / `latestwork: "-"` in its
+body, then post the first Request. All conversations of that role reuse
+this Issue and its shared task records; a new conversation does not need
+a new Issue. When a second role joins, Lead maintains a **team index**
+linking role Issues. Lead receives and handles work through its own Issue.
+
+A Member Issue is the role's persistent task inbox and status record.
+Work Issues and PRs contain specific task details and deliverables; they
+cannot replace a Member Issue. Do not create a separate Lead scheduling
+Issue, task board, queue, or reporting format.
 
 To assign work, append a YAML-fenced comment to the recipient's Issue.
 Use only `from` (sender's member Issue URL, or `user`) and `request`
@@ -138,9 +144,6 @@ extra text, preserve it and let Lead provide the prompt when needed.
 Next-hop prompts carry tasks, not identity: they do not redefine the
 receiving role. If a Request conflicts with the Member Issue's current
 role contract, surface the mismatch rather than silently changing roles.
-
-Use the member Issue Request/Result protocol for team coordination. Do not
-add a second task board, status store, queue, or reporting format.
 
 ## Reference
 
