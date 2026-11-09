@@ -1,10 +1,10 @@
 ---
 name: project-team
 description: >
-  Coordinate persistent teammate conversations in a ChatGPT Project using
-  GitHub Issues for member discovery, task requests, work status, and results.
-  Use when forming roles, assigning or resuming work, coordinating reviews,
-  or integrating cross-conversation results.
+  Coordinate persistent roles across one or more ChatGPT Project conversations,
+  sharing GitHub Member Issues for role contracts, task requests, work status,
+  and results. Use when creating roles, assigning or resuming work, coordinating
+  reviews, or integrating cross-conversation results.
 ---
 
 # Project team
@@ -42,9 +42,9 @@ When forming a teammate, define only what it needs to operate:
 The Member Issue body is the source for the role's current responsibilities
 and boundaries. Initialize every conversation with the role identity and
 Member Issue link; it reads the current remit and linked background there.
-Role changes require an explicit contract update in that Issue, rather than
-a new role for each scope adjustment. Keep project constraints in their
-owning Project or workspace.
+After an explicit role change is agreed, update that Issue's contract;
+a new task or conversation does not change the role. Keep project
+constraints in their owning Project or workspace.
 
 A teammate works within its current remit and the task actually assigned to
 it. It can raise evidence or propose a change in direction, but should not
@@ -77,9 +77,10 @@ On activation or resumption, read the role's Member Issue and linked work.
 Match Request comment URLs with Result `task` links to identify pending work.
 If `status: busy`, inspect `latestwork` first; another conversation of the
 same role may be working on that Request. Continue it only when resuming its
-own work or after an explicit handoff. Otherwise take the oldest unclaimed
-pending Request unless the user or Lead sets another priority. Coordinate
-distinct Request assignments when several conversations work in parallel.
+own work or after an explicit handoff. Otherwise take the oldest pending
+Request not known to be in progress, unless the user or Lead sets another
+priority. When several conversations work in parallel, explicitly assign
+different Request URLs; do not assume a pending Request is unclaimed.
 `idle` does not imply an empty task pool.
 
 Conversations serving a role maintain `status` and `latestwork` in
