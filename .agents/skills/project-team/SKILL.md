@@ -75,12 +75,11 @@ records.
 
 On activation or resumption, read the role's Member Issue and linked work.
 Match Request comment URLs with Result `task` links to identify pending work.
-If `status: busy`, inspect `latestwork` first; another conversation of the
-same role may be working on that Request. Continue it only when resuming its
-own work or after an explicit handoff. Otherwise take the oldest pending
-Request not known to be in progress, unless the user or Lead sets another
-priority. When several conversations work in parallel, explicitly assign
-different Request URLs; do not assume a pending Request is unclaimed.
+When `status: busy`, inspect `latestwork` but do not assume it lists all
+active work. Resume only this conversation's work or an explicitly handed-off
+Request; assign distinct Requests explicitly before working in parallel.
+When `status: idle`, take the oldest pending Request unless the user or Lead
+sets another priority. An unmatched Request may already be in progress;
 `idle` does not imply an empty task pool.
 
 Conversations serving a role maintain `status` and `latestwork` in
