@@ -88,6 +88,20 @@
 
 **后续一致性审查修订：**只写“初始化时创建”无法覆盖已经开展工作却缺少 Member Issue 的项目，因此需要明确补建动作。Member Issue 的存在不依赖任务量，首次 Request 则必须对应实际分配的工作，避免生成占位任务。禁止额外调度系统的规则仅针对与 Member Issue 重复的角色任务协调；正常项目工作 Issue、PR 和项目看板不受限制。这三项修订来自审查推导，不作为用户原话。参见 [PR #25 的审查评论](https://github.com/Ri0n72Y/agent-identity/pull/25#issuecomment-6736029044)。
 
+## Team Request 逐渐膨胀的使用反馈（2026-11-13）
+
+用户原话：
+
+> 观察最近的20个发布的team request，明显有越来越长，将简短的handoff当作完整的任务分配的趋势，是一种对team handoff的滥用。
+
+**现象。** 跨角色交接原本只需指明下一动作和现有工作依据，实际 Request 却逐渐重新罗列 Work Issue、PR、Review 已记录的需求、权限边界、测试矩阵及历史决定。随着任务多次转交，同一事实被复制到多个评论中，增加阅读成本，也可能造成不同版本的任务要求并存。Result.handoff 通常仍只是简短描述和 Request 链接；膨胀主要发生在它指向的 Request 内容中。
+
+**样本依据。** 读取 agent-identity（Member #22、#23）、idea-slime-bar（#38、#40、#42）、hackathon-platform（#53–#58）共 11 个 Member Issue，截至 2026-11-13 04:46:58 UTC 的历史快照包含 73 条 Request，其中 41 条为跨成员派发。按时间比较最早与最近各 20 条跨成员 Request，平均长度由 711 增至 889 字符；超过 1,000 字符的数量由 1 增至 7。最近 20 条中 19 条被发送者的 Result.handoff 引用。样本跨项目且任务复杂度不同，说明长 Request 增多，不能据此断定 Handoff 字段直接导致增长。
+
+**典型案例。** [Coder Request #6825301010](https://github.com/Ri0n72Y/hackathon-platform/issues/54#issuecomment-6825301010) 长 2,102 字符，在已有 Work Issue #31、PR 和权限决策的情况下，重新展开 OAuth 权限、安全校验、异常处理及测试规格。该内容应保留在所属工作产物中，Request 只需说明当前要执行的动作并引用它。
+
+**规则取舍。** Request 用于派发下一动作、链接权威工作产物及补充必要的未记录约束；需求改变时更新其所属 Issue、PR、Review 或文档。小任务允许简短、自包含的 Request，不强制新增文档，也不设置字数上限。Result.handoff 保持简短描述与实际 Request 链接。后续应根据新的执行样本判断规则是否有效。
+
 ## 方案取舍及其性质
 
 以下记录当时考虑并取舍的方案：
