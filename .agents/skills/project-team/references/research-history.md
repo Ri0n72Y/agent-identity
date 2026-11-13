@@ -94,26 +94,13 @@
 
 > 观察最近的20个发布的team request，明显有越来越长，将简短的handoff当作完整的任务分配的趋势，是一种对team handoff的滥用。
 
-本次调查读取了 [agent-identity](https://github.com/Ri0n72Y/agent-identity)、[idea-slime-bar](https://github.com/Ri0n72Y/idea-slime-bar) 与 [hackathon-platform](https://github.com/Ri0n72Y/hackathon-platform) 共 11 个成员 Issue 的评论，识别出 73 条 Request，其中 41 条由其他成员派发。按创建时间比较最早与最近各 20 条跨成员 Request（统计完整 YAML 评论字符数）：
+**现象。** 跨角色交接原本只需指明下一动作和现有工作依据，实际 Request 却逐渐重新罗列 Work Issue、PR、Review 已记录的需求、权限边界、测试矩阵及历史决定。随着任务多次转交，同一事实被复制到多个评论中，增加阅读成本，也可能造成不同版本的任务要求并存。Result.handoff 通常仍只是简短描述和 Request 链接；膨胀主要发生在它指向的 Request 内容中。
 
-| 指标 | 最早 20 条 | 最近 20 条 |
-| --- | ---: | ---: |
-| 平均字符数 | 711 | 889 |
-| 中位字符数 | 599 | 705 |
-| 超过 1,000 字符 | 1 | 7 |
-| 超过 1,500 字符 | 1 | 3 |
+**样本依据。** 读取 agent-identity（Member #22、#23）、idea-slime-bar（#38、#40、#42）、hackathon-platform（#53–#58）共 11 个 Member Issue，截至 2026-11-13 04:46:58 UTC 的历史快照包含 73 条 Request，其中 41 条为跨成员派发。按时间比较最早与最近各 20 条跨成员 Request，平均长度由 711 增至 889 字符；超过 1,000 字符的数量由 1 增至 7。最近 20 条中 19 条被发送者的 Result.handoff 引用。样本跨项目且任务复杂度不同，说明长 Request 增多，不能据此断定 Handoff 字段直接导致增长。
 
-最近 20 条中，19 条有发送成员的 `Result.handoff` 明确引用。相应 Handoff 中位约 144 字符；Request 中位约 705 字符。样本跨项目且任务复杂度不同，此统计支持长 Request 增多的观察，不能单独证明是 Handoff 字段导致。较早的 20 条中也存在一条 3,368 字符的长 Request。
+**典型案例。** [Coder Request #6825301010](https://github.com/Ri0n72Y/hackathon-platform/issues/54#issuecomment-6825301010) 长 2,102 字符，在已有 Work Issue #31、PR 和权限决策的情况下，重新展开 OAuth 权限、安全校验、异常处理及测试规格。该内容应保留在所属工作产物中，Request 只需说明当前要执行的动作并引用它。
 
-典型案例：
-
-- [Coder Request #6825301010](https://github.com/Ri0n72Y/hackathon-platform/issues/54#issuecomment-6825301010)，2,102 字符：在已有 [Work Issue #31](https://github.com/Ri0n72Y/hackathon-platform/issues/31)、PR 和权限决策后，再次展开授权、安全、异常处理、实施和测试规格。
-- [Reviewer Request #6826393911](https://github.com/Ri0n72Y/hackathon-platform/issues/55#issuecomment-6826393911)，1,528 字符：在已有 [PR #64](https://github.com/Ri0n72Y/hackathon-platform/pull/64) 和审查证据后，再次列出测试矩阵与已知限制。
-- [Designer → Lead Request #6820235013](https://github.com/Ri0n72Y/hackathon-platform/issues/53#issuecomment-6820235013)，311 字符：仅说明下一动作、PR 链接及少量关键边界。
-
-**本次修订决定：**Request 仅负责派发下一动作及其权威链接；工作规格、测试矩阵、历史决定和结果保留在对应 Work Issue、PR、Review 或文档中。已有要求需要变化时，更新其所属产物。缺少独立产物的小任务可使用简短且自包含的 Request，不为了缩短评论而另建文档。Result.handoff 继续只包含简短说明与已派发 Request 的链接。
-
-未采用固定字数上限或新增队列/派发文件。是否进一步缩短、是否改善交接，应继续通过后续实际 Request 检查；不能用文档修改本身证明行为已经改进。
+**规则取舍。** Request 用于派发下一动作、链接权威工作产物及补充必要的未记录约束；需求改变时更新其所属 Issue、PR、Review 或文档。小任务允许简短、自包含的 Request，不强制新增文档，也不设置字数上限。Result.handoff 保持简短描述与实际 Request 链接。后续应根据新的执行样本判断规则是否有效。
 
 ## 方案取舍及其性质
 
