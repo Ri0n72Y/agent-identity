@@ -82,6 +82,14 @@ Use only `from` (sender's member Issue URL, or `user`) and `request`
 batch. Multiple senders may append requests without editing each other's
 records.
 
+A Request dispatches the next action; it does not replace the work
+specification. For existing work, link the authoritative Issue, PR,
+review, or document and include only constraints missing from it. Update
+the owning artifact when requirements change; do not copy its detailed
+specifications, test matrix, decisions, or results into a Request. For
+small work without a separate artifact, a brief self-contained Request
+is enough. Do not create an artifact merely to shorten the Request.
+
 On activation or resumption, read the role's Member Issue and linked work.
 Match Request comment URLs with Result `task` links to identify pending work.
 When `status: busy`, inspect `latestwork` but do not assume it lists all
