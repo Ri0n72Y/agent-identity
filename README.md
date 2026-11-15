@@ -33,6 +33,7 @@ agent-identity/
 │       ├── dependency-risk-testing/
 │       ├── evidence-led-ui-design/
 │       ├── frontend-development/
+│       ├── function-first-coding/
 │       ├── paper-writing/
 │       ├── ponytail/
 │       ├── project-team/
@@ -86,6 +87,8 @@ The [memory model](docs/memory-model.md) defines Short → Reflection → Episod
 The canonical, human-authored [Core v1.0.3](core/CORE.md) defines the universal method. The separate `.agents/skills/core-authoring/SKILL.md` explains how to design and review a Core, not what is currently loaded. The reusable skill design method lives in `.agents/skills/skill-authoring/SKILL.md`.
 
 `.agents/skills/evidence-led-ui-design/SKILL.md` is a reusable AI UI/UX design and review method. Its references cover design discovery, evaluation, and research evidence.
+
+`.agents/skills/function-first-coding/SKILL.md` guides function-first JavaScript/TypeScript API organization, explicit state ownership, and code review, alongside the existing React component coding and review skills.
 
 `.agents/skills/dependency-risk-testing/SKILL.md` captures a reusable testing method that derives focused stability tests from production dependency risk rather than from feature lists, bug history, or coverage targets.
 
