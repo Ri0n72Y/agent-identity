@@ -21,13 +21,13 @@ the meaning of a PR number, an internal phase code, or a test tally.
 - If the work is partial or unverified, state the completed portion accurately.
   A conclusion or finding is itself a result when it directly answers the task.
 
-Bad: `U5/U6 done; PR #57; 33 tests passed; awaiting review.`
+Bad: `A1 complete; PR #58; 33 tests passed.`
 
 Better:
 
 ```text
-实现了委托交付、洞天仙力的积累与消费，以及新地格开垦。
-https://github.com/owner/repo/pull/57
+工作台已支持按状态筛选任务，方便查看待处理事项。
+https://github.com/owner/repo/pull/58
 ```
 
 ## Request comment
@@ -35,13 +35,28 @@ https://github.com/owner/repo/pull/57
 Post as a YAML-fenced comment on the **recipient's** Member Issue. Use only
 `from` and `request`; `from` is the sender's Member Issue URL or `user`.
 The comment URL is the durable identity of the request.
+The following placeholders illustrate one linked task chain.
+
+Lead posts an implementation Request on Coder Member Issue #40:
+
+```yaml
+from: https://github.com/owner/repo/issues/10
+request: |-
+  为工作台增加按状态筛选任务的功能。
+  https://github.com/owner/repo/issues/57
+```
+
+Coder posts a review Request on Reviewer Member Issue #42:
 
 ```yaml
 from: https://github.com/owner/repo/issues/40
 request: |-
-  审查委托交付、仙力收支与地格开垦的玩法闭环。
-  https://github.com/owner/repo/pull/57
+  核对任务筛选的实现与边界条件。
+  https://github.com/owner/repo/pull/58
 ```
+
+These Requests have comment URLs
+`issues/40#issuecomment-100` and `issues/42#issuecomment-101`.
 
 For a small task, the action and required context may fit in the sentence.
 For a larger task, link the authoritative work Issue/PR and mention only
@@ -53,18 +68,22 @@ distinct actions, each using the same human-readable action + source pattern.
 Post as a YAML-fenced comment on the **completing member's** Issue.
 `task` is the exact originating Request comment URL, not its Work Issue.
 `start` and `end` are ISO 8601 timestamps with an explicit timezone.
+`result` accepts a YAML scalar or list; a list starts with the concise
+natural-language outcome, followed by evidence links.
 Use `handoff` only after posting a new Request to **another** Member Issue;
-include the next action in ordinary language and the actual Request comment URL.
+include the next action and the actual Request comment URL.
+
+Coder posts this Result on Member Issue #40 after sending the review Request:
 
 ```yaml
 task: https://github.com/owner/repo/issues/40#issuecomment-100
-result: |-
-  实现了委托交付、洞天仙力的积累与消费，以及新地格开垦。
-  https://github.com/owner/repo/pull/57
+result:
+  - "工作台已支持按状态筛选任务，方便查看待处理事项。"
+  - https://github.com/owner/repo/pull/58
 start: "2026-11-16T09:55:00+08:00"
 end: "2026-11-16T10:45:00+08:00"
 handoff: |-
-  审查委托交付、仙力收支与地格开垦的玩法闭环。
+  核对任务筛选的实现与边界条件。
   https://github.com/owner/repo/issues/42#issuecomment-101
 ```
 
@@ -79,7 +98,7 @@ responsible for that role:
 
 ```yaml
 status: busy
-latestwork: "正在实现委托交付与仙力收支：https://github.com/owner/repo/issues/40#issuecomment-100"
+latestwork: "正在实现任务状态筛选：https://github.com/owner/repo/issues/40#issuecomment-100"
 ```
 
 Use only `busy` or `idle`. `latestwork` points to the current Request
