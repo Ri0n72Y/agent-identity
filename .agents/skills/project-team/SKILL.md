@@ -86,8 +86,8 @@ for their field formats and examples.
 A Request explains in plain language what the recipient should do and
 how that work advances the project's intended outcome. A Result explains
 what the member actually achieved and where the outcome can be examined.
-Lead with that meaningful action or outcome, then put the authoritative
-artifact link on the next line. Role codes, PR numbers, test counts,
+Lead with that meaningful action or outcome, then put a link to the
+existing authoritative artifact on the next line when one is available. Role codes, PR numbers, test counts,
 and workflow status alone do not explain the contribution. Keep these
 records short by omitting duplicated information, not by sacrificing
 meaning or accurate completion status.
