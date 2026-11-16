@@ -76,11 +76,21 @@ cannot replace a Member Issue. Do not add a second Lead scheduling Issue
 or parallel role task-status system. Ordinary project work Issues, PRs,
 and project boards remain available.
 
-To assign work, append a YAML-fenced comment to the recipient's Issue.
-Use only `from` (sender's member Issue URL, or `user`) and `request`
-(a short task or list of tasks). Its comment URL identifies the request
-batch. Multiple senders may append requests without editing each other's
-records.
+To assign work, append a Request comment to the recipient's Member Issue.
+Its comment URL identifies the request batch. Multiple senders may append
+requests without editing each other's records. Before writing or editing
+Request, Result, or role-status records, follow
+[references/member-issue-records.md](references/member-issue-records.md)
+for their field formats and examples.
+
+A Request explains in plain language what the recipient should do and
+how that work advances the project's intended outcome. A Result explains
+what the member actually achieved and where the outcome can be examined.
+Lead with that meaningful action or outcome, then put the authoritative
+artifact link on the next line. Role codes, PR numbers, test counts,
+and workflow status alone do not explain the contribution. Keep these
+records short by omitting duplicated information, not by sacrificing
+meaning or accurate completion status.
 
 A Request dispatches the next action; it does not replace the work
 specification. For existing work, link the authoritative Issue, PR,
@@ -107,18 +117,13 @@ claim lock or a complete list of active conversations. Read the current
 body before updating it; do not mark the role idle while another known
 conversation is working. Other roles only append Requests.
 
-On completion, append a YAML-fenced **result** comment with `task`
-(the request comment URL), `result`, `start`, and `end`; include
-`handoff` only when the completing member has posted a next request
-to **another member's Issue**. Its value is a short description of that
-next assignment followed by its Request comment URL. Do not use `handoff`
-for incoming tasks, suggested actions, or PR links. `result` begins
-with a short natural-language outcome; when a list,
-put that sentence first and evidence links after it.
-Record start and end as ISO 8601 timestamps with time zone. Post the
-Result before updating the role status; set `idle` only if no other
-role conversation is known to be working. Detailed work stays in
-linked Issues, PRs, or project artifacts.
+On completion, append a Result to the member's Issue, linking the
+originating Request and recording the actual outcome and work interval.
+Include a handoff only after posting a real next Request to another
+member's Issue; do not treat proposed work or a PR link as an assignment.
+Post the Result before updating the role status; set `idle` only if no
+other role conversation is known to be working. Detailed evidence stays
+in the linked Issues, PRs, or project artifacts.
 
 Consult current project artifacts for work facts; check relevant files,
 Issues/PRs, reviews, and CI rather than relying on copied conversation status.

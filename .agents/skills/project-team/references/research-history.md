@@ -128,3 +128,15 @@
 PR #24 依据最终文本审查修订了 Request/Result、待办恢复、GitHub Issues 适用范围和 Next-hop 链接；后续又明确 Lead 从初始化起使用自己的 Member Issue，并允许一个角色由多个会话共同承担。共享 `busy/idle` 只是最近声明的工作状态，不能充当并发领取锁；多个会话处理任务时需要明确不同 Request 的归属。本轮未引入新字段或锁机制。
 
 遵循 [skill-authoring](../../skill-authoring/SKILL.md)：运行规则保留在 `SKILL.md`，讨论与取舍留在本档案；新的实际执行结果可以推翻旧决定。
+
+## Request / Result 作为面向人的解释记录（2026-11-16）
+
+用户针对真实项目交接的反馈：
+
+> result应当写“我实现了什么，在哪里”。应当始终围绕“这部分代码、需求是如何为产品目标实现而推进的”
+
+> result写的内容是AI工作流可解释化的一部分，是给我看的。同理request也是类似
+
+此前个别 Result 使用切片代号、PR 编号、测试数量和“待审查”等状态作为主要内容；这些字段需要读者进入其他页面才能判断项目实际获得了什么能力。用户要求成果先用自然语言说清，PR 链接单独放下一行；Request 同样以“下一人具体要推进什么”为主。
+
+对应实际修订：[Coder Result](https://github.com/Ri0n72Y/idea-slime-bar/issues/40#issuecomment-6905723352) 与 [Reviewer Request](https://github.com/Ri0n72Y/idea-slime-bar/issues/42#issuecomment-6905721034)。可复用原则纳入 `SKILL.md`；具体 YAML 格式和示例放入 [member-issue-records.md](member-issue-records.md)。此条记录是实践反馈及修订依据，不构成独立运行规则。
