@@ -17,11 +17,12 @@ export class SessionSummaryStore {
     const existing = this.loads.get(sessionId)
     if (existing !== undefined) return existing
 
-    const loading = this.read(sessionId).then(document => {
-      this.snapshots.set(sessionId, document)
+    let loading: Promise<SessionSummaryDocument | undefined>
+    loading = this.read(sessionId).then(document => {
+      if (this.loads.get(sessionId) === loading) this.snapshots.set(sessionId, document)
       return document
     }).catch((error: unknown) => {
-      this.loads.delete(sessionId)
+      if (this.loads.get(sessionId) === loading) this.loads.delete(sessionId)
       throw error
     })
     this.loads.set(sessionId, loading)
