@@ -13,7 +13,7 @@ type TurnEndEvent = Extract<SessionEvent, { type: 'turn/end' }>
 
 interface SessionWorkState {
   readonly queue: TurnEndEvent[]
-  running?: Promise<void>
+  running: Promise<void> | undefined
   retryRequested: boolean
 }
 
@@ -63,8 +63,6 @@ export class SessionSummaryCoordinator {
       if (contribution !== undefined) {
         contribution.text = text
         contribution.interpolate = false
-      } else if (text.length > 0) {
-        assembly.contexts.push({ name: CONTEXT_NAME, text, interpolate: false })
       }
       return assembly
     }, { prepend: true })
@@ -80,7 +78,7 @@ export class SessionSummaryCoordinator {
 
     let state = this.states.get(session.id)
     if (state === undefined) {
-      state = { queue: [], retryRequested: false }
+      state = { queue: [], running: undefined, retryRequested: false }
       this.states.set(session.id, state)
     }
     state.queue.push(event)
@@ -154,7 +152,7 @@ export class SessionSummaryCoordinator {
       pending.seq,
       this.config.maxEventTextChars,
     )
-    if (input === undefined) return true
+    if (input === undefined) throw new Error('dsh-turn-summary: missing complete turn in source log')
 
     const generated = await generateTurnSummary(
       this.ctx,
@@ -163,7 +161,16 @@ export class SessionSummaryCoordinator {
       document,
       input,
       this.lifecycle.signal,
-    )
+    ).catch((error: unknown) => {
+      this.lifecycle.signal.throwIfAborted()
+      const detail = errorMessage(error).replace(/\s+/g, ' ').slice(0, 400)
+      this.ctx.logger.warn('dsh-turn-summary: generation failed for ' + session.id + ' turn ' + input.turn + ': ' + detail)
+      return {
+        turnSummary: 'TSP generation failed: ' + detail + '. Consult the original Session events ' + input.startSeq + '–' + input.endSeq + ' for this turn.',
+        sessionSummary: document!.sessionSummary,
+      }
+    })
+    this.lifecycle.signal.throwIfAborted()
 
     const turnSummary = {
       turn: input.turn,

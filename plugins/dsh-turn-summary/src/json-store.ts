@@ -20,6 +20,9 @@ export class SessionSummaryStore {
     const loading = this.read(sessionId).then(document => {
       this.snapshots.set(sessionId, document)
       return document
+    }).catch((error: unknown) => {
+      this.loads.delete(sessionId)
+      throw error
     })
     this.loads.set(sessionId, loading)
     return loading
@@ -105,7 +108,14 @@ export function validateDocument(value: unknown, expectedSessionId: string): Ses
     throw new Error('dsh-turn-summary: recentTurnSummaries must be an array')
   }
 
-  for (const item of value.recentTurnSummaries) validateTurnSummary(item)
+  let last = -1
+  for (const item of value.recentTurnSummaries) {
+    validateTurnSummary(item)
+    if (item.startSeq <= last || item.endSeq > value.processedThroughSeq) {
+      throw new Error('dsh-turn-summary: unordered or out-of-range Turn Summary')
+    }
+    last = item.endSeq
+  }
   return value as unknown as SessionSummaryDocument
 }
 

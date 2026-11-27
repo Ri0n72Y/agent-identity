@@ -60,7 +60,7 @@ export function resolveConfig(config: TurnSummaryConfig = {}): ResolvedTurnSumma
     ...(config.model === undefined ? {} : { model: config.model }),
     maxTokens: positiveInteger('maxTokens', config.maxTokens ?? 1800),
     timeoutMs: boundedInteger('timeoutMs', config.timeoutMs ?? 60000, 1000, 600000),
-    maxInputBytes: positiveInteger('maxInputBytes', config.maxInputBytes ?? 120000),
+    maxInputBytes: boundedInteger('maxInputBytes', config.maxInputBytes ?? 120000, 1024, 10000000),
     maxEventTextChars: positiveInteger('maxEventTextChars', config.maxEventTextChars ?? 6000),
     maxSummaryChars: positiveInteger('maxSummaryChars', config.maxSummaryChars ?? 12000),
     maxRecentTurns: positiveInteger('maxRecentTurns', config.maxRecentTurns ?? 12),

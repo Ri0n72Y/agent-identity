@@ -21,7 +21,7 @@ const SYSTEM_PROMPT = [
   'Write both Markdown values in the language used by the Session. Keep each turn summary focused on that turn. Update the Session Summary to contain only the current state needed to continue this same Session; remove stale state and retain important active decisions and unresolved work.',
   'Return exactly one JSON object with this shape and no surrounding Markdown fences:',
   '{"turnSummaries":[{"turn":number,"markdown":"Markdown summary"}],"sessionSummary":"Markdown current Session state"}',
-  'The turnSummaries array must contain exactly the requested turn, with its exact turn number. Markdown strings should use concise headings and bullets. Use "(none)" when a section has no relevant content.',
+  'The turnSummaries array must contain exactly the requested turn, with its exact turn number. Write the turn summary as a concise natural-language account, with the user input, tool calls and results, failures and final answer. Avoid a fixed schema inside Markdown. Never treat missing source text as an observed fact.',
   'Do not copy the previous Session Summary verbatim. Reconcile it with the new turn and the recent turn summaries.',
 ].join('\n')
 
@@ -35,14 +35,7 @@ export async function generateTurnSummary(
   lifecycleSignal: AbortSignal,
 ): Promise<SummaryModelOutput> {
   const route = resolveRoute(config, session)
-  const input = buildInput(previous, turn)
-  const inputBytes = Buffer.byteLength(input, 'utf8')
-  if (inputBytes > config.maxInputBytes) {
-    throw new Error(
-      'dsh-turn-summary: Markdown input is ' + inputBytes
-      + ' bytes, exceeding maxInputBytes ' + config.maxInputBytes,
-    )
-  }
+  const input = buildInput(previous, turn, config.maxInputBytes)
 
   const signal = AbortSignal.any([lifecycleSignal, AbortSignal.timeout(config.timeoutMs)])
   const message: RequestMessage = {
@@ -101,7 +94,7 @@ export function parseSummaryOutput(
   return { turnSummary, sessionSummary }
 }
 
-function buildInput(previous: SessionSummaryDocument, turn: TurnSummaryInput): string {
+export function buildInput(previous: SessionSummaryDocument, turn: TurnSummaryInput, maxBytes: number): string {
   const recent = previous.recentTurnSummaries.length === 0
     ? '(none)'
     : previous.recentTurnSummaries.map(item => [
@@ -110,16 +103,16 @@ function buildInput(previous: SessionSummaryDocument, turn: TurnSummaryInput): s
       item.markdown,
     ].join('\n')).join('\n\n')
 
-  return [
-    '# Existing Session state',
+  const prefix = [
+    '# Existing Session state — ' + previous.sessionId,
     '',
     '## Previous Session Summary',
     '',
-    previous.sessionSummary.trim() || '(none)',
+    boundInput(previous.sessionSummary.trim() || '(none)', Math.floor(maxBytes / 5)),
     '',
     '## Recent Turn Summaries',
     '',
-    recent,
+    boundInput(recent, Math.floor(maxBytes / 5)),
     '',
     '# New source turn',
     '',
@@ -128,12 +121,26 @@ function buildInput(previous: SessionSummaryDocument, turn: TurnSummaryInput): s
     '- Source event range: ' + turn.startSeq + '–' + turn.endSeq,
     '- Started: ' + new Date(turn.startedAt).toISOString(),
     '- Ended: ' + new Date(turn.endedAt).toISOString(),
-    '- Outcome: ' + JSON.stringify(turn.reason),
+    '- Outcome: ' + boundInput(JSON.stringify(turn.reason), Math.floor(maxBytes / 10)),
     '',
     '## Recorded Session events',
     '',
-    turn.sourceMarkdown,
   ].join('\n')
+  const remaining = maxBytes - Buffer.byteLength(prefix, 'utf8')
+  if (remaining < 0) throw new Error('dsh-turn-summary: input budget cannot fit turn metadata')
+  return prefix + boundInput(turn.sourceMarkdown, remaining)
+}
+
+/** Retain both ends of oversized input, including the final assistant response. */
+function boundInput(value: string, limit: number): string {
+  const bytes = Buffer.from(value, 'utf8')
+  if (bytes.length <= limit) return value
+  const marker = '\n[omitted middle; consult original Session]\n'
+  const available = limit - Buffer.byteLength(marker, 'utf8')
+  if (available < 8) return ''
+  const head = Math.floor(available / 2) - 3
+  const tail = available - head - 6
+  return bytes.subarray(0, head).toString('utf8') + marker + bytes.subarray(bytes.length - tail).toString('utf8')
 }
 
 function resolveRoute(

@@ -7,7 +7,7 @@ import type { SessionSummaryDocument } from './types.ts'
 export function renderSessionSummaryMarkdown(document: SessionSummaryDocument | undefined): string {
   if (document === undefined) return ''
 
-  const sections: string[] = ['# Session continuity']
+  const sections: string[] = ['# Session continuity — ' + document.sessionId]
   if (document.sessionSummary.trim().length > 0) {
     sections.push('## Session Summary\n\n' + document.sessionSummary.trim())
   }
@@ -60,6 +60,7 @@ function renderEvent(event: SessionEvent, maxChars: number): string | undefined 
   switch (event.type) {
     case 'user/message': {
       const source = event.data.source.kind
+      if (String(source) === 'runtime-context') return undefined
       const heading = source === 'user' ? 'Human input' : 'User-role context (' + source + ')'
       const text = contentText(event.data.content)
       return heading + position + '\n\n' + fence(clip(text || '[no text content]', maxChars), 'text')
@@ -73,10 +74,7 @@ function renderEvent(event: SessionEvent, maxChars: number): string | undefined 
       const text = contentText(event.data.message.content)
       if (text.length === 0) return undefined
       const status = event.data.interrupted === true ? ' (interrupted)' : ''
-      const usage = event.data.usage === undefined
-        ? ''
-        : '\n\nToken usage: ' + JSON.stringify(event.data.usage)
-      return 'Assistant response' + status + position + '\n\n' + fence(clip(text, maxChars), 'text') + usage
+      return 'Assistant response' + status + position + '\n\n' + fence(clip(text, maxChars), 'text')
     }
     case 'assistant/attempt': {
       const finish = event.data.stream.findLast(record =>
@@ -89,15 +87,15 @@ function renderEvent(event: SessionEvent, maxChars: number): string | undefined 
     }
     case 'tool/call':
       return [
-        'Tool call: ' + event.data.name + position,
+        'Tool call: ' + event.data.name + ' (' + event.data.callId + ')' + position,
         '',
         fence(clip(event.data.arguments, maxChars), 'json'),
       ].join('\n')
     case 'tool/result': {
       const content = contentText(event.data.message.content)
       const error = event.data.error === undefined
-        ? ''
-        : '\n\nTool error: ' + JSON.stringify(event.data.error)
+        ? (event.data.message.isError ? '\n\nTool result marked as error.' : '')
+        : '\n\nTool error: ' + clip(JSON.stringify(event.data.error), maxChars)
       return [
         'Tool result: ' + event.data.message.toolCallId + position,
         '',

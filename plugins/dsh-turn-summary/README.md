@@ -39,7 +39,7 @@ The plugin requires the llm, sessionQuery, and systemPrompt services. The summar
 
 session/event observers are fire-and-forget. The plugin registers each turn-end job synchronously, then processes jobs serially per Session. The next system-prompt/assemble waits for an active job before refreshing the TSP context, so it cannot capture the previous turn's stale summary.
 
-A failed generation leaves the source watermark unchanged. The job remains queued and is retried when another turn ends. The next prompt does not wait indefinitely after a failed job; it continues with the last successfully persisted summary. The next successful processing catches up completed turns in source order.
+A failed auxiliary generation writes a short failure note and source interval, retains the previous Session Summary, and allows later turns to proceed. Source-read and persistence failures leave the watermark unchanged and retry on the next turn. Oversized input is explicitly truncated with original Session references; the original log remains authoritative.
 
 A new JSON document starts at the first turn observed by this plugin. It does not retroactively summarize older turns in an existing Session. Original Session history remains available through DSH.
 
@@ -56,6 +56,7 @@ Each Session has one JSON file. The filename is the UTF-8 Session ID encoded as 
 ## Development
 
 ```sh
-pnpm install
-pnpm --filter dsh-turn-summary check
+cd plugins/dsh-turn-summary
+npm install
+npm run check
 ```
