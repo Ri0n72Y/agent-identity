@@ -11,19 +11,22 @@ import type { SessionSummaryDocument } from './types.ts'
 const CONTEXT_NAME = 'turn-summary:session'
 type TurnEndEvent = Extract<SessionEvent, { type: 'turn/end' }>
 
-interface SessionWorkState {
-  readonly queue: TurnEndEvent[]
-  running: Promise<void> | undefined
-  retryRequested: boolean
+/** Result of one explicit /summarize invocation. */
+export interface SummarizeResult {
+  readonly processedTurns: number
+  readonly firstTurn?: number
+  readonly lastTurn?: number
 }
 
-/** Coordinates post-turn generation, persistence, and the next prompt's freshness barrier. */
+/**
+ * Executes TSP only when explicitly requested by /summarize.
+ * No turn-end observer, background queue, or automatic retry is installed.
+ */
 export class SessionSummaryCoordinator {
   private readonly store: SessionSummaryStore
-  private readonly states = new Map<string, SessionWorkState>()
-  private readonly operations = new Set<Promise<void>>()
+  private readonly activeSessions = new Set<string>()
+  private readonly evictWhenIdle = new Set<string>()
   private readonly warnedLoadFailures = new Set<string>()
-  private readonly lifecycle = new AbortController()
 
   constructor(
     private readonly ctx: Context,
@@ -38,12 +41,10 @@ export class SessionSummaryCoordinator {
       interpolate: false,
       text: context => context.session === undefined
         ? ''
-        : renderSessionSummaryMarkdown(this.store.peek(context.session.id)),
+        : renderSessionSummaryMarkdown(this.store.peek(context.session.id), this.config.maxContextBytes),
     })
 
-    ctx.on('session/event', (session, event) => {
-      if (event.type === 'turn/end') this.enqueue(session, event)
-    })
+    ctx.on('session/disposed', session => this.evict(session.id))
 
     ctx.on('system-prompt/assemble', async (_assembly, context, next) => {
       const session = context.session
@@ -51,154 +52,146 @@ export class SessionSummaryCoordinator {
 
       try {
         await this.store.load(session.id)
+        this.warnedLoadFailures.delete(session.id)
       } catch (error) {
         this.warnLoadFailure(session.id, error)
         return next()
       }
 
-      await this.waitForPending(session.id, context.signal)
       const assembly = await next()
-      const text = renderSessionSummaryMarkdown(this.store.peek(session.id))
+      const text = renderSessionSummaryMarkdown(this.store.peek(session.id), this.config.maxContextBytes)
       const contribution = assembly.contexts.find(entry => entry.name === CONTEXT_NAME)
       if (contribution !== undefined) {
         contribution.text = text
         contribution.interpolate = false
+      } else if (text.length > 0) {
+        assembly.contexts.push({ name: CONTEXT_NAME, text, interpolate: false })
       }
       return assembly
     }, { prepend: true })
-
-    ctx.effect(() => async () => {
-      this.lifecycle.abort(new Error('dsh-turn-summary disposed'))
-      await Promise.allSettled([...this.operations])
-    })
   }
 
-  private enqueue(session: Session, event: TurnEndEvent): void {
-    if (this.lifecycle.signal.aborted) return
-
-    let state = this.states.get(session.id)
-    if (state === undefined) {
-      state = { queue: [], running: undefined, retryRequested: false }
-      this.states.set(session.id, state)
+  /**
+   * Summarize every complete turn not yet represented by this Session's TSP.
+   * A new TSP document starts at the latest complete local turn; inherited
+   * history and older local history are not backfilled.
+   */
+  async summarize(session: Session, signal: AbortSignal): Promise<SummarizeResult> {
+    const sessionId = session.id
+    if (this.activeSessions.has(sessionId)) {
+      throw new Error('dsh-turn-summary: /summarize is already running for this Session')
     }
-    state.queue.push(event)
 
-    if (state.running !== undefined) {
-      state.retryRequested = true
+    this.activeSessions.add(sessionId)
+    try {
+      signal.throwIfAborted()
+      const snapshot = await this.ctx.sessionQuery.readSession(sessionId)
+      signal.throwIfAborted()
+      const localEvents = snapshot.events.filter(event => event.seq >= snapshot.inheritedEventCount)
+
+      const latestEnd = localEvents.findLast(
+        (event): event is TurnEndEvent => event.type === 'turn/end',
+      )
+      if (latestEnd === undefined) return { processedTurns: 0 }
+
+      let document = await this.store.load(sessionId)
+      if (document === undefined) {
+        const latestTurn = collectTurnInputForEnd(
+          localEvents,
+          latestEnd,
+          this.config.maxEventTextChars,
+        )
+        document = emptyDocument(sessionId, latestTurn.startSeq - 1)
+      }
+
+      let processedTurns = 0
+      let firstTurn: number | undefined
+      let lastTurn: number | undefined
+
+      while (true) {
+        signal.throwIfAborted()
+        const input = collectNextTurnInput(
+          localEvents,
+          document.processedThroughSeq,
+          latestEnd.seq,
+          this.config.maxEventTextChars,
+        )
+        if (input === undefined) {
+          const unprocessedEnd = localEvents.find(event =>
+            event.type === 'turn/end'
+            && event.seq > document!.processedThroughSeq
+            && event.seq <= latestEnd.seq,
+          )
+          if (unprocessedEnd !== undefined) {
+            throw new Error('dsh-turn-summary: cannot locate the start of an unprocessed completed turn')
+          }
+          break
+        }
+
+        const generated = await generateTurnSummary(
+          this.ctx,
+          this.config,
+          session,
+          document,
+          input,
+          signal,
+        )
+        signal.throwIfAborted()
+
+        const turnSummary = {
+          turn: input.turn,
+          startSeq: input.startSeq,
+          endSeq: input.endSeq,
+          startedAt: input.startedAt,
+          endedAt: input.endedAt,
+          reason: input.reason,
+          markdown: generated.turnSummary,
+        }
+        const updated: SessionSummaryDocument = {
+          ...document,
+          processedThroughSeq: input.endSeq,
+          updatedAt: Date.now(),
+          sessionSummary: generated.sessionSummary,
+          recentTurnSummaries: [
+            ...document.recentTurnSummaries.filter(item => item.endSeq < input.startSeq),
+            turnSummary,
+          ].slice(-this.config.maxRecentTurns),
+        }
+
+        // The in-memory context changes only after the atomic JSON replacement succeeds.
+        await this.store.write(updated)
+        document = updated
+        processedTurns += 1
+        firstTurn ??= input.turn
+        lastTurn = input.turn
+      }
+
+      return {
+        processedTurns,
+        ...(firstTurn === undefined ? {} : { firstTurn }),
+        ...(lastTurn === undefined ? {} : { lastTurn }),
+      }
+    } catch (error) {
+      if (!signal.aborted) {
+        this.ctx.logger.warn(
+          'dsh-turn-summary: explicit summarization failed for Session '
+          + sessionId + ': ' + errorMessage(error),
+        )
+      }
+      throw error
+    } finally {
+      this.activeSessions.delete(sessionId)
+      if (this.evictWhenIdle.delete(sessionId)) this.store.evict(sessionId)
+    }
+  }
+
+  private evict(sessionId: string): void {
+    this.warnedLoadFailures.delete(sessionId)
+    if (this.activeSessions.has(sessionId)) {
+      this.evictWhenIdle.add(sessionId)
       return
     }
-    this.startDrain(session, state)
-  }
-
-  private startDrain(session: Session, state: SessionWorkState): void {
-    const operation = this.drain(session, state)
-    state.running = operation
-    this.operations.add(operation)
-    void operation.then(
-      () => this.finishDrain(session, state, operation),
-      () => this.finishDrain(session, state, operation),
-    )
-  }
-
-  private async drain(session: Session, state: SessionWorkState): Promise<void> {
-    while (state.queue.length > 0 && !this.lifecycle.signal.aborted) {
-      const pending = state.queue[0]
-      if (pending === undefined) return
-      try {
-        const reachedPendingEnd = await this.processTurn(session, pending)
-        if (reachedPendingEnd) state.queue.shift()
-      } catch (error) {
-        if (!this.lifecycle.signal.aborted) {
-          this.ctx.logger.warn(
-            'dsh-turn-summary: Session ' + session.id + ', turn ' + pending.data.turn
-            + ' was not summarized: ' + errorMessage(error),
-          )
-        }
-        break
-      }
-    }
-  }
-
-  private finishDrain(session: Session, state: SessionWorkState, operation: Promise<void>): void {
-    this.operations.delete(operation)
-    if (state.running === operation) state.running = undefined
-
-    const retry = state.retryRequested
-    state.retryRequested = false
-    if (retry && state.queue.length > 0 && !this.lifecycle.signal.aborted) {
-      this.startDrain(session, state)
-    }
-  }
-
-  private async processTurn(session: Session, pending: TurnEndEvent): Promise<boolean> {
-    const snapshot = await this.ctx.sessionQuery.readSession(session.id)
-    let document = await this.store.load(session.id)
-
-    if (document !== undefined && pending.seq <= document.processedThroughSeq) return true
-
-    if (document === undefined) {
-      const firstObservedTurn = collectTurnInputForEnd(
-        snapshot.events,
-        pending,
-        this.config.maxEventTextChars,
-      )
-      document = emptyDocument(session.id, firstObservedTurn.startSeq - 1)
-      await this.store.write(document)
-    }
-
-    const input = collectNextTurnInput(
-      snapshot.events,
-      document.processedThroughSeq,
-      pending.seq,
-      this.config.maxEventTextChars,
-    )
-    if (input === undefined) throw new Error('dsh-turn-summary: missing complete turn in source log')
-
-    const generated = await generateTurnSummary(
-      this.ctx,
-      this.config,
-      session,
-      document,
-      input,
-      this.lifecycle.signal,
-    ).catch((error: unknown) => {
-      this.lifecycle.signal.throwIfAborted()
-      const detail = errorMessage(error).replace(/\s+/g, ' ').slice(0, 400)
-      this.ctx.logger.warn('dsh-turn-summary: generation failed for ' + session.id + ' turn ' + input.turn + ': ' + detail)
-      return {
-        turnSummary: 'TSP generation failed: ' + detail + '. Consult the original Session events ' + input.startSeq + '–' + input.endSeq + ' for this turn.',
-        sessionSummary: document!.sessionSummary,
-      }
-    })
-    this.lifecycle.signal.throwIfAborted()
-
-    const turnSummary = {
-      turn: input.turn,
-      startSeq: input.startSeq,
-      endSeq: input.endSeq,
-      startedAt: input.startedAt,
-      endedAt: input.endedAt,
-      reason: input.reason,
-      markdown: generated.turnSummary,
-    }
-    const updated: SessionSummaryDocument = {
-      ...document,
-      processedThroughSeq: input.endSeq,
-      updatedAt: Date.now(),
-      sessionSummary: generated.sessionSummary,
-      recentTurnSummaries: [...document.recentTurnSummaries, turnSummary].slice(-this.config.maxRecentTurns),
-    }
-    await this.store.write(updated)
-    return input.endSeq >= pending.seq
-  }
-
-  private async waitForPending(sessionId: string, signal?: AbortSignal): Promise<void> {
-    while (true) {
-      const running = this.states.get(sessionId)?.running
-      if (running === undefined) return
-      await waitWithSignal(running, signal)
-      if (this.states.get(sessionId)?.running === running) return
-    }
+    this.store.evict(sessionId)
   }
 
   private warnLoadFailure(sessionId: string, error: unknown): void {
@@ -219,34 +212,6 @@ function emptyDocument(sessionId: string, processedThroughSeq: number): SessionS
     sessionSummary: '',
     recentTurnSummaries: [],
   }
-}
-
-function waitWithSignal(promise: Promise<void>, signal?: AbortSignal): Promise<void> {
-  if (signal === undefined) return promise
-  signal.throwIfAborted()
-
-  return new Promise((resolve, reject) => {
-    const abort = () => {
-      cleanup()
-      reject(signal.reason ?? new Error('dsh-turn-summary: prompt assembly aborted'))
-    }
-    const cleanup = () => signal.removeEventListener('abort', abort)
-    signal.addEventListener('abort', abort, { once: true })
-    if (signal.aborted) {
-      abort()
-      return
-    }
-    promise.then(
-      () => {
-        cleanup()
-        resolve()
-      },
-      error => {
-        cleanup()
-        reject(error)
-      },
-    )
-  })
 }
 
 function errorMessage(error: unknown): string {

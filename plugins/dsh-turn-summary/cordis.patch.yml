@@ -1,4 +1,4 @@
 - insert:
     - id: dsh-turn-summary
       name: "dsh-turn-summary"
-      inject: [llm, sessionQuery, systemPrompt]
+      inject: [llm, sessionQuery, systemPrompt, commands]

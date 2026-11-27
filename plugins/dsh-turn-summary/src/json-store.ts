@@ -33,6 +33,12 @@ export class SessionSummaryStore {
     return this.snapshots.get(sessionId)
   }
 
+  /** Drop one Session's in-memory cache without touching its JSON file. */
+  evict(sessionId: string): void {
+    this.loads.delete(sessionId)
+    this.snapshots.delete(sessionId)
+  }
+
   /** Persist a complete replacement before publishing it to readers. */
   async write(document: SessionSummaryDocument): Promise<void> {
     validateDocument(document, document.sessionId)

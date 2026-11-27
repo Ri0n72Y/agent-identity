@@ -3,29 +3,98 @@ import type { SessionEvent } from '@deepseek-ai/dsh-session'
 
 import type { SessionSummaryDocument } from './types.ts'
 
-/** Render the current Session working state and its bounded recent history. */
-export function renderSessionSummaryMarkdown(document: SessionSummaryDocument | undefined): string {
+const TRUNCATION_MARKER = '\n[older TSP context omitted]'
+
+/** Render TSP Markdown within one aggregate UTF-8 context budget. */
+export function renderSessionSummaryMarkdown(
+  document: SessionSummaryDocument | undefined,
+  maxBytes = 24000,
+): string {
   if (document === undefined) return ''
 
-  const sections: string[] = ['# Session continuity — ' + document.sessionId]
-  if (document.sessionSummary.trim().length > 0) {
-    sections.push('## Session Summary\n\n' + document.sessionSummary.trim())
-  }
+  const heading = '# Session continuity — ' + document.sessionId
+  const headingBytes = Buffer.byteLength(heading, 'utf8')
+  if (headingBytes >= maxBytes) return takeUtf8Prefix(heading, maxBytes)
 
-  if (document.recentTurnSummaries.length > 0) {
-    sections.push('## Recent Turn Summaries')
-    for (const turn of document.recentTurnSummaries) {
-      sections.push([
-        '### Turn ' + turn.turn + ' — ' + turn.reason.kind,
-        '- Time: ' + new Date(turn.startedAt).toISOString() + ' to ' + new Date(turn.endedAt).toISOString(),
-        '- Source events: ' + turn.startSeq + '–' + turn.endSeq,
-        '',
-        turn.markdown.trim(),
-      ].join('\n'))
+  const sessionBudget = Math.floor((maxBytes - headingBytes) * 0.6)
+  const sessionText = document.sessionSummary.trim()
+  const sessionSection = sessionText.length === 0
+    ? ''
+    : '## Session Summary\n\n' + truncateUtf8(sessionText, sessionBudget)
+
+  const selectedNewestFirst: string[] = []
+  const recent = [...document.recentTurnSummaries].reverse()
+  for (const turn of recent) {
+    const section = [
+      '### Turn ' + turn.turn + ' — ' + turn.reason.kind,
+      '- Time: ' + new Date(turn.startedAt).toISOString() + ' to ' + new Date(turn.endedAt).toISOString(),
+      '- Source events: ' + turn.startSeq + '–' + turn.endSeq,
+      '',
+      turn.markdown.trim(),
+    ].join('\n')
+    const candidate = [
+      heading,
+      sessionSection,
+      '## Recent Turn Summaries',
+      ...[...selectedNewestFirst, section].reverse(),
+    ].filter(Boolean).join('\n\n')
+    if (Buffer.byteLength(candidate, 'utf8') <= maxBytes) {
+      selectedNewestFirst.push(section)
+      continue
     }
+
+    if (selectedNewestFirst.length === 0) {
+      const fixed = [heading, sessionSection, '## Recent Turn Summaries'].filter(Boolean).join('\n\n')
+      const remaining = maxBytes - Buffer.byteLength(fixed, 'utf8') - 2
+      if (remaining > 0) {
+        selectedNewestFirst.push(truncateUtf8(section, remaining))
+      }
+    }
+    break
   }
 
-  return sections.length === 1 ? '' : sections.join('\n\n')
+  const sections = [
+    heading,
+    sessionSection,
+    ...(selectedNewestFirst.length === 0
+      ? []
+      : ['## Recent Turn Summaries', ...selectedNewestFirst.reverse()]),
+  ].filter(Boolean)
+  return sections.join('\n\n')
+}
+
+function truncateUtf8(value: string, maxBytes: number): string {
+  if (Buffer.byteLength(value, 'utf8') <= maxBytes) return value
+  const markerBytes = Buffer.byteLength(TRUNCATION_MARKER, 'utf8')
+  if (maxBytes <= markerBytes) return takeUtf8Prefix(value, maxBytes)
+  const available = maxBytes - markerBytes
+  const head = takeUtf8Prefix(value, Math.ceil(available * 0.7))
+  const tail = takeUtf8Suffix(value, available - Buffer.byteLength(head, 'utf8'))
+  return head + TRUNCATION_MARKER + tail
+}
+
+function takeUtf8Prefix(value: string, maxBytes: number): string {
+  let output = ''
+  let size = 0
+  for (const character of value) {
+    const next = Buffer.byteLength(character, 'utf8')
+    if (size + next > maxBytes) break
+    output += character
+    size += next
+  }
+  return output
+}
+
+function takeUtf8Suffix(value: string, maxBytes: number): string {
+  let output = ''
+  let size = 0
+  for (const character of [...value].reverse()) {
+    const next = Buffer.byteLength(character, 'utf8')
+    if (size + next > maxBytes) break
+    output = character + output
+    size += next
+  }
+  return output
 }
 
 /** Render one validated Session turn as Markdown for the summarization model. */
@@ -130,9 +199,6 @@ function contentText(content: readonly ContentBlock[]): string {
         break
       case 'tool-removal':
         parts.push('[tool disabled: ' + block.toolName + ']')
-        break
-      default:
-        parts.push('[' + String(block.type) + ' block omitted]')
         break
     }
   }

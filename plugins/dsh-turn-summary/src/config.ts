@@ -11,6 +11,8 @@ export interface TurnSummaryConfig {
   timeoutMs?: number
   /** Maximum UTF-8 bytes in one Markdown generation input. */
   maxInputBytes?: number
+  /** Maximum UTF-8 bytes injected into one Agent prompt as TSP context. */
+  maxContextBytes?: number
   /** Maximum characters retained from one source event. */
   maxEventTextChars?: number
   /** Maximum characters accepted in each generated Markdown summary. */
@@ -26,6 +28,7 @@ export interface ResolvedTurnSummaryConfig {
   readonly maxTokens: number
   readonly timeoutMs: number
   readonly maxInputBytes: number
+  readonly maxContextBytes: number
   readonly maxEventTextChars: number
   readonly maxSummaryChars: number
   readonly maxRecentTurns: number
@@ -35,12 +38,13 @@ export interface ResolvedTurnSummaryConfig {
 export const Config: z<TurnSummaryConfig> = z.object({
   provider: z.string(),
   model: z.string(),
-  maxTokens: z.number().step(1).min(1).default(1800),
+  maxTokens: z.number().step(1).min(1).max(10000).default(1800),
   timeoutMs: z.number().step(1).min(1000).max(600000).default(60000),
-  maxInputBytes: z.number().step(1).min(1024).default(120000),
-  maxEventTextChars: z.number().step(1).min(256).default(6000),
-  maxSummaryChars: z.number().step(1).min(512).default(12000),
-  maxRecentTurns: z.number().step(1).min(1).default(12),
+  maxInputBytes: z.number().step(1).min(1024).max(10000000).default(120000),
+  maxContextBytes: z.number().step(1).min(1024).max(1000000).default(24000),
+  maxEventTextChars: z.number().step(1).min(256).max(100000).default(6000),
+  maxSummaryChars: z.number().step(1).min(512).max(100000).default(12000),
+  maxRecentTurns: z.number().step(1).min(1).max(100).default(12),
 })
 
 /** Resolve defaults and reject an incomplete explicit model route. */
@@ -58,20 +62,14 @@ export function resolveConfig(config: TurnSummaryConfig = {}): ResolvedTurnSumma
   return Object.freeze({
     ...(config.provider === undefined ? {} : { provider: config.provider }),
     ...(config.model === undefined ? {} : { model: config.model }),
-    maxTokens: positiveInteger('maxTokens', config.maxTokens ?? 1800),
+    maxTokens: boundedInteger('maxTokens', config.maxTokens ?? 1800, 1, 10000),
     timeoutMs: boundedInteger('timeoutMs', config.timeoutMs ?? 60000, 1000, 600000),
     maxInputBytes: boundedInteger('maxInputBytes', config.maxInputBytes ?? 120000, 1024, 10000000),
-    maxEventTextChars: positiveInteger('maxEventTextChars', config.maxEventTextChars ?? 6000),
-    maxSummaryChars: positiveInteger('maxSummaryChars', config.maxSummaryChars ?? 12000),
-    maxRecentTurns: positiveInteger('maxRecentTurns', config.maxRecentTurns ?? 12),
+    maxContextBytes: boundedInteger('maxContextBytes', config.maxContextBytes ?? 24000, 1024, 1000000),
+    maxEventTextChars: boundedInteger('maxEventTextChars', config.maxEventTextChars ?? 6000, 256, 100000),
+    maxSummaryChars: boundedInteger('maxSummaryChars', config.maxSummaryChars ?? 12000, 512, 100000),
+    maxRecentTurns: boundedInteger('maxRecentTurns', config.maxRecentTurns ?? 12, 1, 100),
   })
-}
-
-function positiveInteger(name: string, value: number): number {
-  if (!Number.isSafeInteger(value) || value <= 0) {
-    throw new Error('dsh-turn-summary: ' + name + ' must be a positive safe integer')
-  }
-  return value
 }
 
 function boundedInteger(name: string, value: number, min: number, max: number): number {
