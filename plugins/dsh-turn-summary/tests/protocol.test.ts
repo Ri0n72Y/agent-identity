@@ -28,6 +28,7 @@ const events = [
     type: 'user/message',
     seq: SessionSeq(1),
     time: 110,
+    surfaceOp: 'append',
     data: {
       id: messageId('user-1'),
       role: 'user',
@@ -39,6 +40,7 @@ const events = [
     type: 'user/message',
     seq: SessionSeq(2),
     time: 120,
+    surfaceOp: 'append',
     data: {
       id: messageId('context-1'),
       role: 'user',
@@ -56,6 +58,7 @@ const events = [
     type: 'tool/result',
     seq: SessionSeq(4),
     time: 140,
+    surfaceOp: 'append',
     data: {
       turn: 1,
       step: 1,
@@ -74,6 +77,7 @@ const events = [
     type: 'assistant/message',
     seq: SessionSeq(5),
     time: 150,
+    surfaceOp: 'append',
     data: {
       turn: 1,
       step: 1,

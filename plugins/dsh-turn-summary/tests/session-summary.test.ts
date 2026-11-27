@@ -4,6 +4,7 @@ import { join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { SessionId, SessionSeq } from '@deepseek-ai/dsh-session'
 import type { Session, SessionEvent } from '@deepseek-ai/dsh-session'
+import type { SummaryModelOutput } from '../src/types.ts'
 import type { Context } from '@deepseek-ai/cordis'
 
 import { SessionSummaryCoordinator } from '../src/session-summary.ts'
@@ -142,12 +143,15 @@ describe('SessionSummaryCoordinator explicit execution', () => {
     const coordinator = new SessionSummaryCoordinator(ctx, config, root)
     const session = makeSession()
     let release: (() => void) | undefined
-    generate.mockImplementationOnce(() => new Promise(resolve => {
+    let markStarted: (() => void) | undefined
+    const started = new Promise<void>(resolve => { markStarted = resolve })
+    generate.mockImplementationOnce(() => new Promise<SummaryModelOutput>(resolve => {
       release = () => resolve({ turnSummary: 'Done', sessionSummary: 'Done' })
+      markStarted?.()
     }))
 
     const first = coordinator.summarize(session, new AbortController().signal)
-    await Promise.resolve()
+    await started
     await expect(coordinator.summarize(session, new AbortController().signal)).rejects.toThrow('already running')
     release?.()
     await expect(first).resolves.toMatchObject({ processedTurns: 1 })
