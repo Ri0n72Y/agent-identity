@@ -1,27 +1,12 @@
 import type { ContentBlock, FinishReason } from '@deepseek-ai/dsh-llm'
 import type { SessionEvent } from '@deepseek-ai/dsh-session'
 
-import type { SessionSummaryDocument } from './types.ts'
-
-/** Render all stored summaries without a character or byte cutoff. */
-export function renderSessionSummaryMarkdown(document: SessionSummaryDocument | undefined): string {
-  if (document === undefined) return ''
-  return [
-    '# Session continuity — ' + document.sessionId,
-    '## Session Summary\n\n' + document.sessionSummary,
-    ...(document.turnSummaries.length === 0 ? [] : [
-      '## Turn Summaries',
-      ...document.turnSummaries.map(turn => '### Turn ' + turn.turn + '\n\n' + turn.markdown),
-    ]),
-  ].join('\n\n')
-}
-
 /** Render one validated Session turn as Markdown for the summarization model. */
 export function renderTurnEvents(events: readonly SessionEvent[]): string {
   const start = events.find((event): event is Extract<SessionEvent, { type: 'turn/start' }> => event.type === 'turn/start')
   const end = events.findLast((event): event is Extract<SessionEvent, { type: 'turn/end' }> => event.type === 'turn/end')
   if (start === undefined || end === undefined) {
-    throw new Error('dsh-turn-summary: a turn transcript requires matching start and end events')
+    throw new Error('dsh-tsp: a turn transcript requires matching start and end events')
   }
 
   const sections: string[] = [

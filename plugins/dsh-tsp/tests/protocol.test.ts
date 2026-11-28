@@ -3,10 +3,8 @@ import { SessionSeq } from '@deepseek-ai/dsh-session'
 import type { SessionEvent } from '@deepseek-ai/dsh-session'
 import type { MessageId, ToolCallId } from '@deepseek-ai/dsh-llm'
 
-import { collectCurrentTurn } from '../src/turn-collector.ts'
-import { buildInput, parseSummaryOutput } from '../src/summary-generator.ts'
-import { renderSessionSummaryMarkdown } from '../src/markdown-renderer.ts'
-import type { SessionSummaryDocument } from '../src/types.ts'
+import { collectCurrentTurn } from '../src/turn-summary/turn-collector.ts'
+import { buildInput, parseSummaryOutput } from '../src/turn-summary/summary-generator.ts'
 
 declare module '@deepseek-ai/dsh-llm' {
   interface MessageSourceMap {
@@ -98,11 +96,6 @@ const events = [
   },
 ] satisfies SessionEvent[]
 
-const empty: SessionSummaryDocument = {
-  sessionId: 's1',
-  sessionSummary: '',
-  turnSummaries: [],
-}
 
 describe('TSP protocol', () => {
   it('renders the current complete turn, omitting runtime snapshots and reasoning', () => {
@@ -128,29 +121,22 @@ describe('TSP protocol', () => {
     expect(collectCurrentTurn(second.slice(0, 1))).toBeUndefined()
   })
 
-  it('preserves complete long text in the model input and injected Markdown', () => {
+  it('preserves complete long text in input and output', () => {
     const long = '输入'.repeat(70000) + ' FINAL RESPONSE'
     const turn = collectCurrentTurn(events.map(event => event.type === 'assistant/message'
       ? { ...event, data: { ...event.data, message: { ...event.data.message, content: [{ type: 'text' as const, text: long }] } } }
       : event))
     if (!turn) throw new Error('Expected a complete turn')
     expect(turn.sourceMarkdown).toContain(long)
-    expect(buildInput(empty, turn)).toContain(long)
-    const output = parseSummaryOutput(JSON.stringify({ turnSummary: long, sessionSummary: long }))
-    expect(output.turnSummary).toBe(long)
-    const doc = { ...empty, sessionSummary: output.sessionSummary, turnSummaries: [{ turn: 1, markdown: output.turnSummary }] }
-    expect(renderSessionSummaryMarkdown(doc).split(long)).toHaveLength(3)
+    expect(buildInput('s1', turn)).toContain(long)
+    expect(buildInput('s1', turn)).toContain('s1')
+    expect(parseSummaryOutput(JSON.stringify({ summary: long }))).toBe(long)
   })
 
-  it('validates both complete model outputs', () => {
-    const result = parseSummaryOutput(JSON.stringify({
-      turnSummary: 'Inspected; file missing.',
-      sessionSummary: 'Repository inspection pending.',
-    }))
-    expect(result.turnSummary).toBe('Inspected; file missing.')
-    expect(result.sessionSummary).toBe('Repository inspection pending.')
+  it('validates the single summary field', () => {
+    expect(parseSummaryOutput(JSON.stringify({ summary: 'Inspected; file missing.' }))).toBe('Inspected; file missing.')
     expect(() => parseSummaryOutput('not JSON')).toThrow()
-    expect(() => parseSummaryOutput(JSON.stringify({ turnSummary: '', sessionSummary: 'state' }))).toThrow()
-    expect(() => parseSummaryOutput(JSON.stringify({ turnSummary: 'state', sessionSummary: 'state', extra: true }))).toThrow()
+    expect(() => parseSummaryOutput(JSON.stringify({ summary: '' }))).toThrow()
+    expect(() => parseSummaryOutput(JSON.stringify({ summary: 'state', extra: true }))).toThrow()
   })
 })

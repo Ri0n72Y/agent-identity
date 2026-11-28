@@ -21,14 +21,14 @@ export const Config: z<TurnSummaryConfig> = z.object({
 
 export function resolveConfig(config: TurnSummaryConfig = {}): ResolvedTurnSummaryConfig {
   if ((config.provider === undefined) !== (config.model === undefined)) {
-    throw new Error('dsh-turn-summary: provider and model must be supplied together')
+    throw new Error('dsh-tsp: provider and model must be supplied together')
   }
   if (config.provider?.trim() === '' || config.model?.trim() === '') {
-    throw new Error('dsh-turn-summary: provider and model overrides must be non-empty')
+    throw new Error('dsh-tsp: provider and model overrides must be non-empty')
   }
   const timeoutMs = config.timeoutMs ?? 60000
   if (!Number.isSafeInteger(timeoutMs) || timeoutMs < 1000 || timeoutMs > 600000) {
-    throw new Error('dsh-turn-summary: timeoutMs must be an integer from 1000 to 600000')
+    throw new Error('dsh-tsp: timeoutMs must be an integer from 1000 to 600000')
   }
   return Object.freeze({
     ...(config.provider === undefined ? {} : { provider: config.provider }),

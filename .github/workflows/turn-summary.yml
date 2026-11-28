@@ -1,9 +1,9 @@
 name: TSP checks
 on:
   pull_request:
-    paths: ['plugins/dsh-turn-summary/**', '.github/workflows/turn-summary.yml']
+    paths: ['plugins/dsh-tsp/**', '.github/workflows/turn-summary.yml']
   push:
-    paths: ['plugins/dsh-turn-summary/**', '.github/workflows/turn-summary.yml']
+    paths: ['plugins/dsh-tsp/**', '.github/workflows/turn-summary.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: plugins/dsh-turn-summary
+        working-directory: plugins/dsh-tsp
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
