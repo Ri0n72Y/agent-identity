@@ -1,54 +1,75 @@
 ---
 name: dependency-risk-testing
-description: Design, review, or simplify tests and CI around production dependency risk. Use when choosing stability tests, auditing white-box coupling or weak black-box cases, removing duplicated coverage, or separating routine checks from integration and release verification.
+description: Design, review, or simplify tests and CI around production dependency risk. Use when writing regression tests, auditing test effectiveness, reviewing test doubles and refactoring coupling, removing redundant coverage, or selecting integration and acceptance checks.
 ---
 
 # Dependency-risk testing
 
-Derive lasting tests from real dependency risk and observable contracts, not feature counts, past bugs, or coverage targets. Explicit project verification requirements still apply.
+Keep tests that detect consequential defects in production behavior at a reasonable maintenance cost. Derive them from actual dependency risks and observable contracts. Explicit project verification requirements still apply.
 
 ## Trace the owned dependency
 
-Inspect the actual production path before changing tests: responsible owner, its callers and consumers, public contract, state, side effects, transformations, lifecycle, timing, and error propagation. Do not reconstruct that path from test names or intended architecture.
+Inspect the actual production path before changing tests: owner, callers, consumers, contract, state, side effects, transformations, lifecycle, timing, and error propagation. Do not infer the path from test names or intended architecture.
 
-Identify the first boundary where a plausible defect becomes observable. Prefer structural risks: shared mutable state, converging inputs, fan-out, ordering, cancellation, retries, persistence, representation changes, caching, and fail-closed decisions. A past bug alone does not justify a permanent test; the underlying recurring risk might.
+Find the nearest boundary where a plausible defect becomes observable. Prioritize shared mutable state, converging inputs, fan-out, ordering, concurrency, cancellation, retries, persistence, representation changes, caching, and fail-closed decisions. Include ordinary behavior when it protects a consequential contract. A feature or historical bug alone does not justify another permanent test.
 
 ## Choose the smallest meaningful test
 
-Keep the test near the responsible function or dependency edge. If `A -> B -> C -> D` fails because of `B -> C`, test that contract rather than replaying the entire chain. Test the whole chain only when its composition has an independent failure mode.
+Keep the test near the responsible unit or dependency edge. If `A -> B -> C -> D` fails because of `B -> C`, test that contract; exercise the whole chain only when its composition introduces an independent risk.
 
-Separate **design method**, **scope**, and **cadence**:
+Separate design method, scope, and execution cadence:
 
-- **White-box:** Use implementation knowledge for local branches, invariants, or function dependencies that genuinely require it. Keep that knowledge inside the owned unit; do not encode unrelated components' internals.
-- **Black-box:** Derive cases from the unit's external contract. Choose meaningful equivalence classes, boundary values, invalid inputs, state transitions, or properties; do not equate black-box testing with E2E or with sheer case volume.
-- **Integration / E2E:** Exercise actual boundaries when unit-level substitutes cannot establish their contract. A mocked integration must not be presented as proof of the real runtime, network, native addon, device, or model.
+- **White-box:** Use implementation knowledge to identify local risks and invariants. Assert stable behavior through supported entry points; constrain implementation properties only when they are themselves necessary to the contract.
+- **Black-box:** Derive cases from the contract using meaningful equivalence classes, boundaries, invalid inputs, transitions, or properties. Black-box testing does not imply E2E or large case counts.
+- **Integration / E2E:** Exercise real dependency boundaries when a narrower test cannot establish their behavior. Test composition and runtime compatibility rather than repeating unit coverage.
 
-Prefer asserting observable output, state, persistence, errors, and externally meaningful ordering over incidental call sequences. A contract-preserving refactor should ordinarily leave its tests unchanged.
+Prefer observable results, state, persistence, errors, and consequential side effects. Assert outgoing requests, interaction counts, or ordering when these are part of a boundary contract (e.g. correct destination, no duplicate write). Avoid incidental internal calls and private-state assertions.
 
-## Make the protection discriminating
+## Require discriminating evidence
 
-For each test, identify a plausible incorrect implementation that its assertions would reject. Select cases where the contract is fragile, rather than a convenient happy path that would pass almost any implementation.
+Before adding or retaining a test, identify the contract, a plausible defect, the case that exposes it, and the observable failure. Reject tests that cannot distinguish the intended behavior from that defect.
 
-Where useful, check an invariant across representative partitions or transitions instead of enumerating arbitrary examples. Consider rejected inputs and failure effects, not just returned values. No fixed number of boundary cases, tests per function, or coverage percentage is required.
+- Execute the actual production logic under test. Derive expected results independently from the contract; do not copy the implementation, assert its source text, or preconfigure the result being claimed as evidence.
+- Choose data for the risk it exposes. Verify relevant transformations, boundary values, relationships, state transitions, and failure effects. Do not freeze unrelated sample data, wording, formatting, or configuration. Assert exact values when the contract requires exactness.
+- Prefer one coherent behavior per test. Combine equivalent cases where helpful; retain distinct cases when they protect independent failures. Keep setup, action, and assertions concise and readable without a fixture framework.
+- For a regression or a questionable test, demonstrate the relevant failure when feasible: run against the defective implementation or temporarily inject a plausible fault. Confirm failure for the intended reason and success after restoration. Use targeted checks; do not mandate mutation tooling or scores. Never commit deliberate faults.
 
-## Preserve production encapsulation
+A behavior-preserving refactor should ordinarily leave tests unchanged. Investigate both harmless changes that break tests and consequential defects that pass them. Delete or rewrite change-detector tests that merely mirror production code.
 
-Exercise the unit through its supported entry points and observe its real effects. Substitute dependencies only at genuine external ports, preserving the contract relevant to the test.
+## Preserve fidelity and encapsulation
 
-Do not bypass initialization, populate private fields, call private orchestration methods, or recreate a fictitious runtime merely to make a test pass. If this seems necessary, reconsider the test boundary first; do not add production abstractions or test-only hooks without an independent design reason.
+Prefer a real, deterministic dependency; otherwise use a maintained, sufficiently faithful fake, then a minimal stub or mock where needed. Substitute only at genuine dependency ports. Keep the logic responsible for the claimed protection real.
+
+A test double must preserve the contract relevant to the test. Verify consequential request contents, identity, and side effects where appropriate; a stub that returns success for any input cannot establish correct dispatch. Simulate failures at the correct boundary (including after a side effect when testing an uncertain outcome). Do not infer real dependency behavior from a substitute that performs the expected outcome itself.
+
+Use supported entry points and normal initialization. Do not fabricate private state, invoke private orchestration, or rebuild an external runtime, browser, DOM, database, or scheduler merely to make tests pass. Do not add test-only hooks or production abstractions without an independent design reason.
+
+If the necessary environment is unavailable, run meaningful local tests of owned logic and document the remaining integration or acceptance checks as unverified. Do not invent a simulated integration to claim real runtime, network, device, graphical, or model acceptance.
 
 ## Remove duplication and assign cadence
 
-Keep one nearest meaningful protection per invariant. Remove or shrink another test when it repeats that protection without a distinct failure mode, when ownership changes, or when the invalid state becomes unrepresentable. Prefer deleting duplicated setup to building a fixture framework.
+Audit existing tests when fixing bugs, changing contracts, or refactoring. Keep the nearest meaningful protection for each risk; remove or shrink checks that repeat it, protect obsolete behavior, or assert an invalid state that is now unrepresentable. Strengthen an existing case before adding another. Remove unused fixtures with their tests. Do not hide unchanged test complexity by combining cases solely to reduce the count.
 
-- **Routine CI:** Keep fast, deterministic checks for structural risks and contracts affected by ordinary changes.
-- **Dependency integration:** Run real compatibility and composition checks when their owning boundary changes, or at a justified scheduled or manual gate.
-- **Release / acceptance:** Reserve costly full-flow, device, model, graphical, or production-like regression for appropriate release gates unless its risk warrants more frequent checks.
+- **Routine CI:** Fast, deterministic checks for structural risks and stable contracts; use controlled timing and isolated resources where feasible.
+- **Dependency integration:** Real compatibility and composition checks at the frequency justified by their risks, costs, and change rate.
+- **Release / acceptance:** Realistic full-flow, device, model, graphical, or production-like checks at appropriate gates, automated or manual as justified.
 
-These are scheduling choices, not definitions of unit, regression, white-box, or black-box tests. Preserve required release gates. Do not add change-detection frameworks, CI matrices, or orchestration solely to reduce a small suite.
+Cadence is independent of test design and scope. Preserve required verification gates. Do not impose test counts, coverage thresholds, pyramid ratios, or new CI orchestration without a separate project need.
 
 ## Review and verify
 
-For each proposed protection, ask: **owner and contract → structural risk → discriminating case → observable failure**. Reconsider tests that break under behavior-preserving refactors or whose substitutes conceal the risk they claim to protect.
+For each proposed or existing test, decide to keep, strengthen, simplify, remove, or move it to a more appropriate verification boundary. Base the decision on:
 
-Remove duplicate protection. Exercise changed verification paths before claiming completion; report anything not run as unverified. Do not count mocked success as real integration acceptance.
+1. **Contract and risk:** Which production behavior and plausible failure does it protect?
+2. **Discrimination:** Would the defect actually fail the test for the intended reason?
+3. **Fidelity:** Does the relevant production logic execute, and do substitutes preserve the necessary contract?
+4. **Stability and cost:** Would a harmless refactor break it? Is there already sufficient protection at a cheaper boundary?
+
+Keep independent risk coverage; do not weaken assertions merely to restore green CI. When removing coverage that remains necessary, identify the replacement check or explicitly record the unverified risk. Run changed verification paths before claiming completion. Report checks not run and limits of the evidence. A passing suite, test count, or line coverage alone does not establish effectiveness.
+
+## References
+
+- Google Testing Blog: [Change-Detector Tests Considered Harmful](https://testing.googleblog.com/2015/01/testing-on-toilet-change-detector-tests.html), [Increase Test Fidelity By Avoiding Mocks](https://testing.googleblog.com/2024/02/increase-test-fidelity-by-avoiding-mocks.html).
+- Software Engineering at Google: [Unit Testing](https://abseil.io/resources/swe-book/html/ch12.html), [Test Doubles](https://abseil.io/resources/swe-book/html/ch13.html).
+- Ham Vocke: [The Practical Test Pyramid](https://martinfowler.com/articles/practical-test-pyramid.html).
+- Kent C. Dodds: [Testing Implementation Details](https://kentcdodds.com/blog/testing-implementation-details).
