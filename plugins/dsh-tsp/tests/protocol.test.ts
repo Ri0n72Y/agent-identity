@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest'
 import { SessionSeq } from '@deepseek-ai/dsh-session'
 import type { SessionEvent } from '@deepseek-ai/dsh-session'
-import type { Message, MessageId, ToolCallId } from '@deepseek-ai/dsh-llm'
+import type { Message, MessageId, ToolCallId, ToolCallBlock, ToolSchema } from '@deepseek-ai/dsh-llm'
 
 import { collectCurrentTurn } from '../src/turn-summary/turn-collector.ts'
-import { validateSummaryOutput } from '../src/turn-summary/summary-generator.ts'
+import { readStructuredOutput, STRUCTURED_OUTPUT_TOOL, withStructuredOutput } from '../src/turn-summary/structured-output.ts'
 import { buildSummaryMessages, TURN_SUMMARY_INSTRUCTION } from '../src/turn-summary/request.ts'
 
 declare module '@deepseek-ai/dsh-llm' {
@@ -98,6 +98,10 @@ const events = [
 ] satisfies SessionEvent[]
 
 
+function outputCall(args: string): ToolCallBlock {
+  return { type: 'tool-call', id: callId, name: STRUCTURED_OUTPUT_TOOL.name, arguments: args }
+}
+
 describe('Turn Summary request', () => {
   it('selects only the latest complete local turn', () => {
     const second: SessionEvent[] = [
@@ -142,15 +146,35 @@ describe('Turn Summary request', () => {
     const request = buildSummaryMessages([message], 's1', turn)
     expect(request[0]).toBe(message)
     expect(request[0]?.content[0]).toEqual({ type: 'text', text: long })
-    expect(validateSummaryOutput(JSON.stringify({ summary: long }))).toBe(long)
+    expect(readStructuredOutput([outputCall(JSON.stringify({ summary: long }))])).toBe(long)
   })
   it('accepts only the expected JSON object and preserves the summary string', () => {
     const summary = '  first line\nsecond line  '
-    expect(validateSummaryOutput(JSON.stringify({ summary }))).toBe(summary)
+    expect(readStructuredOutput([outputCall(JSON.stringify({ summary }))])).toBe(summary)
     for (const invalid of ['', '  ', 'plain text', '{"summary":', 'null', '[]',
       '"text"', '{}', '{"summary":""}', '{"summary":"  "}', '{"summary":1}',
       '{"summary":"ok","turn":7}', '~~~json\n{"summary":"ok"}\n~~~']) {
-      expect(() => validateSummaryOutput(invalid)).toThrow()
+      expect(() => readStructuredOutput([outputCall(invalid)])).toThrow()
     }
+  })
+
+  it('requires a single output tool call and rejects other calls', () => {
+    const call = outputCall('{"summary":"ok"}')
+    expect(readStructuredOutput([call])).toBe('ok')
+    expect(() => readStructuredOutput([])).toThrow()
+    expect(() => readStructuredOutput([{ type: 'text', text: call.arguments }])).toThrow()
+    expect(() => readStructuredOutput([call, call])).toThrow()
+    expect(() => readStructuredOutput([{ ...call, name: 'read_file' }])).toThrow()
+    expect(() => readStructuredOutput([call, { ...call, name: 'read_file' }])).toThrow()
+  })
+
+  it('adds the output declaration without changing existing tools or history', () => {
+    const original: ToolSchema = { name: 'read_file', description: 'Read a file', parameters: { type: 'object' } }
+    const history = { tools: [original], updates: [] }
+    const result = withStructuredOutput([original], history)
+    expect(result.tools).toEqual([original, STRUCTURED_OUTPUT_TOOL])
+    expect(result.toolHistory.tools).toEqual([original, STRUCTURED_OUTPUT_TOOL])
+    expect(history.tools).toEqual([original])
+    expect(() => withStructuredOutput([STRUCTURED_OUTPUT_TOOL], history)).toThrow()
   })
 })

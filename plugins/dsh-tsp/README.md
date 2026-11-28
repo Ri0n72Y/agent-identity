@@ -4,13 +4,13 @@ A DeepSeek Harness plugin package for the Turn Summary Protocol.
 
 ## Turn Summary
 
-Run `/summarize` in the target Session. The command selects the latest complete local turn and reuses DSH's native model-visible context (including its existing system messages and tool history). It appends a fixed summary directive and only the supplemental target-turn facts needed to identify the turn and report failures or omitted messages. One auxiliary LLM request returns a JSON object of the form `{"summary":"..."}`. The plugin requires exactly one non-empty string field and rejects malformed, incomplete, or extra-field output before writing.
+Run `/summarize` in the target Session. The command selects the latest complete local turn and reuses DSH's native model-visible context (including its existing system messages and tool history). It appends a fixed summary directive and only the supplemental target-turn facts needed to identify the turn and report failures or omitted messages. One auxiliary LLM request exposes a request-local `structured_output` tool whose argument schema is `{"summary":"..."}` (one required string field). The fixed instruction requires exactly one call to that tool. The plugin reads its JSON arguments, rejects malformed, empty, extra-field or unexpected tool calls, and persists the validated summary. It does not dispatch tools or enter an agent loop.
 
-The original message prefix and tool definitions are reused, following DSH's native compaction request pattern, to allow provider prefix-cache reuse. No transcript is rendered or reserialized as Markdown. The actual cache hit depends on the provider, route, and retained prefix.
+The original message prefix and existing tool definitions are retained, following DSH's native compaction request pattern. The additional output-tool declaration can change provider prefix-cache eligibility. No transcript is rendered or reserialized as Markdown. The actual cache hit depends on the provider, route, and retained prefix.
 
 Each record contains only sessionId, turn and summary. Records are stored independently under `$DSH_HOME/state/tsp/turn-summary/<hex-session-id>/<turn>.json`. Repeated execution for the same turn replaces that record. Skipped turns require no handling. Model or storage failure returns an error without replacing a previously saved record. The plugin does not truncate source text or generated summaries.
 
-The fixed directive requests JSON explicitly. The current DSH `GenerateOptions` contract exposes no JSON output mode, and the native DeepSeek Messages endpoint does not support output-format enforcement. The plugin retains the Session's native model route and validates the JSON locally; it does not send unsupported parameters or bypass DSH. See [DeepSeek JSON Output](https://api-docs.deepseek.com/guides/json_mode/) and [Messages API](https://api-docs.deepseek.com/api/create-message/).
+The output-tool approach follows DSH's native [Subagent structured output](https://github.com/deepseek-ai/deepseek-harness/blob/master/packages/subagent/subagent/src/structured.ts). The declaration is local to the auxiliary request; it does not register a global executable tool or use provider-specific forced-tool parameters. A plain-text response is an error, with no automatic retry. Existing Session tools are never executed by the auxiliary request. A pre-existing tool named `structured_output` causes the request to fail rather than silently replace its schema.
 
 ## Configuration
 
@@ -24,4 +24,4 @@ npm install
 npm run check
 ```
 
-Tests cover standalone turn selection, unchanged native request prefix, JSON response validation and JSON storage. Native command execution, model calls and actual cache hits require a running DSH environment.
+Tests cover standalone turn selection, unchanged native request prefix, output-tool declaration, argument validation and JSON storage. Native command execution, model calls and actual cache hits require a running DSH environment.

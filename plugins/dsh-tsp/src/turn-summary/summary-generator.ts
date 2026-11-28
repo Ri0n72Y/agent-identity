@@ -6,6 +6,7 @@ import type { Session } from '@deepseek-ai/dsh-session'
 import type { ResolvedTurnSummaryConfig } from '../config.ts'
 import type { TurnSummaryInput } from './types.ts'
 import { buildSummaryMessages } from './request.ts'
+import { readStructuredOutput, withStructuredOutput } from './structured-output.ts'
 
 declare module '@deepseek-ai/dsh-llm/types' {
   interface LlmRequestPurposeMap {
@@ -29,8 +30,7 @@ export async function generateTurnSummary(
   const options: GenerateOptions = {
     ...route,
     messages,
-    toolHistory: session.toolHistory(),
-    ...(header?.tools === undefined ? {} : { tools: [...header.tools] }),
+    ...withStructuredOutput(header?.tools ?? [], session.toolHistory()),
     ...(header?.config.provider === route.provider && header.config.model === route.model
       && header.config.reasoningEffort !== undefined ? { reasoningEffort: header.config.reasoningEffort } : {}),
     sessionId: session.id,
@@ -47,26 +47,9 @@ export async function generateTurnSummary(
   }
 
   if (!finished) throw new Error('dsh-tsp: model stream ended without a finish event')
-  const text = textOutput(assembler.blocks())
   assertSuccessfulFinish(assembler.finish)
   signal.throwIfAborted()
-  return validateSummaryOutput(text)
-}
-
-/** Validate the model's JSON response before persisting its summary. */
-export function validateSummaryOutput(text: string): string {
-  let value: unknown
-  try {
-    value = JSON.parse(text)
-  } catch (error) {
-    throw new Error('dsh-tsp: model output is not valid JSON', { cause: error })
-  }
-  if (typeof value !== 'object' || value === null || Array.isArray(value)
-    || Object.keys(value).length !== 1 || !('summary' in value)
-    || typeof value.summary !== 'string' || value.summary.trim().length === 0) {
-    throw new Error('dsh-tsp: expected a JSON object containing only a non-empty summary string')
-  }
-  return value.summary
+  return readStructuredOutput(assembler.blocks())
 }
 
 function resolveRoute(
@@ -82,28 +65,17 @@ function resolveRoute(
   return { provider, model }
 }
 
-function textOutput(blocks: ReturnType<BlockAssembler['blocks']>): string {
-  const unsupported = blocks.find(block => block.type !== 'text' && block.type !== 'reasoning')
-  if (unsupported !== undefined) {
-    throw new Error('dsh-tsp: summarizer output must contain text only')
-  }
-  return blocks
-    .filter((block): block is Extract<(typeof blocks)[number], { type: 'text' }> => block.type === 'text')
-    .map(block => block.text)
-    .join('')
-}
-
 function assertSuccessfulFinish(finish: FinishReason): void {
   switch (finish.kind) {
-    case 'stop':
+    case 'tool-calls':
       return
+    case 'stop':
+      throw new Error('dsh-tsp: model did not submit structured_output')
     case 'error':
     case 'aborted':
       throw new Error('dsh-tsp: summarization failed (' + finish.failure.code + '): ' + finish.failure.message)
     case 'max-tokens':
       throw new Error('dsh-tsp: model output limit reached before completing the summary')
-    case 'tool-calls':
-      throw new Error('dsh-tsp: summarizer attempted to call a tool')
     default:
       throw new Error('dsh-tsp: summarizer returned an unsupported finish reason')
   }

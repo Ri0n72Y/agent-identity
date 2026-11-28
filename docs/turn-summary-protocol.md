@@ -6,9 +6,9 @@ TSP defines a natural-language summary of one DSH turn, identified by its Sessio
 
 The dsh-tsp package provides a Turn Summary operation. It selects the latest complete local turn and reuses the Session's existing DSH model-visible context and tool declarations. A fixed summary directive is appended after the original message prefix, with supplemental facts extracted from the selected turn's events when needed to identify the turn, account for failures, or recover evidence omitted from the model-visible context. The plugin does not construct a Markdown transcript or truncate the source text.
 
-One auxiliary LLM call returns a JSON object containing exactly one non-empty string field, `summary`, describing the selected turn: the user request, actual tool calls and their results, failed attempts with concise causes, and the final response or deliverable. Earlier conversation serves as background only. The original request prefix is retained to enable provider caching, without assuming a cache hit.
+One auxiliary LLM call exposes a request-local `structured_output` tool with an object parameter schema containing exactly one required string field, `summary`, describing the selected turn: the user request, actual tool calls and their results, failed attempts with concise causes, and the final response or deliverable. Earlier conversation serves as background only. The original message prefix and existing tool declarations are retained. Adding the output tool may change provider cache eligibility.
 
-The response must be valid JSON without surrounding prose or code fences. The plugin validates the response before persistence. The current DSH request interface does not expose a native structured-output option; the fixed directive and strict parser enforce the application-level contract without bypassing the native model route.
+The fixed directive requires exactly one call to the output tool, following DSH's Subagent structured-output pattern. The plugin validates the returned tool arguments before persistence and never dispatches other tools. A missing or invalid output call fails without automatic retry. The tool is declared only for the auxiliary request, with no global registration or provider-specific forced-tool parameter.
 
 A stored JSON record has exactly three fields:
 
