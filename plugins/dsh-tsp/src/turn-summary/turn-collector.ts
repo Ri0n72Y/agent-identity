@@ -1,6 +1,5 @@
 import type { SessionEvent } from '@deepseek-ai/dsh-session'
 
-import { renderTurnEvents } from './markdown-renderer.ts'
 import type { TurnSummaryInput } from './types.ts'
 
 /** Select the latest complete turn in the supplied local event log. */
@@ -21,6 +20,6 @@ export function collectCurrentTurn(events: readonly SessionEvent[]): TurnSummary
   if (latest === undefined) return undefined
   return {
     turn: latest.turn,
-    sourceMarkdown: renderTurnEvents(events.slice(latest.start, latest.end + 1)),
+    events: events.slice(latest.start, latest.end + 1),
   }
 }
