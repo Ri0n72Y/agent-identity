@@ -53,10 +53,20 @@ export async function generateTurnSummary(
   return validateSummaryOutput(text)
 }
 
-/** A complete, non-empty text response is persisted by the caller as JSON. */
+/** Validate the model's JSON response before persisting its summary. */
 export function validateSummaryOutput(text: string): string {
-  if (text.trim().length === 0) throw new Error('dsh-tsp: model returned an empty summary')
-  return text
+  let value: unknown
+  try {
+    value = JSON.parse(text)
+  } catch (error) {
+    throw new Error('dsh-tsp: model output is not valid JSON', { cause: error })
+  }
+  if (typeof value !== 'object' || value === null || Array.isArray(value)
+    || Object.keys(value).length !== 1 || !('summary' in value)
+    || typeof value.summary !== 'string' || value.summary.trim().length === 0) {
+    throw new Error('dsh-tsp: expected a JSON object containing only a non-empty summary string')
+  }
+  return value.summary
 }
 
 function resolveRoute(

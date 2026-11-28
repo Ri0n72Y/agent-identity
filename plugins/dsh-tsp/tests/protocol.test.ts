@@ -142,7 +142,15 @@ describe('Turn Summary request', () => {
     const request = buildSummaryMessages([message], 's1', turn)
     expect(request[0]).toBe(message)
     expect(request[0]?.content[0]).toEqual({ type: 'text', text: long })
-    expect(validateSummaryOutput(long)).toBe(long)
-    expect(() => validateSummaryOutput('  ')).toThrow()
+    expect(validateSummaryOutput(JSON.stringify({ summary: long }))).toBe(long)
+  })
+  it('accepts only the expected JSON object and preserves the summary string', () => {
+    const summary = '  first line\nsecond line  '
+    expect(validateSummaryOutput(JSON.stringify({ summary }))).toBe(summary)
+    for (const invalid of ['', '  ', 'plain text', '{"summary":', 'null', '[]',
+      '"text"', '{}', '{"summary":""}', '{"summary":"  "}', '{"summary":1}',
+      '{"summary":"ok","turn":7}', '~~~json\n{"summary":"ok"}\n~~~']) {
+      expect(() => validateSummaryOutput(invalid)).toThrow()
+    }
   })
 })
