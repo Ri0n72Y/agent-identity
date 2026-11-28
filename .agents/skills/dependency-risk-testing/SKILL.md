@@ -54,6 +54,8 @@ Audit existing tests when fixing bugs, changing contracts, or refactoring. Keep 
 - **Dependency integration:** Real compatibility and composition checks at the frequency justified by their risks, costs, and change rate.
 - **Release / acceptance:** Realistic full-flow, device, model, graphical, or production-like checks at appropriate gates, automated or manual as justified.
 
+As a starting point for a balanced test portfolio, Google's rough guideline is about 80% narrow-scoped unit tests and 20% broader-scoped tests (roughly 15% integration and 5% end-to-end). Adapt the mix to the system's risks, architecture, and verification costs; the ratio is guidance, not a quota or acceptance criterion.
+
 Cadence is independent of test design and scope. Preserve required verification gates. Do not impose test counts, coverage thresholds, pyramid ratios, or new CI orchestration without a separate project need.
 
 ## Review and verify
