@@ -7,28 +7,17 @@ import type { SessionSummaryCoordinator } from './session-summary.ts'
 export function createSummarizeCommand(coordinator: SessionSummaryCoordinator): CommandDefinition {
   return {
     name: 'summarize',
-    description: 'Summarize completed turns and update this Session’s TSP',
+    description: 'Summarize the current completed turn and update this Session’s TSP',
     handler: async (invocation: CommandInvocation) => {
       if (invocation.rawInput.trim().length > 0) {
         return { kind: 'error', text: '/summarize does not accept arguments' }
       }
 
       try {
-        const result = await coordinator.summarize(invocation.agent.session, invocation.signal)
-        if (result.processedTurns === 0) {
-          return {
-            kind: 'success',
-            text: 'TSP is up to date. No new completed turns were found.',
-          }
-        }
-
-        const range = result.firstTurn === result.lastTurn
-          ? 'turn ' + result.firstTurn
-          : 'turns ' + result.firstTurn + '–' + result.lastTurn
-        return {
-          kind: 'success',
-          text: 'TSP updated: summarized ' + result.processedTurns + ' ' + range + '.',
-        }
+        const turn = await coordinator.summarize(invocation.agent.session, invocation.signal)
+        return turn === undefined
+          ? { kind: 'success', text: 'No complete local turn to summarize.' }
+          : { kind: 'success', text: 'TSP updated for turn ' + turn + '.' }
       } catch (error) {
         invocation.signal.throwIfAborted()
         const detail = error instanceof Error ? error.message : String(error)

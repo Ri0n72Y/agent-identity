@@ -2,8 +2,7 @@ import { randomUUID } from 'node:crypto'
 import { mkdir, open, readFile, rename, unlink } from 'node:fs/promises'
 import { join } from 'node:path'
 
-import { TSP_SCHEMA_VERSION } from './types.ts'
-import type { SessionSummaryDocument, TurnSummaryRecord } from './types.ts'
+import type { SessionSummaryDocument } from './types.ts'
 
 /** JSON-backed per-Session store with atomic replacement and in-memory read-through. */
 export class SessionSummaryStore {
@@ -93,51 +92,23 @@ export class SessionSummaryStore {
   }
 }
 
-/** Validate persisted data before it can become model context or be overwritten. */
+/** Validate the minimal persisted document and unique turn identities. */
 export function validateDocument(value: unknown, expectedSessionId: string): SessionSummaryDocument {
-  if (!isRecord(value)) throw new Error('dsh-turn-summary: summary document must be an object')
-  if (value.schemaVersion !== TSP_SCHEMA_VERSION) {
-    throw new Error('dsh-turn-summary: unsupported schemaVersion ' + String(value.schemaVersion))
+  if (!isRecord(value) || value.sessionId !== expectedSessionId) {
+    throw new Error('dsh-turn-summary: invalid document or Session ID mismatch')
   }
-  if (value.sessionId !== expectedSessionId) {
-    throw new Error('dsh-turn-summary: Session ID does not match the requested file')
+  if (typeof value.sessionSummary !== 'string' || !Array.isArray(value.turnSummaries)) {
+    throw new Error('dsh-turn-summary: invalid Session Summary or Turn Summaries')
   }
-  if (!isInteger(value.processedThroughSeq) || value.processedThroughSeq < -1) {
-    throw new Error('dsh-turn-summary: processedThroughSeq must be an integer >= -1')
-  }
-  if (!isInteger(value.updatedAt) || value.updatedAt < 0) {
-    throw new Error('dsh-turn-summary: updatedAt must be a non-negative integer')
-  }
-  if (typeof value.sessionSummary !== 'string') {
-    throw new Error('dsh-turn-summary: sessionSummary must be a string')
-  }
-  if (!Array.isArray(value.recentTurnSummaries)) {
-    throw new Error('dsh-turn-summary: recentTurnSummaries must be an array')
-  }
-
-  let last = -1
-  for (const item of value.recentTurnSummaries) {
-    validateTurnSummary(item)
-    if (item.startSeq <= last || item.endSeq > value.processedThroughSeq) {
-      throw new Error('dsh-turn-summary: unordered or out-of-range Turn Summary')
+  const turns = new Set<number>()
+  for (const item of value.turnSummaries) {
+    if (!isRecord(item) || !isInteger(item.turn) || item.turn < 1
+      || typeof item.markdown !== 'string' || turns.has(item.turn)) {
+      throw new Error('dsh-turn-summary: invalid or duplicate Turn Summary')
     }
-    last = item.endSeq
+    turns.add(item.turn)
   }
   return value as unknown as SessionSummaryDocument
-}
-
-function validateTurnSummary(value: unknown): asserts value is TurnSummaryRecord {
-  if (!isRecord(value)) throw new Error('dsh-turn-summary: Turn Summary must be an object')
-  if (!isInteger(value.turn) || value.turn < 1) throw new Error('dsh-turn-summary: invalid turn number')
-  if (!isInteger(value.startSeq) || value.startSeq < 0) throw new Error('dsh-turn-summary: invalid startSeq')
-  if (!isInteger(value.endSeq) || value.endSeq < value.startSeq) throw new Error('dsh-turn-summary: invalid endSeq')
-  if (!isInteger(value.startedAt) || !isInteger(value.endedAt)) {
-    throw new Error('dsh-turn-summary: invalid turn timestamps')
-  }
-  if (!isRecord(value.reason) || typeof value.reason.kind !== 'string') {
-    throw new Error('dsh-turn-summary: invalid turn end reason')
-  }
-  if (typeof value.markdown !== 'string') throw new Error('dsh-turn-summary: Turn Summary markdown must be a string')
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {

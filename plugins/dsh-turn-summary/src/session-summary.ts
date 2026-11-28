@@ -1,27 +1,16 @@
 import type { Context } from '@deepseek-ai/cordis'
-import type { Session, SessionEvent } from '@deepseek-ai/dsh-session'
+import type { Session } from '@deepseek-ai/dsh-session'
 
 import type { ResolvedTurnSummaryConfig } from './config.ts'
 import { SessionSummaryStore } from './json-store.ts'
 import { renderSessionSummaryMarkdown } from './markdown-renderer.ts'
 import { generateTurnSummary } from './summary-generator.ts'
-import { collectNextTurnInput, collectTurnInputForEnd } from './turn-collector.ts'
+import { collectCurrentTurn } from './turn-collector.ts'
 import type { SessionSummaryDocument } from './types.ts'
 
 const CONTEXT_NAME = 'turn-summary:session'
-type TurnEndEvent = Extract<SessionEvent, { type: 'turn/end' }>
 
-/** Result of one explicit /summarize invocation. */
-export interface SummarizeResult {
-  readonly processedTurns: number
-  readonly firstTurn?: number
-  readonly lastTurn?: number
-}
-
-/**
- * Executes TSP only when explicitly requested by /summarize.
- * No turn-end observer, background queue, or automatic retry is installed.
- */
+/** Runs the current-turn summary on explicit command invocation. */
 export class SessionSummaryCoordinator {
   private readonly store: SessionSummaryStore
   private readonly activeSessions = new Set<string>()
@@ -41,7 +30,7 @@ export class SessionSummaryCoordinator {
       interpolate: false,
       text: context => context.session === undefined
         ? ''
-        : renderSessionSummaryMarkdown(this.store.peek(context.session.id), this.config.maxContextBytes),
+        : renderSessionSummaryMarkdown(this.store.peek(context.session.id)),
     })
 
     ctx.on('session/disposed', session => this.evict(session.id))
@@ -59,7 +48,7 @@ export class SessionSummaryCoordinator {
       }
 
       const assembly = await next()
-      const text = renderSessionSummaryMarkdown(this.store.peek(session.id), this.config.maxContextBytes)
+      const text = renderSessionSummaryMarkdown(this.store.peek(session.id))
       const contribution = assembly.contexts.find(entry => entry.name === CONTEXT_NAME)
       if (contribution !== undefined) {
         contribution.text = text
@@ -71,114 +60,38 @@ export class SessionSummaryCoordinator {
     }, { prepend: true })
   }
 
-  /**
-   * Summarize every complete turn not yet represented by this Session's TSP.
-   * A new TSP document starts at the latest complete local turn; inherited
-   * history and older local history are not backfilled.
-   */
-  async summarize(session: Session, signal: AbortSignal): Promise<SummarizeResult> {
+  /** Summarize only the latest complete local turn, once per invocation. */
+  async summarize(session: Session, signal: AbortSignal): Promise<number | undefined> {
     const sessionId = session.id
     if (this.activeSessions.has(sessionId)) {
       throw new Error('dsh-turn-summary: /summarize is already running for this Session')
     }
-
     this.activeSessions.add(sessionId)
     try {
       signal.throwIfAborted()
       const snapshot = await this.ctx.sessionQuery.readSession(sessionId)
       signal.throwIfAborted()
-      const localEvents = snapshot.events.filter(event => event.seq >= snapshot.inheritedEventCount)
+      const current = collectCurrentTurn(snapshot.events.slice(snapshot.inheritedEventCount))
+      if (current === undefined) return undefined
 
-      const latestEnd = localEvents.findLast(
-        (event): event is TurnEndEvent => event.type === 'turn/end',
-      )
-      if (latestEnd === undefined) return { processedTurns: 0 }
-
-      let document = await this.store.load(sessionId)
-      if (document === undefined) {
-        const latestTurn = collectTurnInputForEnd(
-          localEvents,
-          latestEnd,
-          this.config.maxEventTextChars,
-        )
-        document = emptyDocument(sessionId, latestTurn.startSeq - 1)
+      const previous: SessionSummaryDocument = await this.store.load(sessionId) ?? {
+        sessionId,
+        sessionSummary: '',
+        turnSummaries: [],
       }
+      signal.throwIfAborted()
+      const generated = await generateTurnSummary(this.ctx, this.config, session, previous, current, signal)
+      signal.throwIfAborted()
 
-      let processedTurns = 0
-      let firstTurn: number | undefined
-      let lastTurn: number | undefined
-
-      while (true) {
-        signal.throwIfAborted()
-        const input = collectNextTurnInput(
-          localEvents,
-          document.processedThroughSeq,
-          latestEnd.seq,
-          this.config.maxEventTextChars,
-        )
-        if (input === undefined) {
-          const unprocessedEnd = localEvents.find(event =>
-            event.type === 'turn/end'
-            && event.seq > document!.processedThroughSeq
-            && event.seq <= latestEnd.seq,
-          )
-          if (unprocessedEnd !== undefined) {
-            throw new Error('dsh-turn-summary: cannot locate the start of an unprocessed completed turn')
-          }
-          break
-        }
-
-        const generated = await generateTurnSummary(
-          this.ctx,
-          this.config,
-          session,
-          document,
-          input,
-          signal,
-        )
-        signal.throwIfAborted()
-
-        const turnSummary = {
-          turn: input.turn,
-          startSeq: input.startSeq,
-          endSeq: input.endSeq,
-          startedAt: input.startedAt,
-          endedAt: input.endedAt,
-          reason: input.reason,
-          markdown: generated.turnSummary,
-        }
-        const updated: SessionSummaryDocument = {
-          ...document,
-          processedThroughSeq: input.endSeq,
-          updatedAt: Date.now(),
-          sessionSummary: generated.sessionSummary,
-          recentTurnSummaries: [
-            ...document.recentTurnSummaries.filter(item => item.endSeq < input.startSeq),
-            turnSummary,
-          ].slice(-this.config.maxRecentTurns),
-        }
-
-        // The in-memory context changes only after the atomic JSON replacement succeeds.
-        await this.store.write(updated)
-        document = updated
-        processedTurns += 1
-        firstTurn ??= input.turn
-        lastTurn = input.turn
-      }
-
-      return {
-        processedTurns,
-        ...(firstTurn === undefined ? {} : { firstTurn }),
-        ...(lastTurn === undefined ? {} : { lastTurn }),
-      }
-    } catch (error) {
-      if (!signal.aborted) {
-        this.ctx.logger.warn(
-          'dsh-turn-summary: explicit summarization failed for Session '
-          + sessionId + ': ' + errorMessage(error),
-        )
-      }
-      throw error
+      await this.store.write({
+        sessionId,
+        sessionSummary: generated.sessionSummary,
+        turnSummaries: [
+          ...previous.turnSummaries.filter(item => item.turn !== current.turn),
+          { turn: current.turn, markdown: generated.turnSummary },
+        ].sort((a, b) => a.turn - b.turn),
+      })
+      return current.turn
     } finally {
       this.activeSessions.delete(sessionId)
       if (this.evictWhenIdle.delete(sessionId)) this.store.evict(sessionId)
@@ -200,17 +113,6 @@ export class SessionSummaryCoordinator {
     this.ctx.logger.warn(
       'dsh-turn-summary: cannot load Session state for ' + sessionId + ': ' + errorMessage(error),
     )
-  }
-}
-
-function emptyDocument(sessionId: string, processedThroughSeq: number): SessionSummaryDocument {
-  return {
-    schemaVersion: 1,
-    sessionId,
-    processedThroughSeq,
-    updatedAt: Date.now(),
-    sessionSummary: '',
-    recentTurnSummaries: [],
   }
 }
 

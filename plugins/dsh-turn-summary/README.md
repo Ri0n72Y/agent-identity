@@ -1,75 +1,43 @@
 # dsh-turn-summary
 
-A Cordis plugin that maintains the Turn Summary Protocol (TSP) for each DeepSeek Harness Session.
+A Cordis plugin implementing the Session-level Turn Summary Protocol (TSP).
 
-## Explicit execution
+## Usage
 
-Run `/summarize` in the target Session when you want to update its TSP.
+Run `/summarize` in the target DSH Session. The command summarizes its latest complete local turn and updates its Session Summary with one auxiliary LLM request.
 
-The command is registered through DSH's native command registry. It executes directly against the receiving Agent and does not send the command or its result as a model message.
+The command does not backfill skipped turns. Running it again for the same turn replaces the stored Turn Summary. If a request or JSON write fails, the command returns an error and preserves the previous committed document. The user may invoke the command again at any time.
 
-One invocation:
-- Reads the target Session's validated source log.
-- Selects all complete turns not yet represented in TSP.
-- On the first invocation, summarizes only the latest complete turn; older history is not backfilled.
-- Makes one auxiliary LLM request per selected turn. Each request generates that Turn Summary and the updated Session Summary together.
-- Atomically persists each successful turn before moving to the next one.
-- Returns a command result indicating the number of turns processed.
+The original Session events remain unchanged. The full textual turn and the previous Session Summary form the Markdown model input. The plugin validates and atomically writes both generated summaries as JSON. Subsequent prompts receive the persisted Session Summary and stored Turn Summaries as Markdown.
 
-If generation or persistence fails, the command returns an error. The source watermark advances only after a successful JSON write. Run `/summarize` again to retry. Concurrent invocations for the same Session are rejected rather than queued.
+No source text or summaries are truncated by the plugin. Model input/output limits still apply; incomplete model output is rejected.
 
-## Responsibilities
+## Configuration
 
-- Read the validated source log through `ctx.sessionQuery.readSession()`.
-- Preserve the original DSH Session as authoritative evidence.
-- Persist derived TSP state as JSON under `dshPath('state', 'turn-summary')`.
-- Inject the latest Session Summary and recent Turn Summaries as Markdown through `ctx.systemPrompt.context()`.
-
-TSP does not append summaries to the Session log or use the internal-only `appendPluginRecord()` API. This version does not automatically listen to `turn/end`; automatic scheduling is a separate future phase.
-
-## Installation
-
-Install the package in a DSH composition and add it to the Cordis bundle:
-
-```yaml
-- name: dsh-turn-summary
-  config:
-    maxRecentTurns: 12
-    maxContextBytes: 24000
-```
-
-The plugin requires the llm, sessionQuery, systemPrompt, and commands services. The summarization route defaults to the latest request route recorded in the live Session. Set both provider and model to override it:
+The plugin requires the llm, sessionQuery, systemPrompt and commands services. By default, the auxiliary request uses the Session's latest model route. An optional explicit provider/model pair and request timeout can be configured:
 
 ```yaml
 - name: dsh-turn-summary
   config:
     provider: deepseek
     model: deepseek-chat
-    maxTokens: 1800
     timeoutMs: 60000
-    maxRecentTurns: 12
-    maxContextBytes: 24000
 ```
 
-## Persistence
+## State
 
-Files are stored below:
+JSON files are stored under `$DSH_HOME/state/turn-summary/`. Each filename is the hexadecimal encoding of the UTF-8 Session ID. The persisted fields are:
 
-```text
-$DSH_HOME/state/turn-summary/
+```json
+{
+  "sessionId": "example-session",
+  "sessionSummary": "Current state",
+  "turnSummaries": [
+    { "turn": 2, "markdown": "Summary of turn 2" },
+    { "turn": 7, "markdown": "Summary of turn 7" }
+  ]
+}
 ```
-
-Each Session has one JSON file. The filename is the UTF-8 Session ID encoded as lowercase hexadecimal, preventing path traversal and case-insensitive filename collisions. The document stores the schema version, Session ID, processed source-event watermark, current Session Summary, and bounded recent Turn Summaries.
-
-The Session Summary is the sole Session-level working memory. Recent Turn Summaries are a bounded window, not an archive. Historical details remain available through native Session query.
-
-## Failure behavior
-
-- A failed model request does not advance the watermark or write a failure placeholder.
-- If a command processes several pending turns and a later turn fails, earlier successful turns remain persisted.
-- A failed JSON replacement does not publish the new in-memory context.
-- Re-running `/summarize` retries the first turn not yet persisted.
-- The next Prompt reads the latest successfully persisted TSP. If no TSP exists, no TSP context is injected.
 
 ## Development
 
@@ -78,3 +46,5 @@ cd plugins/dsh-turn-summary
 npm install
 npm run check
 ```
+
+Tests cover standalone turn extraction, Markdown rendering, model-response validation, and JSON storage. Actual DSH command and prompt behavior require a running DSH environment.
