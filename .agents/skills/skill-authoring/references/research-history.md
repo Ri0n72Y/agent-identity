@@ -159,11 +159,11 @@ This produced a new design principle:
 
 ## Dogfooding result: preserving the reasoning behind a compressed skill (2026-10-21)
 
-The `dependency-risk-testing` skill was re-evaluated after a real DSH Meeting CI simplification. The original skill had compressed “protect fragile dependency edges,” but subsequent practice surfaced another issue: tests can reproduce internal orchestration by fabricating private service state, becoming coupled to the implementation without validating the real plugin runtime.
+A testing skill was re-evaluated after CI simplification. Practice surfaced a recurring issue: tests can reproduce internal orchestration by fabricating private service state, becoming coupled to the implementation without validating the real runtime.
 
 A discussion of white-box versus black-box design and CI cadence was compared against ISTQB terminology, Google Testing Blog, the Practical Test Pyramid, Google's SMURF analysis, and Microsoft's Engineering Playbook. This produced narrower rules about discriminating test cases, respecting production encapsulation, and separating method, scope and cadence. Counterarguments mattered: white-box is not intrinsically function-only, regression is not necessarily full-flow, and expensive end-to-end checks are not always release-only.
 
-Compressing the final operational rule again would lose the disagreement, alternatives and evidence useful when the practice changes. Therefore the complete analysis was saved as a **historical, non-runtime** [reference](../../dependency-risk-testing/references/research-history.md) alongside the skill, with no mandatory reference-loading instruction in its `SKILL.md`.
+The reusable conclusions and their design alternatives are preserved in a **non-runtime** [research rationale](../../effective-testing/references/research.md), with no mandatory reference-loading instruction in the runtime skill.
 
 **Design implication:** treat a skill as a small activation-and-decision model, and preserve substantial provenance separately when it provides a meaningful path to revising that model. The archive justifies future review; it does not become a new runtime dependency.
 
@@ -175,7 +175,7 @@ The new skill-authoring guidance was examined against the Core's six methods. Mu
 
 Two gaps justified a narrow change: (1) skill revisions should begin with the *actual* dominant failure in practice rather than an even-handed inventory of plausible improvements, and must test practitioner assertions against artifacts and outcomes; (2) archives preserve the arguments behind a prior decision, but do not give that decision authority against contradictory new experience. The earlier claim that a rule was revisable **only if** provenance survived was too absolute; lost provenance should not block correction.
 
-This was an evidence-based semantic review of the method documents and source file, not a runtime A/B evaluation of skill effectiveness. The `dependency-risk-testing` skill already requires tracing actual dependencies, identifying a closest accountable boundary, and verifying results; this review did not find a reason to mechanically copy Core instructions into that domain skill.
+This was an evidence-based semantic review of the method documents and source file, not a runtime A/B evaluation of skill effectiveness. The domain skill already required tracing actual dependencies, identifying a stable accountable boundary, and verifying results; the review did not find a reason to mechanically copy Core instructions into it.
 
 ## Sources
 

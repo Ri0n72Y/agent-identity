@@ -30,7 +30,7 @@ agent-identity/
 │   └── skills/
 │       ├── agents-md-authoring/
 │       ├── core-authoring/
-│       ├── dependency-risk-testing/
+│       ├── effective-testing/
 │       ├── evidence-led-ui-design/
 │       ├── frontend-development/
 │       ├── paper-writing/
@@ -87,7 +87,7 @@ The canonical, human-authored [Core v1.0.3](core/CORE.md) defines the universal 
 
 `.agents/skills/evidence-led-ui-design/SKILL.md` is a reusable AI UI/UX design and review method. Its references cover design discovery, evaluation, and research evidence.
 
-`.agents/skills/dependency-risk-testing/SKILL.md` captures a reusable testing method that derives focused stability tests from production dependency risk rather than from feature lists, bug history, or coverage targets.
+`.agents/skills/effective-testing/SKILL.md` guides test design, writing, review, simplification, and verification through behavior contracts, risk, fidelity, maintainability, and test lifecycle.
 
 `.agents/skills/project-team/SKILL.md` coordinates an evolving team of persistent ChatGPT Project conversations, using project artifacts and GitHub rather than a custom team runtime.
 

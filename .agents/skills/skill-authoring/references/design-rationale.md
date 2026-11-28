@@ -192,7 +192,7 @@ Keep two kinds of supporting material distinct:
 
 An archive is not a shadow runtime prompt or proof that the old decision remains valid. Distinguish observations from interpretations and unresolved assumptions; point to canonical primary sources rather than duplicating them indiscriminately. When new practice contradicts the archive's rationale, update the skill instead of defending the archived conclusion. Preserve enough context to challenge the rule, without copying every conversation or making archival work mandatory for a trivial skill revision.
 
-For this design guide, the wider evidence lives in [research-history.md](./research-history.md). The [dependency-risk-testing research history](../../dependency-risk-testing/references/research-history.md) illustrates retaining domain-specific reasoning outside the runtime skill.
+For this design guide, the wider evidence lives in [research-history.md](./research-history.md). The [effective testing research rationale](../../effective-testing/references/research.md) illustrates retaining domain-specific reasoning outside the runtime skill.
 
 This repository's Reflection model provides the same boundary at a higher level: evidence may justify a durable change without being copied wholesale into durable state.
 
