@@ -4,7 +4,7 @@ import type { SessionEvent } from '@deepseek-ai/dsh-session'
 import type { Message, MessageId, ToolCallId, ToolCallBlock, ToolSchema } from '@deepseek-ai/dsh-llm'
 
 import { collectCurrentTurn } from '../src/turn-summary/turn-collector.ts'
-import { readStructuredOutput, STRUCTURED_OUTPUT_TOOL, withStructuredOutput } from '../src/turn-summary/structured-output.ts'
+import { prepareStructuredOutputChoice, readStructuredOutput, STRUCTURED_OUTPUT_TOOL, withStructuredOutput } from '../src/turn-summary/structured-output.ts'
 import { buildSummaryMessages, TURN_SUMMARY_INSTRUCTION } from '../src/turn-summary/request.ts'
 
 declare module '@deepseek-ai/dsh-llm' {
@@ -176,5 +176,14 @@ describe('Turn Summary request', () => {
     expect(result.toolHistory.tools).toEqual([original, STRUCTURED_OUTPUT_TOOL])
     expect(history.tools).toEqual([original])
     expect(() => withStructuredOutput([STRUCTURED_OUTPUT_TOOL], history)).toThrow()
+  })
+
+  it('adds the named tool choice only to turn-summary requests', () => {
+    const request = { body: {}, signal: new AbortController().signal }
+    expect(prepareStructuredOutputChoice(request)).toBeUndefined()
+    expect(prepareStructuredOutputChoice({ ...request, purpose: 'compaction' })).toBeUndefined()
+    expect(prepareStructuredOutputChoice({ ...request, purpose: 'turn-summary' })).toEqual({
+      value: { type: 'tool', name: STRUCTURED_OUTPUT_TOOL.name },
+    })
   })
 })

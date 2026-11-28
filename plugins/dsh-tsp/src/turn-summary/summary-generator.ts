@@ -31,8 +31,7 @@ export async function generateTurnSummary(
     ...route,
     messages,
     ...withStructuredOutput(header?.tools ?? [], session.toolHistory()),
-    ...(header?.config.provider === route.provider && header.config.model === route.model
-      && header.config.reasoningEffort !== undefined ? { reasoningEffort: header.config.reasoningEffort } : {}),
+    reasoningEffort: 'off',
     sessionId: session.id,
     purpose: 'turn-summary',
     signal,
@@ -61,6 +60,9 @@ function resolveRoute(
   const model = config.model ?? header?.config.model
   if (provider === undefined || model === undefined || provider.length === 0 || model.length === 0) {
     throw new Error('dsh-tsp: no model route is available; configure provider and model together')
+  }
+  if (provider !== 'deepseek-official' && provider !== 'deepseek-account') {
+    throw new Error('dsh-tsp: forced structured output requires a native DeepSeek provider (deepseek-official or deepseek-account)')
   }
   return { provider, model }
 }

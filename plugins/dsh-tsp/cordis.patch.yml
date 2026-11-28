@@ -1,4 +1,4 @@
 - insert:
     - id: dsh-tsp
       name: "dsh-tsp"
-      inject: [llm, sessionQuery, commands]
+      inject: [llm, sessionQuery, commands, deepseekLlmApiExtensions]

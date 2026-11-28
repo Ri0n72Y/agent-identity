@@ -1,4 +1,13 @@
 import type { ContentBlock, ToolHistory, ToolSchema } from '@deepseek-ai/dsh-llm'
+import type { DeepSeekLlmApiExtensionRequest, PreparedDeepSeekLlmApiExtension } from '@deepseek-ai/dsh-deepseek-llm-api-extensions'
+
+type StructuredOutputChoice = { type: 'tool'; name: string }
+
+declare module '@deepseek-ai/dsh-deepseek-llm-api-extensions/types' {
+  interface DeepSeekLlmApiExtensionMap {
+    tool_choice: StructuredOutputChoice
+  }
+}
 
 /** Request-local output tool. Its arguments are the input to summary persistence. */
 export const STRUCTURED_OUTPUT_TOOL: ToolSchema = {
@@ -10,6 +19,14 @@ export const STRUCTURED_OUTPUT_TOOL: ToolSchema = {
     required: ['summary'],
     additionalProperties: false,
   },
+}
+
+/** Add the provider constraint only to TSP's auxiliary request. */
+export function prepareStructuredOutputChoice(
+  request: DeepSeekLlmApiExtensionRequest,
+): PreparedDeepSeekLlmApiExtension<StructuredOutputChoice> | undefined {
+  if (request.purpose !== 'turn-summary') return undefined
+  return { value: { type: 'tool', name: STRUCTURED_OUTPUT_TOOL.name } }
 }
 
 /** Include the output tool in both native tool declarations and their historical projection. */
