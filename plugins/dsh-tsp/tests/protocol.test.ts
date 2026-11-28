@@ -111,7 +111,7 @@ describe('Turn Summary request', () => {
   })
 
   it('keeps the native message prefix unchanged and appends one fixed instruction', () => {
-    const context: Message[] = events.flatMap(event => {
+    const context = events.flatMap<Message>(event => {
       if (event.type === 'user/message') return [event.data]
       if (event.type === 'assistant/message' || event.type === 'tool/result') return [event.data.message]
       return []
