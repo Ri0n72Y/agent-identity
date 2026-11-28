@@ -1,5 +1,5 @@
 import type { Context } from '@deepseek-ai/cordis'
-import { BlockAssembler } from '@deepseek-ai/dsh-llm'
+import { BlockAssembler, ReasoningEffortId } from '@deepseek-ai/dsh-llm'
 import type { FinishReason, GenerateOptions } from '@deepseek-ai/dsh-llm'
 import type { Session } from '@deepseek-ai/dsh-session'
 
@@ -31,7 +31,7 @@ export async function generateTurnSummary(
     ...route,
     messages,
     ...withStructuredOutput(header?.tools ?? [], session.toolHistory()),
-    reasoningEffort: 'off',
+    reasoningEffort: ReasoningEffortId('off'),
     sessionId: session.id,
     purpose: 'turn-summary',
     signal,
